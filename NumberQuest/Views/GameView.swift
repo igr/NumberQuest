@@ -37,121 +37,18 @@ struct GameView: View {
                 Spacer()
                 
                 // Current Guess Display
-                HStack(spacing: 20) {
+                HStack(spacing: 10) {
                     Text("Your Guess:")
                         .font(.title2)
                         .fontWeight(.semibold)
-                    
-                    HStack(spacing: 5) {
-                        Text("\(firstDigit)")
-                            .font(.system(size: 40, weight: .bold, design: .monospaced))
-                            .foregroundColor(.blue)
-                        Text("\(secondDigit)")
-                            .font(.system(size: 40, weight: .bold, design: .monospaced))
-                            .foregroundColor(.blue)
-                        Text("\(thirdDigit)")
-                            .font(.system(size: 40, weight: .bold, design: .monospaced))
-                            .foregroundColor(.blue)
-                    }
                 }
                 
-                // Digit Pickers (bottom area)
-                VStack(spacing: 20) {
-                    Text("Pick your 3 digits:")
-                        .font(.headline)
-                    
-                    HStack(spacing: 30) {
-                        // First Digit Picker
-                        VStack {
-                            Text("Hundreds")
-                                .font(.caption)
-                                .foregroundColor(.secondary)
-                            Picker("First Digit", selection: $firstDigit) {
-                                ForEach(0...9, id: \.self) { digit in
-                                    Text("\(digit)")
-                                        .font(.title)
-                                        .tag(digit)
-                                }
-                            }
-                            .pickerStyle(WheelPickerStyle())
-                            .frame(width: 80, height: 120)
-                            .clipped()
-                        }
-                        
-                        // Second Digit Picker
-                        VStack {
-                            Text("Tens")
-                                .font(.caption)
-                                .foregroundColor(.secondary)
-                            Picker("Second Digit", selection: $secondDigit) {
-                                ForEach(0...9, id: \.self) { digit in
-                                    Text("\(digit)")
-                                        .font(.title)
-                                        .tag(digit)
-                                }
-                            }
-                            .pickerStyle(WheelPickerStyle())
-                            .frame(width: 80, height: 120)
-                            .clipped()
-                        }
-                        
-                        // Third Digit Picker
-                        VStack {
-                            Text("Units")
-                                .font(.caption)
-                                .foregroundColor(.secondary)
-                            Picker("Third Digit", selection: $thirdDigit) {
-                                ForEach(0...9, id: \.self) { digit in
-                                    Text("\(digit)")
-                                        .font(.title)
-                                        .tag(digit)
-                                }
-                            }
-                            .pickerStyle(WheelPickerStyle())
-                            .frame(width: 80, height: 120)
-                            .clipped()
-                        }
-                    }
-                    
-                    // Guess Button
-                    Button(action: {
-                        gameManager.makeGuess(firstDigit: firstDigit, secondDigit: secondDigit, thirdDigit: thirdDigit)
-                    }) {
-                        Text("Make Guess")
-                            .font(.title2)
-                            .fontWeight(.bold)
-                            .foregroundColor(.white)
-                            .padding(.horizontal, 40)
-                            .padding(.vertical, 15)
-                            .background(
-                                RoundedRectangle(cornerRadius: 15)
-                                    .fill(gameManager.gameWon ? Color.gray : Color.green)
-                            )
-                    }
-                    .disabled(gameManager.gameWon)
-                    
-                    // New Game Button (appears when game is won)
-                    if gameManager.gameWon {
-                        Button(action: {
-                            gameManager.startNewGame()
-                            // Reset pickers
-                            firstDigit = 0
-                            secondDigit = 0
-                            thirdDigit = 0
-                        }) {
-                            Text("New Game")
-                                .font(.title2)
-                                .fontWeight(.bold)
-                                .foregroundColor(.white)
-                                .padding(.horizontal, 40)
-                                .padding(.vertical, 15)
-                                .background(
-                                    RoundedRectangle(cornerRadius: 15)
-                                        .fill(Color.blue)
-                                )
-                        }
-                    }
-                }
+                NumberPickerView(
+                    firstDigit: $firstDigit,
+                    secondDigit: $secondDigit,
+                    thirdDigit: $thirdDigit,
+                    gameManager: gameManager
+                )
                 .padding(.bottom, 30)
             }
             .navigationTitle("Guess Game")
