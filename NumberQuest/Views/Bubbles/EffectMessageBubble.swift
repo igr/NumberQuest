@@ -11,14 +11,22 @@ struct EffectMessageBubble: View {
             return .purple
         case .milestone:
             return .red
-        case .streak:
-            return .red
         case .celebration:
-            return .pink
-        case .encouragement:
             return .orange
         case .warning:
             return .yellow
+        }
+    }
+    private var effectText: String {
+        switch effectMessage.effectType {
+        case .gameStart, .gameEnd:
+            return "Game started"
+        case .celebration:
+            return "You did it!"
+        case .milestone:
+            return "You completed attempts!"
+        case .warning:
+            return "Warning: Your progress is being saved!"
         }
     }
     
@@ -27,17 +35,11 @@ struct EffectMessageBubble: View {
             Spacer()
             
             VStack(spacing: 2) {
-                Text(effectMessage.content)
+                Text(effectText)
                     .foregroundColor(.primary)
                     .font(.callout)
                     .fontWeight(.semibold)
                     .italic()
-                
-                // Show effect type for debugging/context
-                Text("effect · \(String(format: "%.1f", effectMessage.duration))s")
-                    .foregroundColor(.secondary)
-                    .font(.caption2)
-                    .fontWeight(.light)
             }
             .padding(.horizontal, 12)
             .padding(.vertical, 8)
@@ -52,4 +54,6 @@ struct EffectMessageBubble: View {
         }
         .padding(.horizontal, 16)
     }
+    
+    
 }

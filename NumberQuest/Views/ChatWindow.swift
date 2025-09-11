@@ -120,7 +120,6 @@ struct ChatWindow_Previews: PreviewProvider {
         Message(SystemMessage(type: .tooHigh(currentGuess: 500))),
         Message(PlayerMessage(guess: 250, attempt: 2)),
         Message(SystemMessage(type: .tooLow(currentGuess: 250))),
-        Message(EffectMessage(type: .encouragement)),
         Message(PlayerMessage(guess: 375, attempt: 3)),
         Message(SystemMessage(type: .tooHigh(currentGuess: 375))),
         Message(PlayerMessage(guess: 312, attempt: 4)),

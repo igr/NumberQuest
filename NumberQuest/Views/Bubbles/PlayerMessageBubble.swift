@@ -7,17 +7,11 @@ struct PlayerMessageBubble: View {
     var body: some View {
         HStack(alignment: .center) {
             Spacer()
-            
             VStack(alignment: .center, spacing: 4) {
                 Text("\(playerMessage.guess)")
                     .foregroundColor(.white)
                     .font(.largeTitle)
                     .fontWeight(.bold)
-                Text("#\(playerMessage.attempt)")
-                    .foregroundColor(.black.opacity(0.8))
-                    .font(.title3)
-                    .fontWeight(.medium)
-
             }
             .padding(.horizontal, 20)
             .padding(.vertical, 12)

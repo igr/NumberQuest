@@ -10,12 +10,10 @@ struct GameView: View {
     var body: some View {
         NavigationView() {
             VStack(spacing: 20) {
-                // Game Title
                 Text("🎯 Number Quest")
                     .font(.largeTitle)
                     .fontWeight(.bold)
                 
-                // Chat Window
                 ChatWindow(messages: $gameManager.chatMessages)
                     .background(Color.gray.opacity(0.05))
                     .cornerRadius(15)

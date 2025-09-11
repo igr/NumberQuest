@@ -4,10 +4,23 @@ import Foundation
 struct SystemMessageBubble: View {
     let systemMessage: SystemMessage
     
+    private var systemText: String {
+        switch systemMessage.messageType {
+        case .tooHigh:
+            return "Oops! Your guess is too high."
+        case .tooLow:
+            return "Oops! Your guess is too low."
+        case .welcome:
+            return "Welcome to the Number Guessing Game!"
+        case .victory:
+            return "Congratulations! You won!"
+        }
+    }
+    
     var body: some View {
         HStack {
             VStack(alignment: .leading, spacing: 2) {
-                Text(systemMessage.content)
+                Text(systemText)
                     .foregroundColor(.white)
                     .font(.body)
                 
