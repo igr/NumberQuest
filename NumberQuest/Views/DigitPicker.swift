@@ -22,13 +22,15 @@ struct DigitPicker: View {
         .system(size: 60, weight: .bold, design: .monospaced)
     }
     
-    var body: some View {
-        let padding: CGFloat = if (selectedNdx() == 0 || selectedNdx() == 9) {
-            // so that first and last item can fit into the selection area
-            itemHeight * (CGFloat(visibleItems) / 2 - 0.5)
+    var padding: CGFloat {
+        let selectedIndex = selectedNdx()
+        if selectedIndex == 0 || selectedIndex == digits.last {
+            return itemHeight * (CGFloat(visibleItems) / 2 - 0.5)
         } else {
-            0
+            return 0
         }
+    }
+    var body: some View {
         ScrollView(.vertical, showsIndicators: false) {
             LazyVStack(spacing: 0) {
                 ForEach(digits, id: \.self) { digitValue in
