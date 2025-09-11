@@ -14,17 +14,11 @@ struct DigitPicker: View {
     private let itemHeight: CGFloat = 60
     private let visibleItems = 3
     
-    // deprecated
-    private func selectedNdx() -> Int {
-        return selectedIndex
-    }
-    
     private var digitFont: Font {
         .system(size: 60, weight: .bold, design: .monospaced)
     }
     
     var padding: CGFloat {
-        let selectedIndex = selectedNdx()
         if selectedIndex == 0 || selectedIndex == digits.last {
             return itemHeight * (CGFloat(visibleItems) / 2 - 0.5)
         } else {
@@ -42,6 +36,8 @@ struct DigitPicker: View {
                         .scaleEffect(scaleForDigit(at: digitValue))
                         .opacity(opacityForDigit(at: digitValue))
                         .id(digitValue)
+                        .mask(gradientForDigit(at: digitValue)
+                        )
                 }
             }
             .padding(.vertical, padding)
@@ -91,7 +87,7 @@ struct DigitPicker: View {
     }
     
     private func colorForDigit(at index: Int) -> Color {
-        let distance = abs(index - selectedNdx())
+        let distance = abs(index - selectedIndex)
         if distance == 0 {
             return .blue
         } else if distance <= 1 {
@@ -104,7 +100,7 @@ struct DigitPicker: View {
     }
     
     private func scaleForDigit(at index: Int) -> CGFloat {
-        let distance = abs(index - selectedNdx())
+        let distance = abs(index - selectedIndex)
         if distance == 0 {
             return 1.0
         } else if distance <= 1 {
@@ -115,7 +111,7 @@ struct DigitPicker: View {
     }
     
     private func opacityForDigit(at index: Int) -> Double {
-        let distance = abs(index - selectedNdx())
+        let distance = abs(index - selectedIndex)
         if distance == 0 {
             return 1.0
         } else if distance <= 1 {
@@ -126,7 +122,17 @@ struct DigitPicker: View {
             return 0.2
         }
     }
-        
+
+    private func gradientForDigit(at index: Int) -> LinearGradient {
+        let distance = index - selectedIndex
+        if distance == 0 {
+            return LinearGradient(gradient: Gradient(colors: [Color.black, Color.black.opacity(100)]), startPoint: .top, endPoint: .bottom)
+        } else if distance < 0 {
+            return LinearGradient(gradient: Gradient(colors: [Color.black, Color.black.opacity(0)]), startPoint: .bottom, endPoint: .top)
+        } else {
+            return LinearGradient(gradient: Gradient(colors: [Color.black, Color.black.opacity(0)]), startPoint: .top, endPoint: .bottom)
+        }
+    }
 }
 
 #Preview {
