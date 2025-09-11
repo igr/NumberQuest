@@ -7,31 +7,25 @@ struct NumberPickerView: View {
     
     var onGuess: (Int) -> Void
     
-    @State private var firstDigitOptional: Int? = nil
-    @State private var secondDigitOptional: Int? = nil
-    @State private var thirdDigitOptional: Int? = nil
-    
     var body: some View {
         VStack(spacing: 20) {
             HStack(spacing: 0) {
                 // First Digit Picker
-                DigitPicker(selectedIndex: $firstDigitOptional)
+                DigitPicker(selectedIndex: $firstDigit)
                     .frame(width: 100, height: 180)
                 
                 // Second Digit Picker
-                DigitPicker(selectedIndex: $secondDigitOptional)
+                DigitPicker(selectedIndex: $secondDigit)
                     .frame(width: 80, height: 180)
                 
                 // Third Digit Picker
-                DigitPicker(selectedIndex: $thirdDigitOptional)
+                DigitPicker(selectedIndex: $thirdDigit)
                     .frame(width: 80, height: 180)
             }
             
             // Guess Button
             Button(action: {
-                let number = (firstDigitOptional ?? 0) * 100
-                    + (secondDigitOptional ?? 0) * 10
-                    + (thirdDigitOptional ?? 0)
+                let number = firstDigit * 100 + secondDigit * 10 + thirdDigit
                 onGuess(number)
             }) {
                 HStack {
@@ -48,36 +42,6 @@ struct NumberPickerView: View {
                         .fill(Color.green)
                 )
             }
-        }
-        .onAppear {
-            // Initialize optional values from bindings
-            firstDigitOptional = firstDigit
-            secondDigitOptional = secondDigit
-            thirdDigitOptional = thirdDigit
-        }
-        .onChange(of: firstDigitOptional) { _, newValue in
-            if let newValue {
-                firstDigit = newValue
-            }
-        }
-        .onChange(of: secondDigitOptional) { _, newValue in
-            if let newValue {
-                secondDigit = newValue
-            }
-        }
-        .onChange(of: thirdDigitOptional) { _, newValue in
-            if let newValue {
-                thirdDigit = newValue
-            }
-        }
-        .onChange(of: firstDigit) { _, newValue in
-            firstDigitOptional = newValue
-        }
-        .onChange(of: secondDigit) { _, newValue in
-            secondDigitOptional = newValue
-        }
-        .onChange(of: thirdDigit) { _, newValue in
-            thirdDigitOptional = newValue
         }
     }
 }

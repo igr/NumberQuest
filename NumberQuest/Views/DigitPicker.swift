@@ -2,9 +2,9 @@ import SwiftUI
 import AudioToolbox
 
 struct DigitPicker: View {
-    @Binding var selectedIndex: Int?
+    @Binding var selectedIndex: Int
     
-    init(selectedIndex: Binding<Int?>) {
+    init(selectedIndex: Binding<Int>) {
         self._selectedIndex = selectedIndex
     }
         
@@ -14,8 +14,9 @@ struct DigitPicker: View {
     private let itemHeight: CGFloat = 60
     private let visibleItems = 3
     
+    // deprecated
     private func selectedNdx() -> Int {
-        return selectedIndex ?? 0
+        return selectedIndex
     }
     
     private var digitFont: Font {
@@ -46,16 +47,19 @@ struct DigitPicker: View {
             .padding(.vertical, padding)
             .scrollTargetLayout()
         }
-        .scrollPosition(id: $selectedIndex, anchor: .center)
+        .scrollPosition(id: Binding(get: { selectedIndex }, set: { newValue in
+            let clamped = min(max(newValue ?? 0, digits.first!), digits.last!)
+            if clamped != selectedIndex {
+                selectedIndex = clamped
+            }
+        }), anchor: .center)
         .frame(height: itemHeight * CGFloat(visibleItems))
         .scrollTargetBehavior(.viewAligned)
         .scrollDisabled(false)
         .onChange(of: selectedIndex) { _, newValue in
-            if let newValue {
-                let clamped = min(max(newValue, digits.first!), digits.last!)
-                if clamped != selectedIndex {
-                    selectedIndex = clamped
-                }
+            let clamped = min(max(newValue, digits.first!), digits.last!)
+            if clamped != selectedIndex {
+                selectedIndex = clamped
             }
         }
         .onChange(of: selectedIndex, initial: false) {
@@ -127,11 +131,11 @@ struct DigitPicker: View {
 
 #Preview {
     struct PreviewWrapper: View {
-        @State private var digit: Int? = 5
+        @State private var digit = 5
 
         var body: some View {
             VStack(spacing: 30) {
-                Text("Selected Digit: \(digit ?? -1)")
+                Text("Selected Digit: \(digit)")
                     .font(.title)
                 
                 DigitPicker(selectedIndex: $digit)
