@@ -9,32 +9,25 @@ struct GameView: View {
 
     var body: some View {
         NavigationView() {
-            VStack(spacing: 30) {
+            VStack(spacing: 20) {
                 // Game Title
-                Text("🎯 Guess the Number")
+                Text("🎯 Number Quest")
                     .font(.largeTitle)
                     .fontWeight(.bold)
                 
-                // Message Area (top)
-                VStack(spacing: 0) {
-                    Text(gameManager.message)
-                        .font(.title2)
-                        .multilineTextAlignment(.center)
-                        .padding()
-                        .background(
-                            RoundedRectangle(cornerRadius: 15)
-                                .fill(gameManager.gameWon ? Color.green.opacity(0.2) : Color.blue.opacity(0.1))
-                        )
-                    
-                    if gameManager.attempts > 0 {
-                        Text("Attempts: \(gameManager.attempts)")
-                            .font(.headline)
-                            .foregroundColor(.secondary)
-                    }
-                }
-                .padding(.horizontal)
+                // Chat Window
+                ChatWindow(messages: $gameManager.chatMessages)
+                    .frame(maxHeight: 300)
+                    .background(Color.gray.opacity(0.05))
+                    .cornerRadius(15)
+                    .padding(.horizontal)
                 
-                Spacer()
+                // Attempts counter
+                if gameManager.attempts > 0 {
+                    Text("Attempts: \(gameManager.attempts)")
+                        .font(.headline)
+                        .foregroundColor(.secondary)
+                }
 
                 VStack() {
                     NumberPickerView(
@@ -55,7 +48,7 @@ struct GameView: View {
                             secondDigit = 0
                             thirdDigit = 0
                         }) {
-                            Text("New Game")
+                            Text("🎮 New Game")
                                 .font(.title2)
                                 .fontWeight(.bold)
                                 .foregroundColor(.white)
@@ -74,6 +67,11 @@ struct GameView: View {
             .navigationTitle("Number Quest")
             .navigationBarTitleDisplayMode(.inline)
             .edgesIgnoringSafeArea(.bottom)
+            .onAppear {
+                if !gameManager.gameStarted {
+                    gameManager.startNewGame()
+                }
+            }
         }
     }
 }
