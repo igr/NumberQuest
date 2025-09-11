@@ -19,10 +19,16 @@ struct DigitPicker: View {
     }
     
     private var digitFont: Font {
-        .system(size: 50, weight: .bold, design: .monospaced)
+        .system(size: 60, weight: .bold, design: .monospaced)
     }
     
     var body: some View {
+        let padding: CGFloat = if (selectedNdx() == 0 || selectedNdx() == 9) {
+            // so that first and last item can fit into the selection area
+            itemHeight * (CGFloat(visibleItems) / 2 - 0.5)
+        } else {
+            0
+        }
         ScrollView(.vertical, showsIndicators: false) {
             LazyVStack(spacing: 0) {
                 ForEach(digits, id: \.self) { digitValue in
@@ -35,8 +41,7 @@ struct DigitPicker: View {
                         .id(digitValue)
                 }
             }
-            // so that first and last item can fit into the selection area
-            .padding(.vertical, itemHeight * (CGFloat(visibleItems) / 2 - 0.5))
+            .padding(.vertical, padding)
             .scrollTargetLayout()
         }
         .scrollPosition(id: $selectedIndex, anchor: .center)
@@ -98,9 +103,9 @@ struct DigitPicker: View {
         if distance == 0 {
             return 1.0
         } else if distance <= 1 {
-            return 0.8
-        } else {
             return 0.6
+        } else {
+            return 0.4
         }
     }
     
@@ -116,6 +121,7 @@ struct DigitPicker: View {
             return 0.2
         }
     }
+        
 }
 
 #Preview {
