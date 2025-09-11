@@ -1,107 +1,93 @@
 import SwiftUI
 import Foundation
 
-// MARK: - Message Protocol
-protocol GameMessage: Identifiable, Equatable {
-    var id: UUID { get }
-    var content: String { get }
-}
-
-// MARK: - Player Message
-struct PlayerMessage: GameMessage {
-    let id = UUID()
-    let content: String
-    let guess: Int
-    
-    init(guess: Int) {
-        self.guess = guess
-        self.content = "My guess: \(guess)"
-    }
-    
-    static func == (lhs: PlayerMessage, rhs: PlayerMessage) -> Bool {
-        lhs.id == rhs.id
-    }
-}
-
-// MARK: - System Message
-struct SystemMessage: GameMessage {
-    let id = UUID()
-    let content: String
-    let messageType: SystemMessageType
-    
-    enum SystemMessageType {
-        case welcome
-        case tooHigh(currentGuess: Int)
-        case tooLow(currentGuess: Int)
-        case victory(targetNumber: Int, attempts: Int)
-        case hint(message: String)
-    }
-    
-    init(type: SystemMessageType) {
-        self.messageType = type
-        
-        switch type {
-        case .welcome:
-            self.content = "🎯 Welcome to NumberQuest! I'm thinking of a 3-digit number. Can you guess it?"
-        case .tooHigh(let guess):
-            self.content = "📉 Too high! \(guess) is greater than my number."
-        case .tooLow(let guess):
-            self.content = "📈 Too low! \(guess) is less than my number."
-        case .victory(let target, let attempts):
-            self.content = "🎉 Congratulations! You guessed \(target) in \(attempts) attempt\(attempts == 1 ? "" : "s")!"
-        case .hint(let message):
-            self.content = "💡 \(message)"
-        }
-    }
-    
-    static func == (lhs: SystemMessage, rhs: SystemMessage) -> Bool {
-        lhs.id == rhs.id
-    }
-}
-
-// MARK: - Type-erased Message Container
-struct Message: Identifiable, Equatable {
-    let id = UUID()
-    private let _message: any GameMessage
-    
-    var content: String { _message.content }
-    var isPlayerMessage: Bool { _message is PlayerMessage }
-    
-    init(_ message: any GameMessage) {
-        self._message = message
-    }
-    
-    static func == (lhs: Message, rhs: Message) -> Bool {
-        lhs.id == rhs.id
-    }
-}
-
-// MARK: - Individual Message View
-struct MessageBubble: View {
+// MARK: - Player Message Bubble
+struct PlayerMessageBubble: View {
     let message: Message
     
     var body: some View {
         HStack {
-            if message.isPlayerMessage {
-                Spacer()
-            }
+            Spacer()
             
-            // Message bubble
             Text(message.content)
                 .foregroundColor(.white)
+                .font(.body)
+                .fontWeight(.medium)
                 .padding(.horizontal, 16)
                 .padding(.vertical, 10)
                 .background(
                     RoundedRectangle(cornerRadius: 18)
-                        .fill(message.isPlayerMessage ? Color.green : Color.blue)
+                        .fill(Color.green)
                 )
-                .frame(maxWidth: 280, alignment: message.isPlayerMessage ? .trailing : .leading)
-            
-            if !message.isPlayerMessage {
-                Spacer()
-            }
+                .frame(maxWidth: 280, alignment: .trailing)
         }
         .padding(.horizontal, 16)
+    }
+}
+
+// MARK: - System Message Bubble
+struct SystemMessageBubble: View {
+    let message: Message
+    
+    var body: some View {
+        HStack {
+            Text(message.content)
+                .foregroundColor(.white)
+                .font(.body)
+                .padding(.horizontal, 16)
+                .padding(.vertical, 10)
+                .background(
+                    RoundedRectangle(cornerRadius: 18)
+                        .fill(Color.blue)
+                )
+                .frame(maxWidth: 280, alignment: .leading)
+            
+            Spacer()
+        }
+        .padding(.horizontal, 16)
+    }
+}
+
+// MARK: - Effect Message Bubble
+struct EffectMessageBubble: View {
+    let message: Message
+    
+    var body: some View {
+        HStack {
+            Spacer()
+            
+            Text(message.content)
+                .foregroundColor(.primary)
+                .font(.callout)
+                .fontWeight(.semibold)
+                .italic()
+                .padding(.horizontal, 12)
+                .padding(.vertical, 8)
+                .background(
+                    RoundedRectangle(cornerRadius: 15)
+                        .fill(Color.orange.opacity(0.2))
+                        .stroke(Color.orange.opacity(0.5), lineWidth: 1)
+                )
+                .frame(maxWidth: 250)
+            
+            Spacer()
+        }
+        .padding(.horizontal, 16)
+    }
+}
+
+// MARK: - Message Bubble Container
+struct MessageBubble: View {
+    let message: Message
+    
+    var body: some View {
+        if message.isPlayerMessage {
+            PlayerMessageBubble(message: message)
+        } else if message.isSystemMessage {
+            SystemMessageBubble(message: message)
+        } else if message.isEffectMessage {
+            EffectMessageBubble(message: message)
+        }
     }
 }
 
@@ -191,14 +177,17 @@ struct ChatWindow_Previews: PreviewProvider {
     }
     
     static var sampleMessages: [Message] = [
+        Message(EffectMessage(type: .gameStart)),
         Message(SystemMessage(type: .welcome)),
-        Message(PlayerMessage(guess: 500)),
+        Message(PlayerMessage(guess: 500, attempt: 1)),
         Message(SystemMessage(type: .tooHigh(currentGuess: 500))),
-        Message(PlayerMessage(guess: 250)),
+        Message(PlayerMessage(guess: 250, attempt: 2)),
         Message(SystemMessage(type: .tooLow(currentGuess: 250))),
-        Message(PlayerMessage(guess: 375)),
+        Message(EffectMessage(type: .encouragement)),
+        Message(PlayerMessage(guess: 375, attempt: 3)),
         Message(SystemMessage(type: .tooHigh(currentGuess: 375))),
-        Message(PlayerMessage(guess: 312)),
+        Message(PlayerMessage(guess: 312, attempt: 4)),
+        Message(EffectMessage(type: .celebration)),
         Message(SystemMessage(type: .victory(targetNumber: 312, attempts: 4)))
     ]
 }

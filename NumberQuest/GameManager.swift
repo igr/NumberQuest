@@ -22,7 +22,7 @@ class GameManager: ObservableObject {
         attempts += 1
         
         // Add player message
-        chatMessages.append(Message(PlayerMessage(guess: guess)))
+        chatMessages.append(Message(PlayerMessage(guess: guess, attempt: attempts)))
         
         if guess == targetNumber {
             gameWon = true
