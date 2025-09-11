@@ -11,7 +11,7 @@ struct SystemMessageBubble: View {
         case .tooLow:
             return "Oops! Your guess is too low."
         case .welcome:
-            return "Welcome to the Number Guessing Game!"
+            return "🎯 Welcome! Guess a Number!"
         case .victory:
             return "Congratulations! You won!"
         }
