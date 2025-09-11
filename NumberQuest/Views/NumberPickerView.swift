@@ -10,10 +10,6 @@ struct NumberPickerView: View {
     @State private var secondDigitOptional: Int? = nil
     @State private var thirdDigitOptional: Int? = nil
     
-    private var digitFont: Font {
-        .system(size: 60, weight: .bold, design: .monospaced)
-    }
-    
     var body: some View {
         VStack(spacing: 20) {
             HStack(spacing: 0) {
@@ -48,32 +44,7 @@ struct NumberPickerView: View {
                         .fill(gameManager.gameWon ? Color.gray : Color.green)
                 )
             }
-            .disabled(gameManager.gameWon)
-            
-            // New Game Button (appears when game is won)
-            if gameManager.gameWon {
-                Button(action: {
-                    gameManager.startNewGame()
-                    // Reset pickers
-                    firstDigit = 0
-                    secondDigit = 0
-                    thirdDigit = 0
-                    firstDigitOptional = 0
-                    secondDigitOptional = 0
-                    thirdDigitOptional = 0
-                }) {
-                    Text("New Game")
-                        .font(.title2)
-                        .fontWeight(.bold)
-                        .foregroundColor(.white)
-                        .padding(.horizontal, 40)
-                        .padding(.vertical, 15)
-                        .background(
-                            RoundedRectangle(cornerRadius: 15)
-                                .fill(Color.blue)
-                        )
-                }
-            }
+            .disabled(gameManager.gameWon)            
         }
         .onAppear {
             // Initialize optional values from bindings

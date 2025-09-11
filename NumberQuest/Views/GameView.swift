@@ -44,6 +44,28 @@ struct GameView: View {
                         gameManager: gameManager
                     )
                     .padding(.bottom, 30)
+                    
+                    // New Game Button (appears when game is won)
+                    if gameManager.gameWon {
+                        Button(action: {
+                            gameManager.startNewGame()
+                            // Reset pickers
+                            firstDigit = 0
+                            secondDigit = 0
+                            thirdDigit = 0
+                        }) {
+                            Text("New Game")
+                                .font(.title2)
+                                .fontWeight(.bold)
+                                .foregroundColor(.white)
+                                .padding(.horizontal, 40)
+                                .padding(.vertical, 15)
+                                .background(
+                                    RoundedRectangle(cornerRadius: 15)
+                                        .fill(Color.blue)
+                                )
+                        }
+                    }
                 }
                 .frame(maxWidth: .infinity)
                 .background(Color.green.opacity(0.1))
