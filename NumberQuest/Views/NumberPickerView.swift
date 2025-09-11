@@ -10,15 +10,12 @@ struct NumberPickerView: View {
     var body: some View {
         VStack(spacing: 20) {
             HStack(spacing: 0) {
-                // First Digit Picker
                 DigitPicker(selectedIndex: $firstDigit)
-                    .frame(width: 100, height: 180)
+                    .frame(width: 80, height: 180)
                 
-                // Second Digit Picker
                 DigitPicker(selectedIndex: $secondDigit)
                     .frame(width: 80, height: 180)
                 
-                // Third Digit Picker
                 DigitPicker(selectedIndex: $thirdDigit)
                     .frame(width: 80, height: 180)
             }

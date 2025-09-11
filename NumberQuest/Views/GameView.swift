@@ -37,7 +37,7 @@ struct GameView: View {
                     ) { value in
                         gameManager.makeGuess(value)
                     }
-                    .padding(.bottom, 30)
+                    .padding(.bottom, 30)                    
                     
                     // New Game Button (appears when game is won)
                     if gameManager.gameWon {
@@ -64,8 +64,6 @@ struct GameView: View {
                 .frame(maxWidth: .infinity)
                 .background(Color.green.opacity(0.1))
             }
-            .navigationTitle("Number Quest")
-            .navigationBarTitleDisplayMode(.inline)
             .edgesIgnoringSafeArea(.bottom)
             .onAppear {
                 if !gameManager.gameStarted {
