@@ -8,7 +8,7 @@ struct PlayerMessageBubble: View {
         HStack(alignment: .center) {
             Spacer()
             VStack(alignment: .center, spacing: 4) {
-                Text("\(playerMessage.guess)")
+                Text(String(format: "%03d", playerMessage.guess))
                     .foregroundColor(.white)
                     .font(.largeTitle)
                     .fontWeight(.bold)

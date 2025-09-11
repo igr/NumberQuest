@@ -4,6 +4,7 @@ struct NumberPickerView: View {
     @Binding var firstDigit: Int
     @Binding var secondDigit: Int
     @Binding var thirdDigit: Int
+    @Binding var isEnabled: Bool
     
     var onGuess: (Int) -> Void
     
@@ -26,8 +27,8 @@ struct NumberPickerView: View {
                 onGuess(number)
             }) {
                 HStack {
-                    Image(systemName: "play.fill")
-                    Text("Make Guess")
+                    Image(systemName: isEnabled ? "play.fill" : "hourglass")
+                    Text(isEnabled ? "Make Guess" : "Challenging...")
                 }
                 .font(.title2)
                 .fontWeight(.bold)
@@ -36,9 +37,10 @@ struct NumberPickerView: View {
                 .padding(.vertical, 15)
                 .background(
                     RoundedRectangle(cornerRadius: 15)
-                        .fill(Color.green)
+                        .fill(isEnabled ? Color.green : Color.gray)
                 )
             }
+            .disabled(!isEnabled)
         }
     }
 }
@@ -48,12 +50,14 @@ struct NumberPickerView: View {
         @State private var firstDigit = 5
         @State private var secondDigit = 2
         @State private var thirdDigit = 7
+        @State private var isEnabled = true
         
         var body: some View {
             NumberPickerView(
                 firstDigit: $firstDigit,
                 secondDigit: $secondDigit,
                 thirdDigit: $thirdDigit,
+                isEnabled: $isEnabled,
                 onGuess: { number in
                     print("Guess made with number: \(number)")
                 }

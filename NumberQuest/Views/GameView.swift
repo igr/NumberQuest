@@ -6,6 +6,13 @@ struct GameView: View {
     @State private var firstDigit = 0
     @State private var secondDigit = 0
     @State private var thirdDigit = 0
+    
+    private var isGuessEnabled: Binding<Bool> {
+        Binding(
+            get: { !gameManager.thinking && !gameManager.gameWon },
+            set: { _ in /* Read-only computed binding */ }
+        )
+    }
 
     var body: some View {
         NavigationView() {
@@ -31,6 +38,7 @@ struct GameView: View {
                         firstDigit: $firstDigit,
                         secondDigit: $secondDigit,
                         thirdDigit: $thirdDigit,
+                        isEnabled: isGuessEnabled
                     ) { value in
                         gameManager.makeGuess(value)
                     }
