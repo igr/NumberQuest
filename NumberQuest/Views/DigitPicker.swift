@@ -92,11 +92,11 @@ struct DigitPicker: View {
         if distance == 0 {
             return .blue
         } else if distance <= 1 {
-            return .primary
+            return .primary.opacity(0.6)
         } else if distance <= 2 {
-            return .secondary
+            return .secondary.opacity(0.4)
         } else {
-            return .secondary.opacity(0.5)
+            return .secondary.opacity(0.2)
         }
     }
     

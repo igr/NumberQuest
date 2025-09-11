@@ -6,51 +6,28 @@ struct NumberPickerView: View {
     @Binding var thirdDigit: Int
     @ObservedObject var gameManager: GameManager
     
+    @State private var firstDigitOptional: Int? = nil
+    @State private var secondDigitOptional: Int? = nil
+    @State private var thirdDigitOptional: Int? = nil
+    
     private var digitFont: Font {
         .system(size: 60, weight: .bold, design: .monospaced)
     }
     
     var body: some View {
         VStack(spacing: 20) {
-            HStack(spacing: 30) {
+            HStack(spacing: 0) {
                 // First Digit Picker
-                Picker("First Digit", selection: $firstDigit) {
-                    ForEach(0...9, id: \.self) { digit in
-                        Text("\(digit)")
-                            .font(digitFont)
-                            .foregroundColor(.blue)
-                            .tag(digit)
-                    }
-                }
-                .pickerStyle(.wheel)
-                .frame(width: 100, height: 120)
-                .clipped()
+                DigitPicker(selectedIndex: $firstDigitOptional)
+                    .frame(width: 100, height: 180)
                 
                 // Second Digit Picker
-                Picker("Second Digit", selection: $secondDigit) {
-                    ForEach(0...9, id: \.self) { digit in
-                        Text("\(digit)")
-                            .font(digitFont)
-                            .foregroundColor(.blue)
-                            .tag(digit)
-                    }
-                }
-                .pickerStyle(.wheel)
-                .frame(width: 80, height: 120)
-                .clipped()
+                DigitPicker(selectedIndex: $secondDigitOptional)
+                    .frame(width: 80, height: 180)
                 
                 // Third Digit Picker
-                Picker("Third Digit", selection: $thirdDigit) {
-                    ForEach(0...9, id: \.self) { digit in
-                        Text("\(digit)")
-                            .font(digitFont)
-                            .foregroundColor(.blue)
-                            .tag(digit)
-                    }
-                }
-                .pickerStyle(.wheel)
-                .frame(width: 80, height: 120)
-                .clipped()
+                DigitPicker(selectedIndex: $thirdDigitOptional)
+                    .frame(width: 80, height: 180)
             }
             
             // Guess Button
@@ -78,6 +55,9 @@ struct NumberPickerView: View {
                     firstDigit = 0
                     secondDigit = 0
                     thirdDigit = 0
+                    firstDigitOptional = 0
+                    secondDigitOptional = 0
+                    thirdDigitOptional = 0
                 }) {
                     Text("New Game")
                         .font(.title2)
@@ -91,6 +71,36 @@ struct NumberPickerView: View {
                         )
                 }
             }
+        }
+        .onAppear {
+            // Initialize optional values from bindings
+            firstDigitOptional = firstDigit
+            secondDigitOptional = secondDigit
+            thirdDigitOptional = thirdDigit
+        }
+        .onChange(of: firstDigitOptional) { _, newValue in
+            if let newValue {
+                firstDigit = newValue
+            }
+        }
+        .onChange(of: secondDigitOptional) { _, newValue in
+            if let newValue {
+                secondDigit = newValue
+            }
+        }
+        .onChange(of: thirdDigitOptional) { _, newValue in
+            if let newValue {
+                thirdDigit = newValue
+            }
+        }
+        .onChange(of: firstDigit) { _, newValue in
+            firstDigitOptional = newValue
+        }
+        .onChange(of: secondDigit) { _, newValue in
+            secondDigitOptional = newValue
+        }
+        .onChange(of: thirdDigit) { _, newValue in
+            thirdDigitOptional = newValue
         }
     }
 }

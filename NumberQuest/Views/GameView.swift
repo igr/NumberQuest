@@ -8,7 +8,7 @@ struct GameView: View {
     @State private var thirdDigit = 0
 
     var body: some View {
-        NavigationView {
+        NavigationView() {
             VStack(spacing: 30) {
                 // Game Title
                 Text("🎯 Guess the Number")
@@ -16,7 +16,7 @@ struct GameView: View {
                     .fontWeight(.bold)
                 
                 // Message Area (top)
-                VStack {
+                VStack(spacing: 0) {
                     Text(gameManager.message)
                         .font(.title2)
                         .multilineTextAlignment(.center)
@@ -36,23 +36,18 @@ struct GameView: View {
                 
                 Spacer()
                 
-                // Current Guess Display
-                HStack(spacing: 10) {
-                    Text("Your Guess:")
-                        .font(.title2)
-                        .fontWeight(.semibold)
+                VStack() {
+                    NumberPickerView(
+                        firstDigit: $firstDigit,
+                        secondDigit: $secondDigit,
+                        thirdDigit: $thirdDigit,
+                        gameManager: gameManager
+                    )
+                    .padding(.bottom, 30)
                 }
-                
-                NumberPickerView(
-                    firstDigit: $firstDigit,
-                    secondDigit: $secondDigit,
-                    thirdDigit: $thirdDigit,
-                    gameManager: gameManager
-                )
-                .padding(.bottom, 30)
             }
-            .navigationTitle("Guess Game")
-            .navigationBarTitleDisplayMode(.inline)
+            .navigationTitle("Number Quest")
+            .navigationBarTitleDisplayMode(.inline)            
         }
     }
 }

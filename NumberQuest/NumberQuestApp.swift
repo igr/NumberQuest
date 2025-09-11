@@ -25,7 +25,7 @@ struct NumberQuestApp: App {
 
     var body: some Scene {
         WindowGroup {
-            MainView()
+            GameView()
         }
     }
 }
