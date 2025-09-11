@@ -43,11 +43,11 @@ struct SystemMessage: GameMessage {
         
         switch type {
         case .welcome:
-            self.content = "🎯 Welcome to NumberQuest! I'm thinking of a 3-digit number. Can you guess it?"
+            self.content = "🎯 Guess my number!"
         case .tooHigh(let guess):
-            self.content = "📉 Too high! \(guess) is greater than my number."
+            self.content = "🔺 Too high! \(guess) is greater than my number."
         case .tooLow(let guess):
-            self.content = "📈 Too low! \(guess) is less than my number."
+            self.content = "🔻 Too low! \(guess) is less than my number."
         case .victory(let target, let attempts):
             self.content = "🎉 Congratulations! You guessed \(target) in \(attempts) attempt\(attempts == 1 ? "" : "s")!"
         case .hint(let message):
@@ -113,6 +113,11 @@ struct Message: Identifiable, Equatable {
     var isPlayerMessage: Bool { _message is PlayerMessage }
     var isSystemMessage: Bool { _message is SystemMessage }
     var isEffectMessage: Bool { _message is EffectMessage }
+    
+    // Type-safe unwrapping methods
+    var asPlayerMessage: PlayerMessage? { _message as? PlayerMessage }
+    var asSystemMessage: SystemMessage? { _message as? SystemMessage }
+    var asEffectMessage: EffectMessage? { _message as? EffectMessage }
     
     init(_ message: any GameMessage) {
         self._message = message

@@ -17,7 +17,6 @@ struct GameView: View {
                 
                 // Chat Window
                 ChatWindow(messages: $gameManager.chatMessages)
-                    .frame(maxHeight: 300)
                     .background(Color.gray.opacity(0.05))
                     .cornerRadius(15)
                     .padding(.horizontal)
