@@ -55,7 +55,6 @@ struct DigitPicker: View {
                 let clamped = min(max(newValue, digits.first!), digits.last!)
                 if clamped != selectedIndex {
                     selectedIndex = clamped
-
                 }
             }
         }

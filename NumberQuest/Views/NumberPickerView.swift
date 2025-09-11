@@ -34,16 +34,19 @@ struct NumberPickerView: View {
             Button(action: {
                 gameManager.makeGuess(firstDigit: firstDigit, secondDigit: secondDigit, thirdDigit: thirdDigit)
             }) {
-                Text("Make Guess")
-                    .font(.title2)
-                    .fontWeight(.bold)
-                    .foregroundColor(.white)
-                    .padding(.horizontal, 40)
-                    .padding(.vertical, 15)
-                    .background(
-                        RoundedRectangle(cornerRadius: 15)
-                            .fill(gameManager.gameWon ? Color.gray : Color.green)
-                    )
+                HStack {
+                    Image(systemName: "play.fill")
+                    Text("Make Guess")
+                }
+                .font(.title2)
+                .fontWeight(.bold)
+                .foregroundColor(.white)
+                .padding(.horizontal, 40)
+                .padding(.vertical, 15)
+                .background(
+                    RoundedRectangle(cornerRadius: 15)
+                        .fill(gameManager.gameWon ? Color.gray : Color.green)
+                )
             }
             .disabled(gameManager.gameWon)
             

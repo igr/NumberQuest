@@ -35,7 +35,7 @@ struct GameView: View {
                 .padding(.horizontal)
                 
                 Spacer()
-                
+
                 VStack() {
                     NumberPickerView(
                         firstDigit: $firstDigit,
@@ -45,9 +45,12 @@ struct GameView: View {
                     )
                     .padding(.bottom, 30)
                 }
+                .frame(maxWidth: .infinity)
+                .background(Color.green.opacity(0.1))
             }
             .navigationTitle("Number Quest")
-            .navigationBarTitleDisplayMode(.inline)            
+            .navigationBarTitleDisplayMode(.inline)
+            .edgesIgnoringSafeArea(.bottom)
         }
     }
 }
