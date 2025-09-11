@@ -4,7 +4,8 @@ struct NumberPickerView: View {
     @Binding var firstDigit: Int
     @Binding var secondDigit: Int
     @Binding var thirdDigit: Int
-    @ObservedObject var gameManager: GameManager
+    
+    var onGuess: (Int) -> Void
     
     @State private var firstDigitOptional: Int? = nil
     @State private var secondDigitOptional: Int? = nil
@@ -28,7 +29,10 @@ struct NumberPickerView: View {
             
             // Guess Button
             Button(action: {
-                gameManager.makeGuess(firstDigit: firstDigit, secondDigit: secondDigit, thirdDigit: thirdDigit)
+                let number = (firstDigitOptional ?? 0) * 100
+                    + (secondDigitOptional ?? 0) * 10
+                    + (thirdDigitOptional ?? 0)
+                onGuess(number)
             }) {
                 HStack {
                     Image(systemName: "play.fill")
@@ -41,10 +45,9 @@ struct NumberPickerView: View {
                 .padding(.vertical, 15)
                 .background(
                     RoundedRectangle(cornerRadius: 15)
-                        .fill(gameManager.gameWon ? Color.gray : Color.green)
+                        .fill(Color.green)
                 )
             }
-            .disabled(gameManager.gameWon)            
         }
         .onAppear {
             // Initialize optional values from bindings
@@ -84,14 +87,15 @@ struct NumberPickerView: View {
         @State private var firstDigit = 5
         @State private var secondDigit = 2
         @State private var thirdDigit = 7
-        @StateObject private var gameManager = GameManager()
         
         var body: some View {
             NumberPickerView(
                 firstDigit: $firstDigit,
                 secondDigit: $secondDigit,
                 thirdDigit: $thirdDigit,
-                gameManager: gameManager
+                onGuess: { number in
+                    print("Guess made with number: \(number)")
+                }
             )
         }
     }

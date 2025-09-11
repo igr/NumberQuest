@@ -41,8 +41,9 @@ struct GameView: View {
                         firstDigit: $firstDigit,
                         secondDigit: $secondDigit,
                         thirdDigit: $thirdDigit,
-                        gameManager: gameManager
-                    )
+                    ) { value in
+                        gameManager.makeGuess(value)
+                    }
                     .padding(.bottom, 30)
                     
                     // New Game Button (appears when game is won)
