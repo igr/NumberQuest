@@ -45,18 +45,10 @@ struct SystemMessage: GameMessage {
 // MARK: - Effect Message
 struct EffectMessage: GameMessage {
     let id = UUID()
-    let effectType: EffectType
+    var effect: any GameEffect
     
-    enum EffectType {
-        case gameStart
-        case gameEnd
-        case milestone(attempt: Int)
-        case celebration
-        case warning(message: String)
-    }
-    
-    init(type: EffectType) {
-        self.effectType = type
+    init(_ effect: any GameEffect) {
+        self.effect = effect
     }
     
     static func == (lhs: EffectMessage, rhs: EffectMessage) -> Bool {

@@ -17,23 +17,25 @@ class GameManager: ObservableObject {
             Message(SystemMessage(type: .welcome))
         ]
     }
+    
     func makeGuess(_ guess: Int) {
         thinking = true
         
         attempts += 1
+        let effect = chooseEffect()
         
         Task {
             // Show the player message immediately
             await MainActor.run {
-                // Add player message
                 chatMessages.append(Message(PlayerMessage(guess: guess, attempt: attempts)))
             }
             
-            // Wait 0.5s before responding
-            try? await Task.sleep(nanoseconds: 500_000_000)
+            // Wait before responding
+            try? await Task.sleep(nanoseconds: randomThinkingTime())
             
             if guess == targetNumber {
                 await MainActor.run {
+                    // 🎉 Hooray
                     gameWon = true
                     chatMessages.append(Message(SystemMessage(type: .victory(targetNumber: targetNumber, attempts: attempts))))
                     thinking = false
@@ -45,9 +47,37 @@ class GameManager: ObservableObject {
                     } else {
                         chatMessages.append(Message(SystemMessage(type: .tooHigh(currentGuess: guess))))
                     }
-                    thinking = false
+                    if (effect.isNoop) {
+                        thinking = false
+                    }
+                }
+
+                if (!effect.isNoop) {
+                    // Second delay before a follow-up message
+                    try? await Task.sleep(nanoseconds: randomEffectTime())
+                    
+                    effect.apply(to: self)
+                    
+                    await MainActor.run {
+                        chatMessages.append(Message(EffectMessage(effect)))
+                        thinking = false
+                    }
                 }
             }
         }
+    }
+    
+    private func chooseEffect() -> any GameEffect {
+        return AllEffects.randomEffect()
+    }
+    
+    private func randomThinkingTime() -> UInt64 {
+        let seconds = Double.random(in: 0.5...1.5)
+        return UInt64(seconds * 1_000_000_000)
+    }
+    
+    private func randomEffectTime() -> UInt64 {
+        let seconds = Double.random(in: 0.5...1)
+        return UInt64(seconds * 1_000_000_000)
     }
 }

@@ -23,17 +23,6 @@ struct SystemMessageBubble: View {
                 Text(systemText)
                     .foregroundColor(.white)
                     .font(.body)
-                
-                // Optional: Show message type as subtle indicator
-                if case .tooHigh(let guess) = systemMessage.messageType {
-                    Text("Your guess: \(guess)")
-                        .foregroundColor(.white.opacity(0.7))
-                        .font(.caption2)
-                } else if case .tooLow(let guess) = systemMessage.messageType {
-                    Text("Your guess: \(guess)")
-                        .foregroundColor(.white.opacity(0.7))
-                        .font(.caption2)
-                }
             }
             .padding(.horizontal, 16)
             .padding(.vertical, 10)

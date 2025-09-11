@@ -114,7 +114,6 @@ struct ChatWindow_Previews: PreviewProvider {
     }
     
     static var sampleMessages: [Message] = [
-        Message(EffectMessage(type: .gameStart)),
         Message(SystemMessage(type: .welcome)),
         Message(PlayerMessage(guess: 500, attempt: 1)),
         Message(SystemMessage(type: .tooHigh(currentGuess: 500))),
@@ -123,7 +122,7 @@ struct ChatWindow_Previews: PreviewProvider {
         Message(PlayerMessage(guess: 375, attempt: 3)),
         Message(SystemMessage(type: .tooHigh(currentGuess: 375))),
         Message(PlayerMessage(guess: 312, attempt: 4)),
-        Message(EffectMessage(type: .celebration)),
+        Message(EffectMessage(ChangeTargetNumberEffect())),
         Message(SystemMessage(type: .victory(targetNumber: 312, attempts: 4)))
     ]
 }

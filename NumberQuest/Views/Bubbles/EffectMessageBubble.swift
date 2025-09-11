@@ -6,28 +6,10 @@ struct EffectMessageBubble: View {
     
     // Different colors based on effect type
     private var effectColor: Color {
-        switch effectMessage.effectType {
-        case .gameStart, .gameEnd:
-            return .purple
-        case .milestone:
-            return .red
-        case .celebration:
-            return .orange
-        case .warning:
-            return .yellow
-        }
+        return .yellow
     }
     private var effectText: String {
-        switch effectMessage.effectType {
-        case .gameStart, .gameEnd:
-            return "Game started"
-        case .celebration:
-            return "You did it!"
-        case .milestone:
-            return "You completed attempts!"
-        case .warning:
-            return "Warning: Your progress is being saved!"
-        }
+        return effectMessage.effect.message
     }
     
     var body: some View {
