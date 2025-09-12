@@ -5,7 +5,6 @@ struct ActiveTricksView: View {
     let activeTricks: [ActiveTrick]
     let attemptCount: Int
     @State var selectedTrick: ActiveTrick?
-    @State var showPopup = false
     
     var body: some View {
         HStack(alignment: .center, spacing: 8) {
@@ -24,7 +23,6 @@ struct ActiveTricksView: View {
                 let activeTrick = activeTricks[index]
                 Button(action: {
                     selectedTrick = activeTrick
-                    showPopup = true
                 }) {
                     Text(activeTrick.trick.icon)
                         .font(.title2)

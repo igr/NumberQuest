@@ -1,8 +1,9 @@
 import SwiftUI
-import Foundation
+import PopupView
 
 struct TrickBubble: View {
     let trickMessage: TrickMessage
+    @State private var selectedTrick: ActiveTrick?
     
     private var trickColor: Color {
         return .yellow
@@ -13,8 +14,14 @@ struct TrickBubble: View {
     
     var body: some View {
         HStack(spacing: 4) {
-            Text(trickMessage.trick.icon)
-                .font(.system(size: 18, weight: .bold, design: .monospaced))
+            Button(action: {
+                selectedTrick = ActiveTrick(trick: trickMessage.trick, remainingDuration: 0)
+            }) {
+                Text(trickMessage.trick.icon)
+                    .font(.system(size: 20, weight: .bold, design: .monospaced))
+            }
+            .buttonStyle(PlainButtonStyle())
+            
             Text(trickText)
                 .foregroundColor(.primary)
                 .font(.callout)
@@ -29,6 +36,15 @@ struct TrickBubble: View {
                 .stroke(trickColor.opacity(0.5), lineWidth: 1)
         )
         .padding(.horizontal, 16)
+        .popup(item: $selectedTrick) { item in
+            TrickDetailView(activeTrick: item)
+        } customize: {
+            $0
+                .type(.floater())
+                .closeOnTap(true)
+                .appearFrom(.topSlide)
+                .position(.center)
+        }
     }
 }
 

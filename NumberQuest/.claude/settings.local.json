@@ -2,7 +2,9 @@
   "permissions": {
     "allow": [
       "Read(//Users/igorspasic/prj/igr/NumberQuest/**)",
-      "Bash(find:*)"
+      "Bash(find:*)",
+      "Bash(xcodebuild:*)",
+      "Bash(xargs swift:*)"
     ],
     "deny": [],
     "ask": []
