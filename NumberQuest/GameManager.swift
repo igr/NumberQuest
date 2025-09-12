@@ -17,51 +17,37 @@ class GameManager: ObservableObject {
         gameStarted = true
         activeTricks = []
         chatMessages = [
-            Message(SystemMessage(type: .welcome))
+            Message(SystemMessage(type: .welcome)),
+            Message(SystemMessage(type: .debug(activeTricks: [])))
         ]
-    }
-    
-    fileprivate func showMissed(guess: Int, isEnd: Bool) async {
-        await MainActor.run {
-            showMissed(guess)
-            if (isEnd) {
-                thinking = false
-            }
-        }
     }
     
     func makeGuess(_ guess: Int) {
         thinking = true
         attempts += 1
-        let newTrick = AllTricks.randomTrick(excluding: activeTricks)
         
         Task {
             await showPlayerGuess(guess)
-            
-            try? await Task.sleep(nanoseconds: randomThinkingTime())
-            
+
             if guess == targetNumber {
                 await winGame()
             } else {
-                await continueGame(guess: guess, newTrick: newTrick)
+                await continueGame(guess: guess)
+
+                thinking = false
             }
         }
     }
     
-    fileprivate func continueGame(guess: Int, newTrick: any GameTrick) async {
-        await showMissed(guess: guess, isEnd: newTrick.isNoop)
+    fileprivate func continueGame(guess: Int) async {
+        await showMissed(guess: guess)
         
-        if (newTrick.isNoop) {
-            return
-        }
+        let newTrick = AllTricks.randomTrick(excluding: activeTricks)
         
-        // HANDLE NEW TRICK
-        
-        if (newTrick.duration != 0) {
+        if (newTrick.duration > 0) {
+            // new trick is not an immediate action, keep it.
             activeTricks.append(ActiveTrick(trick: newTrick, remainingDuration: newTrick.duration))
         }
-        
-        try? await Task.sleep(nanoseconds: randomTrickTime())
         
         await newTrick.triggerOnCreate(to: self)
         
@@ -70,6 +56,8 @@ class GameManager: ObservableObject {
         await processActiveTricks()
 
         await removeExpiredTricks()
+        
+        await sendActiveTricksUpdate()
     }
     
     fileprivate func processActiveTricks() async {
@@ -87,9 +75,13 @@ class GameManager: ObservableObject {
     }
     
     fileprivate func showNewTrick(_ trick: any GameTrick) async {
+        if (trick.isNoop) {
+            return
+        }
+        try? await Task.sleep(nanoseconds: randomTrickTime())
+        
         await MainActor.run {
             chatMessages.append(Message(TrickMessage(trick)))
-            thinking = false
         }
     }
     
@@ -100,18 +92,28 @@ class GameManager: ObservableObject {
             thinking = false
         }
     }
-    
-    fileprivate func showMissed(_ guess: Int) {
-        if guess < targetNumber {
-            chatMessages.append(Message(SystemMessage(type: .tooLow(currentGuess: guess))))
-        } else {
-            chatMessages.append(Message(SystemMessage(type: .tooHigh(currentGuess: guess))))
+
+    fileprivate func showMissed(guess: Int) async {
+        await MainActor.run {
+            if guess < targetNumber {
+                chatMessages.append(Message(SystemMessage(type: .tooLow(currentGuess: guess))))
+            } else {
+                chatMessages.append(Message(SystemMessage(type: .tooHigh(currentGuess: guess))))
+            }
         }
     }
     
     fileprivate func showPlayerGuess(_ guess: Int) async {
         await MainActor.run {
             chatMessages.append(Message(PlayerMessage(guess: guess, attempt: attempts)))
+        }
+        try? await Task.sleep(nanoseconds: randomThinkingTime())
+    }
+        
+    // MARK: - Active Tricks Status
+    private func sendActiveTricksUpdate() async {
+        await MainActor.run {
+            chatMessages.append(Message(SystemMessage(type: .debug(activeTricks: activeTricks))))
         }
     }
     

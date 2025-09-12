@@ -34,15 +34,9 @@ struct ChatWindow: View {
                             Image(systemName: "message")
                                 .font(.system(size: 48))
                                 .foregroundColor(.secondary)
-                            
                             Text("No messages yet")
                                 .font(.headline)
                                 .foregroundColor(.secondary)
-                            
-                            Text("Messages will appear here as you play")
-                                .font(.subheadline)
-                                .foregroundColor(.black)
-                                .multilineTextAlignment(.center)
                         }
                         .frame(maxWidth: .infinity)
                         .frame(minHeight: 200)

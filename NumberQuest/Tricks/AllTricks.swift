@@ -4,6 +4,7 @@ enum TrickType: CaseIterable {
     case noop
     case shuffleTarget
     case snail
+    case linguaLarry
 }
 
 protocol GameTrick: Identifiable, Equatable {
@@ -75,6 +76,11 @@ enum AllTricks {
             probability: 1.0,            
             builder: { SnailTrick() }
         ),
+        TrickDefinition(
+            type: .linguaLarry,
+            probability: 1.0,
+            builder: {LinguaLarryTrick()}
+        )
     ]
     
     // MARK: - Returns a random trick excluding active tricks

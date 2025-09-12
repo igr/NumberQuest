@@ -14,6 +14,26 @@ struct SystemBubble: View {
             return "🎯 Welcome! Guess a Number!"
         case .victory:
             return "🎉 Congratulations! You won!"
+        case .debug(let activeTricks):
+            if activeTricks.isEmpty {
+                return "✨ No active tricks"
+            } else {
+                let trickList = activeTricks.map { "• \($0.trick.name) (\($0.remainingDuration) turns left)" }.joined(separator: "\n")
+                return "⚡ Active Tricks:\n\(trickList)"
+            }
+        }
+    }
+    
+    private var systemColor: Color {
+        switch systemMessage.messageType {
+        case .tooHigh, .tooLow:
+            return .red
+        case .welcome:
+            return .green
+        case .victory:
+            return .yellow
+        case .debug:
+            return .gray
         }
     }
     
@@ -28,7 +48,7 @@ struct SystemBubble: View {
             .padding(.vertical, 10)
             .background(
                 RoundedRectangle(cornerRadius: 18)
-                    .fill(Color.blue)
+                    .fill(systemColor)
             )
             .frame(maxWidth: 280, alignment: .leading)
             
