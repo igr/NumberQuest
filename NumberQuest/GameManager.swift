@@ -64,8 +64,6 @@ class GameManager: ObservableObject {
         await processActiveTricks()
 
         await removeExpiredTricks()
-        
-        await sendActiveTricksUpdate()
     }
     
     fileprivate func processActiveTricks() async {
@@ -96,18 +94,19 @@ class GameManager: ObservableObject {
     fileprivate func winGame() async {
         await MainActor.run {
             state.gameWon = true
-            state.chatMessages.append(Message(SystemMessage(type: .victory(targetNumber: state.targetNumber, attempts: state.attempts))))
+            state.chatMessages.append(
+                Message(SystemMessage(type: .victory(targetNumber: state.targetNumber, attempts: state.attempts)))
+            )
             state.thinking = false
         }
     }
 
     fileprivate func showMissed(guess: Int) async {
         await MainActor.run {
-            if guess < state.targetNumber {
-                state.chatMessages.append(Message(SystemMessage(type: .tooLow(currentGuess: guess))))
-            } else {
-                state.chatMessages.append(Message(SystemMessage(type: .tooHigh(currentGuess: guess))))
-            }
+            let sysMsg: SystemMessage = guess < state.targetNumber
+                ? SystemMessage(type: .tooLow(currentGuess: guess))
+                : SystemMessage(type: .tooHigh(currentGuess: guess))
+            state.chatMessages.append(Message(applyTricks(to: sysMsg)))
         }
     }
     
@@ -116,13 +115,6 @@ class GameManager: ObservableObject {
             state.chatMessages.append(Message(PlayerMessage(guess: guess, attempt: state.attempts)))
         }
         try? await Task.sleep(nanoseconds: randomThinkingTime())
-    }
-        
-    // MARK: - Active Tricks Status
-    private func sendActiveTricksUpdate() async {
-        await MainActor.run {
-            state.chatMessages.append(Message(SystemMessage(type: .debug(activeTricks: state.activeTricks, target: state.targetNumber))))
-        }
     }
     
     private func randomThinkingTime() -> UInt64 {
@@ -133,5 +125,11 @@ class GameManager: ObservableObject {
     private func randomTrickTime() -> UInt64 {
         let seconds = Double.random(in: 0.5...1)
         return UInt64(seconds * 1_000_000_000)
+    }
+    
+    private func applyTricks(to message: SystemMessage) -> SystemMessage {
+        state.activeTricks.reduce(message) { current, activeTrick in
+            activeTrick.trick.modify(systemMessage: current)
+        }
     }
 }

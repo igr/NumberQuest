@@ -28,8 +28,8 @@ struct SystemMessage: GameMessage {
     
     enum SystemMessageType {
         case welcome
-        case tooHigh(currentGuess: Int)
-        case tooLow(currentGuess: Int)
+        case tooHigh(currentGuess: Int, content: String = "🔻 Too high!")
+        case tooLow(currentGuess: Int, content: String = "🔺 Too low!")
         case victory(targetNumber: Int, attempts: Int)
         case debug(activeTricks: [ActiveTrick], target: Int)
     }

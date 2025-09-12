@@ -6,10 +6,10 @@ struct SystemBubble: View {
     
     private var systemText: String {
         switch systemMessage.messageType {
-        case .tooHigh:
-            return "🔺 Too high!"
-        case .tooLow:
-            return "🔻 Too low."
+        case .tooHigh(_, let content):
+            return content
+        case .tooLow(_, let content):
+            return content
         case .welcome:
             return "🎯 Welcome! Guess a Number!"
         case .victory:
@@ -24,10 +24,10 @@ struct SystemBubble: View {
         }
     }
     
-    private var systemColor: Color {
+    var systemColor: Color {
         switch systemMessage.messageType {
         case .tooHigh, .tooLow:
-            return .red
+            return .blue
         case .welcome:
             return .green
         case .victory:
