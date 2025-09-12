@@ -22,7 +22,7 @@ class GameManager: ObservableObject {
         thinking = true
         
         attempts += 1
-        let effect = AllEffects.randomEffect()
+        let trick = AllTricks.randomTrick()
         
         Task {
             // Show the player message immediately
@@ -41,27 +41,27 @@ class GameManager: ObservableObject {
                 await MainActor.run {
                     missGuess(guess)
 
-                    if (effect.isNoop) {
+                    if (trick.isNoop) {
                         thinking = false
                     }
                 }
 
-                if (!effect.isNoop) {
+                if (!trick.isNoop) {
                     // Second delay before a follow-up message
-                    try? await Task.sleep(nanoseconds: randomEffectTime())
+                    try? await Task.sleep(nanoseconds: randomTrickTime())
                     
-                    effect.apply(to: self)
+                    trick.apply(to: self)
                     
                     await MainActor.run {
-                        announceEffect(effect)
+                        announceTrick(trick)
                     }
                 }
             }
         }
     }
     
-    fileprivate func announceEffect(_ effect: any GameEffect) {
-        chatMessages.append(Message(EffectMessage(effect)))
+    fileprivate func announceTrick(_ trick: any GameTrick) {
+        chatMessages.append(Message(TrickMessage(trick)))
         thinking = false
     }
     
@@ -84,7 +84,7 @@ class GameManager: ObservableObject {
         return UInt64(seconds * 1_000_000_000)
     }
     
-    private func randomEffectTime() -> UInt64 {
+    private func randomTrickTime() -> UInt64 {
         let seconds = Double.random(in: 0.5...1)
         return UInt64(seconds * 1_000_000_000)
     }

@@ -1,5 +1,5 @@
 import Foundation
 
-struct NoopEffect: GameEffect {
+struct NoopTrick: GameTrick {
     var isNoop: Bool = true
 }

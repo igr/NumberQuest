@@ -1,6 +1,6 @@
 import Foundation
 
-struct ChangeTargetNumberEffect: GameEffect {
+struct ChangeTargetNumberTrick: GameTrick {
     var icon = "🔀"
     var message = "Target Changed!"
     var duration = 0

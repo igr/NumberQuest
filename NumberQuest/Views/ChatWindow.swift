@@ -11,8 +11,8 @@ struct MessageBubble: View {
             PlayerMessageBubble(playerMessage: playerMessage)
         } else if let systemMessage = message.asSystemMessage {
             SystemMessageBubble(systemMessage: systemMessage)
-        } else if let effectMessage = message.asEffectMessage {
-            EffectMessageBubble(effectMessage: effectMessage)
+        } else if let trickMessage = message.asTrickMessage {
+            TrickMessageBubble(trickMessage: trickMessage)
         }
     }
 }
@@ -122,7 +122,7 @@ struct ChatWindow_Previews: PreviewProvider {
         Message(PlayerMessage(guess: 375, attempt: 3)),
         Message(SystemMessage(type: .tooHigh(currentGuess: 375))),
         Message(PlayerMessage(guess: 312, attempt: 4)),
-        Message(EffectMessage(ChangeTargetNumberEffect())),
+        Message(TrickMessage(ChangeTargetNumberTrick())),
         Message(SystemMessage(type: .victory(targetNumber: 312, attempts: 4)))
     ]
 }

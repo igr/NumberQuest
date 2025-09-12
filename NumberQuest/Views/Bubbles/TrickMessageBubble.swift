@@ -1,15 +1,14 @@
 import SwiftUI
 import Foundation
 
-struct EffectMessageBubble: View {
-    let effectMessage: EffectMessage
+struct TrickMessageBubble: View {
+    let trickMessage: TrickMessage
     
-    // Different colors based on effect type
-    private var effectColor: Color {
+    private var trickColor: Color {
         return .yellow
     }
-    private var effectText: String {
-        return effectMessage.effect.message
+    private var trickText: String {
+        return trickMessage.trick.message
     }
     
     var body: some View {
@@ -17,7 +16,7 @@ struct EffectMessageBubble: View {
             Spacer()
             
             VStack(spacing: 2) {
-                Text(effectText)
+                Text(trickText)
                     .foregroundColor(.primary)
                     .font(.callout)
                     .fontWeight(.semibold)
@@ -27,8 +26,8 @@ struct EffectMessageBubble: View {
             .padding(.vertical, 8)
             .background(
                 RoundedRectangle(cornerRadius: 15)
-                    .fill(effectColor.opacity(0.2))
-                    .stroke(effectColor.opacity(0.5), lineWidth: 1)
+                    .fill(trickColor.opacity(0.2))
+                    .stroke(trickColor.opacity(0.5), lineWidth: 1)
             )
             .frame(maxWidth: 250)
             
