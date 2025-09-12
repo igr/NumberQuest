@@ -9,13 +9,6 @@ struct ActiveTricksView: View {
     var body: some View {
         if !activeTricks.isEmpty {
             VStack(alignment: .leading, spacing: 8) {
-                HStack {
-                    Text("🎪 Active Effects")
-                        .font(.headline)
-                        .fontWeight(.semibold)
-                    Spacer()
-                }
-                
                 ForEach(activeTricks.indices, id: \.self) { index in
                     let activeTrick = activeTricks[index]
                     Button(action: {
@@ -70,11 +63,6 @@ struct ActiveTricksView: View {
                     .appearFrom(.topSlide)
                     .position(.center)
             }
-//            .sheet(item: $selectedTrick) { trick in
-//                    TrickDetailView(activeTrick: trick)
-//                        .presentationDetents([.medium])
-//                        .presentationDragIndicator(.visible)
-//            }
         }
     }
 }

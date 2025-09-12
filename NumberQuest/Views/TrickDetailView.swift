@@ -18,69 +18,8 @@ struct TrickDetailView: View {
             }
             .padding(.top, 20)
             
-            // Duration info
-            HStack {
-                VStack(alignment: .leading) {
-                    Text("Remaining Duration")
-                        .font(.headline)
-                        .foregroundColor(.secondary)
-                    Text("\(activeTrick.remainingDuration) turns")
-                        .font(.title2)
-                        .fontWeight(.semibold)
-                        .foregroundColor(activeTrick.remainingDuration <= 2 ? .red : .blue)
-                }
-                
-                Spacer()
-                
-                VStack(alignment: .trailing) {
-                    Text("Total Duration")
-                        .font(.headline)
-                        .foregroundColor(.secondary)
-                    Text("\(activeTrick.trick.duration) turns")
-                        .font(.title2)
-                        .fontWeight(.semibold)
-                        .foregroundColor(.primary)
-                }
-            }
-            .padding(.horizontal, 20)
-            
-            // Progress bar
-            VStack(alignment: .leading, spacing: 8) {
-                HStack {
-                    Text("Progress")
-                        .font(.headline)
-                        .foregroundColor(.secondary)
-                    Spacer()
-                    Text("\(activeTrick.trick.duration - activeTrick.remainingDuration)/\(activeTrick.trick.duration)")
-                        .font(.caption)
-                        .foregroundColor(.secondary)
-                }
-                
-                GeometryReader { geometry in
-                    ZStack(alignment: .leading) {
-                        RoundedRectangle(cornerRadius: 8)
-                            .fill(Color.gray.opacity(0.3))
-                            .frame(height: 8)
-                        
-                        RoundedRectangle(cornerRadius: 8)
-                            .fill(activeTrick.remainingDuration <= 2 ? Color.red : Color.blue)
-                            .frame(
-                                width: geometry.size.width * (Double(activeTrick.trick.duration - activeTrick.remainingDuration) / Double(activeTrick.trick.duration)),
-                                height: 8
-                            )
-                            .animation(.easeInOut(duration: 0.3), value: activeTrick.remainingDuration)
-                    }
-                }
-                .frame(height: 8)
-            }
-            .padding(.horizontal, 20)
-            
             // Description
             VStack(alignment: .leading, spacing: 8) {
-                Text("Description")
-                    .font(.headline)
-                    .foregroundColor(.secondary)
-                
                 Text(activeTrick.trick.description)
                     .font(.body)
                     .foregroundColor(.primary)
@@ -88,11 +27,45 @@ struct TrickDetailView: View {
             }
             .padding(.horizontal, 20)
             .frame(maxWidth: .infinity, alignment: .leading)
+
             
+            // Progress bar
+            if (activeTrick.trick.duration > 0) {
+                VStack(alignment: .leading, spacing: 8) {
+                    HStack {
+                        Text("Turns left")
+                            .font(.headline)
+                            .foregroundColor(.secondary)
+                        Spacer()
+                        Text("\(activeTrick.trick.duration - activeTrick.remainingDuration)/\(activeTrick.trick.duration)")
+                            .font(.caption)
+                            .foregroundColor(.secondary)
+                    }
+                    
+                    GeometryReader { geometry in
+                        ZStack(alignment: .leading) {
+                            RoundedRectangle(cornerRadius: 8)
+                                .fill(Color.gray.opacity(0.3))
+                                .frame(height: 8)
+                            
+                            RoundedRectangle(cornerRadius: 8)
+                                .fill(activeTrick.remainingDuration <= 2 ? Color.red : Color.blue)
+                                .frame(
+                                    width: geometry.size.width * (Double(activeTrick.trick.duration - activeTrick.remainingDuration) / Double(activeTrick.trick.duration)),
+                                    height: 12
+                                )
+                                .animation(.easeInOut(duration: 0.3), value: activeTrick.remainingDuration)
+                        }
+                    }
+                    .frame(height: 8)
+                }
+                .padding(.horizontal, 20)
+            }
+                        
             Button {
                 dismiss?()
             } label: {
-                Text("Thanks")
+                Text("OK!")
                     .font(.system(size: 18, weight: .bold))
                     .frame(maxWidth: .infinity)
                     .padding(.vertical, 18)
@@ -108,4 +81,16 @@ struct TrickDetailView: View {
         .shadowedStyle()
         .padding(.horizontal, 40)
     }
+}
+
+#Preview {
+    TrickDetailView(activeTrick: ActiveTrick(trick: SnailTrick(), remainingDuration: 3))
+}
+
+#Preview("Almost Expired") {
+    TrickDetailView(activeTrick: ActiveTrick(trick: SnailTrick(), remainingDuration: 1))
+}
+
+#Preview("Shuffle Trick") {
+    TrickDetailView(activeTrick: ActiveTrick(trick: ShuffleTargetTrick(), remainingDuration: 0))
 }
