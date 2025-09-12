@@ -2,14 +2,22 @@ import SwiftUI
 import SwiftData
 
 struct GameView: View {
-    @StateObject private var gameManager = GameManager()
+    @StateObject private var state = GameState()
+    @StateObject private var gameManager: GameManager
+    
     @State private var firstDigit = 0
     @State private var secondDigit = 0
     @State private var thirdDigit = 0
     
+    init() {
+        let gameState = GameState()
+        _state = StateObject(wrappedValue: gameState)
+        _gameManager = StateObject(wrappedValue: GameManager(state: gameState))
+    }
+    
     private var isGuessEnabled: Binding<Bool> {
         Binding(
-            get: { !gameManager.thinking && !gameManager.gameWon },
+            get: { !state.thinking && !state.gameWon },
             set: { _ in /* Read-only computed binding */ }
         )
     }
@@ -21,16 +29,16 @@ struct GameView: View {
                     .font(.largeTitle)
                     .fontWeight(.bold)
                 
-                ActiveTricksView(activeTricks: gameManager.activeTricks)
+                ActiveTricksView(activeTricks: state.activeTricks)
                 
-                ChatWindow(messages: $gameManager.chatMessages)
+                ChatWindow(messages: $state.chatMessages)
                     .background(Color.gray.opacity(0.05))
                     .cornerRadius(15)
                     .padding(.horizontal)
                 
                 // Attempts counter
-                if gameManager.attempts > 0 {
-                    Text("Attempts: \(gameManager.attempts)")
+                if state.attempts > 0 {
+                    Text("Attempts: \(state.attempts)")
                         .font(.headline)
                         .foregroundColor(.secondary)
                 }
@@ -47,7 +55,7 @@ struct GameView: View {
                     .padding(.bottom, 30)                    
                     
                     // New Game Button (appears when game is won)
-                    if gameManager.gameWon {
+                    if state.gameWon {
                         Button(action: {
                             gameManager.startNewGame()
                             // Reset pickers
@@ -73,7 +81,7 @@ struct GameView: View {
             }
             .edgesIgnoringSafeArea(.bottom)
             .onAppear {
-                if !gameManager.gameStarted {
+                if !state.gameStarted {
                     gameManager.startNewGame()
                 }
             }

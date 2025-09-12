@@ -1,7 +1,6 @@
-import Foundation
+import SwiftUI
 
-@MainActor
-class GameManager: ObservableObject {
+class GameState: ObservableObject {
     @Published var targetNumber: Int = 0
     @Published var attempts: Int = 0
     @Published var gameWon: Bool = false
@@ -9,32 +8,41 @@ class GameManager: ObservableObject {
     @Published var chatMessages: [Message] = []
     @Published var thinking: Bool = false
     @Published var activeTricks: [ActiveTrick] = []
+}
+
+@MainActor
+class GameManager: ObservableObject {
+    @ObservedObject var state: GameState
+    
+    init(state: GameState) {
+        self.state = state
+    }
     
     func startNewGame() {
-        targetNumber = Int.random(in: 1...999)
-        attempts = 0
-        gameWon = false
-        gameStarted = true
-        activeTricks = []
-        chatMessages = [
+        state.targetNumber = Int.random(in: 1...999)
+        state.attempts = 0
+        state.gameWon = false
+        state.gameStarted = true
+        state.activeTricks = []
+        state.chatMessages = [
             Message(SystemMessage(type: .welcome)),
             Message(SystemMessage(type: .debug(activeTricks: [], target: 0)))
         ]
     }
     
     func makeGuess(_ guess: Int) {
-        thinking = true
-        attempts += 1
+        state.thinking = true
+        state.attempts += 1
         
         Task {
             await showPlayerGuess(guess)
 
-            if guess == targetNumber {
+            if guess == state.targetNumber {
                 await winGame()
             } else {
                 await continueGame(guess: guess)
 
-                thinking = false
+                state.thinking = false
             }
         }
     }
@@ -42,14 +50,14 @@ class GameManager: ObservableObject {
     fileprivate func continueGame(guess: Int) async {
         await showMissed(guess: guess)
         
-        let newTrick = AllTricks.randomTrick(excluding: activeTricks)
+        let newTrick = AllTricks.randomTrick(excluding: state.activeTricks)
         
         if (newTrick.duration > 0) {
             // new trick is not an immediate action, keep it.
-            activeTricks.append(ActiveTrick(trick: newTrick, remainingDuration: newTrick.duration))
+            state.activeTricks.append(ActiveTrick(trick: newTrick, remainingDuration: newTrick.duration))
         }
         
-        await newTrick.triggerOnCreate(to: self)
+        await newTrick.triggerOnCreate(to: state)
         
         await showNewTrick(newTrick)
         
@@ -61,14 +69,14 @@ class GameManager: ObservableObject {
     }
     
     fileprivate func processActiveTricks() async {
-        for activeTrick in activeTricks {
-            await activeTrick.trick.triggerOnTurn(to: self)
+        for activeTrick in state.activeTricks {
+            await activeTrick.trick.triggerOnTurn(to: self.state)
         }
     }
     
     fileprivate func removeExpiredTricks() async {
         // Reduce duration and remove expired tricks
-        activeTricks = activeTricks.compactMap { activeTrick in
+        state.activeTricks = state.activeTricks.compactMap { activeTrick in
             let newDuration = activeTrick.remainingDuration - 1
             return newDuration > 0 ? ActiveTrick(trick: activeTrick.trick, remainingDuration: newDuration) : nil
         }
@@ -81,31 +89,31 @@ class GameManager: ObservableObject {
         try? await Task.sleep(nanoseconds: randomTrickTime())
         
         await MainActor.run {
-            chatMessages.append(Message(TrickMessage(trick)))
+            state.chatMessages.append(Message(TrickMessage(trick)))
         }
     }
     
     fileprivate func winGame() async {
         await MainActor.run {
-            gameWon = true
-            chatMessages.append(Message(SystemMessage(type: .victory(targetNumber: targetNumber, attempts: attempts))))
-            thinking = false
+            state.gameWon = true
+            state.chatMessages.append(Message(SystemMessage(type: .victory(targetNumber: state.targetNumber, attempts: state.attempts))))
+            state.thinking = false
         }
     }
 
     fileprivate func showMissed(guess: Int) async {
         await MainActor.run {
-            if guess < targetNumber {
-                chatMessages.append(Message(SystemMessage(type: .tooLow(currentGuess: guess))))
+            if guess < state.targetNumber {
+                state.chatMessages.append(Message(SystemMessage(type: .tooLow(currentGuess: guess))))
             } else {
-                chatMessages.append(Message(SystemMessage(type: .tooHigh(currentGuess: guess))))
+                state.chatMessages.append(Message(SystemMessage(type: .tooHigh(currentGuess: guess))))
             }
         }
     }
     
     fileprivate func showPlayerGuess(_ guess: Int) async {
         await MainActor.run {
-            chatMessages.append(Message(PlayerMessage(guess: guess, attempt: attempts)))
+            state.chatMessages.append(Message(PlayerMessage(guess: guess, attempt: state.attempts)))
         }
         try? await Task.sleep(nanoseconds: randomThinkingTime())
     }
@@ -113,7 +121,7 @@ class GameManager: ObservableObject {
     // MARK: - Active Tricks Status
     private func sendActiveTricksUpdate() async {
         await MainActor.run {
-            chatMessages.append(Message(SystemMessage(type: .debug(activeTricks: activeTricks, target: targetNumber))))
+            state.chatMessages.append(Message(SystemMessage(type: .debug(activeTricks: state.activeTricks, target: state.targetNumber))))
         }
     }
     

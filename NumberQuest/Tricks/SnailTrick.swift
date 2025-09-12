@@ -8,10 +8,10 @@ struct SnailTrick: GameTrick {
     var duration = 10
 
     @MainActor
-    func triggerOnTurn(to game: GameManager) async {
+    func triggerOnTurn(to state: GameState) async {
         // Change target by +1 or -1 randomly each turn
         let change = Bool.random() ? 1 : -1
-        let newTarget = max(0, min(999, game.targetNumber + change))
-        game.targetNumber = newTarget
+        let newTarget = max(0, min(999, state.targetNumber + change))
+        state.targetNumber = newTarget
     }
 }
