@@ -1,5 +1,11 @@
 import Foundation
 
+struct ActiveTrick {
+    let trick: any GameTrick
+    var remainingDuration: Int
+}
+
+@MainActor
 class GameManager: ObservableObject {
     @Published var targetNumber: Int = 0
     @Published var attempts: Int = 0
@@ -8,13 +14,14 @@ class GameManager: ObservableObject {
     @Published var chatMessages: [Message] = []
     @Published var thinking: Bool = false
     
-    private var activeTricks: [any GameTrick] = []
+    private var activeTricks: [ActiveTrick] = []
     
     func startNewGame() {
         targetNumber = Int.random(in: 1...999)
         attempts = 0
         gameWon = false
         gameStarted = true
+        activeTricks = []
         chatMessages = [
             Message(SystemMessage(type: .welcome))
         ]
@@ -57,18 +64,29 @@ class GameManager: ObservableObject {
         // HANDLE NEW TRICK
         
         if (newTrick.duration != 0) {
-            activeTricks.append(newTrick)
+            activeTricks.append(ActiveTrick(trick: newTrick, remainingDuration: newTrick.duration))
         }
         
         try? await Task.sleep(nanoseconds: randomTrickTime())
         
-        newTrick.triggerOnCreate(to: self)
+        await newTrick.triggerOnCreate(to: self)
         
         await showNewTrick(newTrick)
         
-        // HANDLE ALL TRICKS
-        // iterate all tricks, apply effect
-        // reduce tricks duration by one
+        await processActiveTricks()
+    }
+    
+    fileprivate func processActiveTricks() async {
+        // Apply effects of all active tricks
+        for activeTrick in activeTricks {
+            await activeTrick.trick.triggerOnTurn(to: self)
+        }
+        
+        // Reduce duration and remove expired tricks
+        activeTricks = activeTricks.compactMap { activeTrick in
+            let newDuration = activeTrick.remainingDuration - 1
+            return newDuration > 0 ? ActiveTrick(trick: activeTrick.trick, remainingDuration: newDuration) : nil
+        }
     }
     
     fileprivate func showNewTrick(_ trick: any GameTrick) async {
