@@ -22,7 +22,7 @@ class GameManager: ObservableObject {
         thinking = true
         
         attempts += 1
-        let effect = chooseEffect()
+        let effect = AllEffects.randomEffect()
         
         Task {
             // Show the player message immediately
@@ -35,18 +35,12 @@ class GameManager: ObservableObject {
             
             if guess == targetNumber {
                 await MainActor.run {
-                    // 🎉 Hooray
-                    gameWon = true
-                    chatMessages.append(Message(SystemMessage(type: .victory(targetNumber: targetNumber, attempts: attempts))))
-                    thinking = false
+                    winGame()
                 }
             } else {
                 await MainActor.run {
-                    if guess < targetNumber {
-                        chatMessages.append(Message(SystemMessage(type: .tooLow(currentGuess: guess))))
-                    } else {
-                        chatMessages.append(Message(SystemMessage(type: .tooHigh(currentGuess: guess))))
-                    }
+                    missGuess(guess)
+
                     if (effect.isNoop) {
                         thinking = false
                     }
@@ -59,16 +53,30 @@ class GameManager: ObservableObject {
                     effect.apply(to: self)
                     
                     await MainActor.run {
-                        chatMessages.append(Message(EffectMessage(effect)))
-                        thinking = false
+                        announceEffect(effect)
                     }
                 }
             }
         }
     }
     
-    private func chooseEffect() -> any GameEffect {
-        return AllEffects.randomEffect()
+    fileprivate func announceEffect(_ effect: any GameEffect) {
+        chatMessages.append(Message(EffectMessage(effect)))
+        thinking = false
+    }
+    
+    fileprivate func winGame() {
+        gameWon = true
+        chatMessages.append(Message(SystemMessage(type: .victory(targetNumber: targetNumber, attempts: attempts))))
+        thinking = false
+    }
+
+    fileprivate func missGuess(_ guess: Int) {
+        if guess < targetNumber {
+            chatMessages.append(Message(SystemMessage(type: .tooLow(currentGuess: guess))))
+        } else {
+            chatMessages.append(Message(SystemMessage(type: .tooHigh(currentGuess: guess))))
+        }
     }
     
     private func randomThinkingTime() -> UInt64 {

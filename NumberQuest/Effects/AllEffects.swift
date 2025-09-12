@@ -2,9 +2,15 @@ import Foundation
 
 protocol GameEffect: Identifiable, Equatable {
     var id: UUID { get }
-    /// Effect icon
+    /// Effect icon (emoji)
     var icon: String { get }
+    /// Effect message that will be shown right away
     var message: String { get }
+    
+    /// How many cycles effect is working
+    /// Setting to 0 means its an immediate action
+    var duration: Int { get }
+    
     /// Returns true if effect is not really an effect, but a NOOP.
     var isNoop: Bool { get }
 }
@@ -14,7 +20,7 @@ extension GameEffect {
     var isNoop: Bool { false }
     var icon: String { "X" }
     var message: String { "Effect" }
-    
+    var duration: Int { Int.max }
     /// Applies mods to the game manager right after choosing the effect
     func apply(to game: GameManager) {}
 }
