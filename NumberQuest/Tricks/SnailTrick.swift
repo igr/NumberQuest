@@ -1,6 +1,6 @@
 
-///
 struct SnailTrick: GameTrick {
+    var type = TrickType.snail
     var icon = "🐌"
     var name = "Snail"
     var message = "Target changed by ONE!"

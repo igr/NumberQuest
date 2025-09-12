@@ -8,40 +8,25 @@ struct ActiveTricksView: View {
     
     var body: some View {
         if !activeTricks.isEmpty {
-            VStack(alignment: .leading, spacing: 8) {
+            HStack(alignment: .center, spacing: 8) {
                 ForEach(activeTricks.indices, id: \.self) { index in
                     let activeTrick = activeTricks[index]
                     Button(action: {
                         selectedTrick = activeTrick
                         showPopup = true
                     }) {
-                        HStack {
-                            Text(activeTrick.trick.icon)
-                                .font(.title2)
-                            
-                            VStack(alignment: .leading, spacing: 2) {
-                                Text(activeTrick.trick.name)
-                                    .font(.subheadline)
-                                    .fontWeight(.medium)
-                                    .foregroundColor(.primary)
-                                Text(activeTrick.trick.description)
-                                    .font(.caption)
-                                    .foregroundColor(.secondary)
-                                    .lineLimit(1)
-                            }
-                            
-                            Spacer()
-                            
-                            Text("\(activeTrick.remainingDuration)")
-                                .font(.caption)
-                                .fontWeight(.bold)
-                                .foregroundColor(.white)
-                                .padding(.horizontal, 8)
-                                .padding(.vertical, 4)
-                                .background(
-                                    RoundedRectangle(cornerRadius: 8)
-                                        .fill(activeTrick.remainingDuration <= 2 ? Color.red : Color.blue)
-                                )
+                        Text(activeTrick.trick.icon)
+                            .font(.title2)                        
+                        Text("\(activeTrick.remainingDuration)")
+                            .font(.caption)
+                            .fontWeight(.bold)
+                            .foregroundColor(.white)
+                            .padding(.horizontal, 8)
+                            .padding(.vertical, 4)
+                            .background(
+                                RoundedRectangle(cornerRadius: 8)
+                                    .fill(activeTrick.remainingDuration <= 2 ? Color.red : Color.blue)
+                            )
                         }
                         .padding(.horizontal, 12)
                         .padding(.vertical, 8)
@@ -49,11 +34,9 @@ struct ActiveTricksView: View {
                             RoundedRectangle(cornerRadius: 10)
                                 .fill(Color.gray.opacity(0.1))
                         )
-                    }
-                    .buttonStyle(PlainButtonStyle())
                 }
+                .buttonStyle(PlainButtonStyle())
             }
-            .padding(.horizontal)
             .popup(item: $selectedTrick) { item in
                 TrickDetailView(activeTrick: item)
             } customize: {

@@ -33,7 +33,7 @@ class GameManager: ObservableObject {
     func makeGuess(_ guess: Int) {
         thinking = true
         attempts += 1
-        let newTrick = AllTricks.randomTrick()
+        let newTrick = AllTricks.randomTrick(excluding: activeTricks)
         
         Task {
             await showPlayerGuess(guess)

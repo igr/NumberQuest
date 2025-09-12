@@ -1,7 +1,15 @@
 import Foundation
 
+enum TrickType: CaseIterable {
+    case noop
+    case shuffleTarget
+    case snail
+}
+
 protocol GameTrick: Identifiable, Equatable {
     var id: UUID { get }
+    /// Trick type
+    var type: TrickType { get }
     /// Trick icon (emoji)
     var icon: String { get }
     /// Trick message that will be shown right away
@@ -25,6 +33,7 @@ protocol GameTrick: Identifiable, Equatable {
 
 extension GameTrick {
     var id: UUID { UUID() }
+    var type: TrickType { .noop }
     var icon: String { "X" }
     var name: String { "Trick" }
     var message: String { "Trick in action" }
@@ -43,7 +52,8 @@ extension GameTrick {
 /// - probability: chance that the trick is chosen
 /// - builder: function that creates the trick
 struct TrickDefinition {
-    let probability: Double
+    let type: TrickType
+    let probability: Double    
     let builder: () -> any GameTrick
 }
 
@@ -51,41 +61,57 @@ enum AllTricks {
     // MARK: - Registry of all tricks
     static let tricks: [TrickDefinition] = [
         TrickDefinition(
+            type: .noop,
             probability: 1.0,
             builder: { NoopTrick() }
         ),
         TrickDefinition(
+            type: .shuffleTarget,
             probability: 1.0,
             builder: { ShuffleTargetTrick() }
         ),
         TrickDefinition(
-            probability: 1.0,
+            type: .snail,
+            probability: 1.0,            
             builder: { SnailTrick() }
         ),
     ]
     
-    // MARK: - Returns a random trick, respecting probabilities
-    static func randomTrick() -> any GameTrick {
+    // MARK: - Returns a random trick excluding active tricks
+    static func randomTrick(excluding activeTricks: [ActiveTrick]) -> any GameTrick {
         guard !tricks.isEmpty else { fatalError("No tricks available") }
         
-        let totalWeight = tricks.reduce(0) { $0 + $1.probability }
+        // Get types of currently active tricks
+        let activeTrickTypes = Set(activeTricks.map { $0.type })
+        
+        // Filter out tricks that are currently active
+        let availableTricks = tricks.filter { trickDef in
+            return !activeTrickTypes.contains(trickDef.type)
+        }
+        
+        // If no tricks available (all are active)
+        guard !availableTricks.isEmpty else {
+            return NoopTrick()
+        }
+        
+        let totalWeight = availableTricks.reduce(0) { $0 + $1.probability }
         let random = Double.random(in: 0..<totalWeight)
         
         var running = 0.0
-        for trick in tricks {
+        for trick in availableTricks {
             running += trick.probability
             if random < running {
                 return trick.builder()
             }
         }
-        
-        return tricks.last!.builder() // fallback
+        return availableTricks.last!.builder() // fallback
     }
 }
 
 struct ActiveTrick : Identifiable, Equatable {
     let id = UUID()
     let trick: any GameTrick
+    var type: TrickType { trick.type }
     var remainingDuration: Int
     
     static func == (lhs: ActiveTrick, rhs: ActiveTrick) -> Bool {
