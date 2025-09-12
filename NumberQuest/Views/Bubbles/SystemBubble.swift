@@ -7,13 +7,13 @@ struct SystemBubble: View {
     private var systemText: String {
         switch systemMessage.messageType {
         case .tooHigh:
-            return "Oops! Your guess is too high."
+            return "🔺 Too high!"
         case .tooLow:
-            return "Oops! Your guess is too low."
+            return "🔻 Too low."
         case .welcome:
             return "🎯 Welcome! Guess a Number!"
         case .victory:
-            return "Congratulations! You won!"
+            return "🎉 Congratulations! You won!"
         }
     }
     
