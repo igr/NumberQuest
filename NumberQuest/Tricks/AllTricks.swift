@@ -7,6 +7,7 @@ enum TrickType: CaseIterable {
     case linguaLarry
     case drunkPlayer
     case expandSlots
+    case magnet
 }
 
 protocol GameTrick: Identifiable, Equatable {
@@ -90,6 +91,11 @@ enum AllTricks {
             type: .drunkPlayer,
             probability: 1.0,
             builder: { DrunkPlayerTrick() }
+        ),
+        TrickDefinition(
+            type: .magnet,
+            probability: 1.0,
+            builder: { MagnetTrick() }
         ),
     ]
     

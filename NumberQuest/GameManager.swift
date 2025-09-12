@@ -9,6 +9,7 @@ class GameState: ObservableObject {
     @Published var thinking: Bool = false
     @Published var activeTricks: [ActiveTrick] = []
     @Published var maxActiveTricks: Int = 3
+    @Published var lastGuess: Int = 0
 }
 
 @MainActor
@@ -36,6 +37,7 @@ class GameManager: ObservableObject {
         state.attempts += 1
 
         let guess = processActiveTricksOnGuess(_guess)
+        state.lastGuess = guess
         
         Task {
             await showPlayerGuess(guess)

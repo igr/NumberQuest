@@ -1,0 +1,32 @@
+
+struct MagnetTrick: GameTrick {
+    var type = TrickType.magnet
+    var icon = "🧲"
+    var name = "Magnet"
+    var message = "Target is moved towards the guess!"
+    var description = "Each turn, the target number is moved towards the guess for random amount, but never more than half the distance."
+    var duration = 2
+
+    @MainActor
+    func triggerOnTurn(to state: GameState) async {
+        // Calculate the difference between target and last guess
+        let difference = state.lastGuess - state.targetNumber
+        
+        // Move target towards the guess by a random amount, but never more than half the difference
+        let maxMovement = abs(difference) / 2
+        
+        // If maxMovement is 0, no movement is possible
+        guard maxMovement > 0 else { return }
+        
+        // Random movement amount from 1 to maxMovement
+        let movement = Int.random(in: 1...maxMovement)
+        
+        // Determine direction (positive if guess > target, negative if guess < target)
+        let direction = difference > 0 ? 1 : -1
+        
+        // Apply the movement
+        let change = movement * direction
+        let newTarget = Numbers.clip(state.targetNumber + change)
+        state.targetNumber = newTarget
+    }
+}
