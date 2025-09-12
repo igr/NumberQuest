@@ -68,14 +68,17 @@ class GameManager: ObservableObject {
         await showNewTrick(newTrick)
         
         await processActiveTricks()
+
+        await removeExpiredTricks()
     }
     
     fileprivate func processActiveTricks() async {
-        // Apply effects of all active tricks
         for activeTrick in activeTricks {
             await activeTrick.trick.triggerOnTurn(to: self)
         }
-        
+    }
+    
+    fileprivate func removeExpiredTricks() async {
         // Reduce duration and remove expired tricks
         activeTricks = activeTricks.compactMap { activeTrick in
             let newDuration = activeTrick.remainingDuration - 1
