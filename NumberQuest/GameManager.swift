@@ -1,10 +1,5 @@
 import Foundation
 
-struct ActiveTrick {
-    let trick: any GameTrick
-    var remainingDuration: Int
-}
-
 @MainActor
 class GameManager: ObservableObject {
     @Published var targetNumber: Int = 0

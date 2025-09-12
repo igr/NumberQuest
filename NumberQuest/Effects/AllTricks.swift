@@ -82,3 +82,8 @@ enum AllTricks {
         return tricks.last!.builder() // fallback
     }
 }
+
+struct ActiveTrick {
+    let trick: any GameTrick
+    var remainingDuration: Int
+}

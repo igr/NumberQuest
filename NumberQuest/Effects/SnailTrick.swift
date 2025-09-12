@@ -3,7 +3,7 @@
 struct SnailTrick: GameTrick {
     var icon = "🐌"
     var name = "Snail"
-    var message = "Target Changed!"
+    var message = "Target changed by ONE!"
     var description = "Target changes by ONE each turn."
     var duration = 10
 
