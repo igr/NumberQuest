@@ -29,19 +29,12 @@ struct GameView: View {
                     .font(.largeTitle)
                     .fontWeight(.bold)
                 
-                ActiveTricksView(activeTricks: state.activeTricks)
+                ActiveTricksView(activeTricks: state.activeTricks, attemptCount: state.attempts)
                 
                 ChatWindow(messages: $state.chatMessages)
                     .background(Color.gray.opacity(0.05))
                     .cornerRadius(15)
                     .padding(.horizontal)
-                
-                // Attempts counter
-                if state.attempts > 0 {
-                    Text("Attempts: \(state.attempts)")
-                        .font(.headline)
-                        .foregroundColor(.secondary)
-                }
 
                 VStack() {
                     NumberPickerView(

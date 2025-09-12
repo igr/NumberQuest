@@ -3,11 +3,23 @@ import PopupView
 
 struct ActiveTricksView: View {
     let activeTricks: [ActiveTrick]
+    let attemptCount: Int
     @State var selectedTrick: ActiveTrick?
     @State var showPopup = false
     
     var body: some View {
         HStack(alignment: .center, spacing: 8) {
+            // Attempt count circle on the left
+            Text("\(attemptCount)")
+                .font(.headline)
+                .fontWeight(.bold)
+                .foregroundColor(.white)
+                .frame(width: 36, height: 36)
+                .background(
+                    Circle()
+                        .fill(Color.orange)
+                )
+            
             ForEach(activeTricks.indices, id: \.self) { index in
                 let activeTrick = activeTricks[index]
                 Button(action: {
@@ -53,13 +65,16 @@ struct ActiveTricksView: View {
     ActiveTricksView(activeTricks: [
         ActiveTrick(trick: SnailTrick(), remainingDuration: 5),
         ActiveTrick(trick: ShuffleTargetTrick(), remainingDuration: 1)
-    ])
+    ], attemptCount: 7)
 }
 
 #Preview("Empty") {
-    ActiveTricksView(activeTricks: [])
+    ActiveTricksView(activeTricks: [], attemptCount: 0)
 }
 
+#Preview("With Attempts Only") {
+    ActiveTricksView(activeTricks: [], attemptCount: 3)
+}
 
 #Preview("TrickDetailView") {
     TrickDetailView(activeTrick: ActiveTrick(trick: SnailTrick(), remainingDuration: 3))
