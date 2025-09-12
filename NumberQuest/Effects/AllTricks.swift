@@ -6,6 +6,10 @@ protocol GameTrick: Identifiable, Equatable {
     var icon: String { get }
     /// Trick message that will be shown right away
     var message: String { get }
+    /// Trick name
+    var name: String { get }
+    /// Trick description
+    var description: String { get }
     
     /// How many cycles trick is working
     /// Setting to 0 means its an immediate action
@@ -19,7 +23,9 @@ extension GameTrick {
     var id: UUID { UUID() }
     var isNoop: Bool { false }
     var icon: String { "X" }
-    var message: String { "Trick" }
+    var name: String { "Trick" }
+    var message: String { "Trick in action" }
+    var description: String { "Trick description" }
     var duration: Int { Int.max }
     /// Applies trick to the game manager right after choosing the trick
     func apply(to game: GameManager) {}
@@ -37,13 +43,17 @@ enum AllTricks {
     // MARK: - Registry of all tricks
     static let tricks: [TrickDefinition] = [
         TrickDefinition(
-            probability: 10.0,
+            probability: 1.0,
             builder: { NoopTrick() }
         ),
         TrickDefinition(
             probability: 1.0,
-            builder: { ChangeTargetNumberTrick() }
-        )
+            builder: { ShuffleTargetTrick() }
+        ),
+        TrickDefinition(
+            probability: 1.0,
+            builder: { SnailTrick() }
+        ),
     ]
     
     // MARK: - Returns a random trick, respecting probabilities

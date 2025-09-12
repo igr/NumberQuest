@@ -122,7 +122,7 @@ struct ChatWindow_Previews: PreviewProvider {
         Message(PlayerMessage(guess: 375, attempt: 3)),
         Message(SystemMessage(type: .tooHigh(currentGuess: 375))),
         Message(PlayerMessage(guess: 312, attempt: 4)),
-        Message(TrickMessage(ChangeTargetNumberTrick())),
+        Message(TrickMessage(ShuffleTargetTrick())),
         Message(SystemMessage(type: .victory(targetNumber: 312, attempts: 4)))
     ]
 }
