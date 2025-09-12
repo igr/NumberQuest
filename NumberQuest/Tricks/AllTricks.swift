@@ -6,6 +6,7 @@ enum TrickType: CaseIterable {
     case snail
     case linguaLarry
     case drunkPlayer
+    case expandSlots
 }
 
 protocol GameTrick: Identifiable, Equatable {

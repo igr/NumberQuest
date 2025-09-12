@@ -62,7 +62,10 @@ struct ActiveTricksView: View {
 #Preview {
     ActiveTricksView(activeTricks: [
         ActiveTrick(trick: SnailTrick(), remainingDuration: 5),
-        ActiveTrick(trick: ShuffleTargetTrick(), remainingDuration: 1)
+        ActiveTrick(trick: ShuffleTargetTrick(), remainingDuration: 1),
+        ActiveTrick(trick: LinguaLarryTrick(), remainingDuration: 4),
+        ActiveTrick(trick: DrunkPlayerTrick(), remainingDuration: 4),
+        ActiveTrick(trick: ExpandSlotsTrick(), remainingDuration: 4),
     ], attemptCount: 7)
 }
 
