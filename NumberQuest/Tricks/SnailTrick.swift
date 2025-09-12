@@ -9,9 +9,8 @@ struct SnailTrick: GameTrick {
 
     @MainActor
     func triggerOnTurn(to state: GameState) async {
-        // Change target by +1 or -1 randomly each turn
         let change = Bool.random() ? 1 : -1
-        let newTarget = max(0, min(999, state.targetNumber + change))
+        let newTarget = Numbers.clip(state.targetNumber + change)
         state.targetNumber = newTarget
     }
 }

@@ -30,9 +30,11 @@ class GameManager: ObservableObject {
         ]
     }
     
-    func makeGuess(_ guess: Int) {
+    func makeGuess(_ _guess: Int) {
         state.thinking = true
         state.attempts += 1
+
+        let guess = processActiveTricksOnGuess(_guess)
         
         Task {
             await showPlayerGuess(guess)
@@ -61,12 +63,20 @@ class GameManager: ObservableObject {
         
         await showNewTrick(newTrick)
         
-        await processActiveTricks()
+        await processActiveTricksOnTurn()
 
         await removeExpiredTricks()
     }
     
-    fileprivate func processActiveTricks() async {
+    fileprivate func processActiveTricksOnGuess(_ guess: Int) -> Int {
+        var newGuess = guess
+        for activeTrick in state.activeTricks {
+            newGuess = activeTrick.trick.triggerOnGuess(guess: newGuess)
+        }
+        return newGuess
+    }
+    
+    fileprivate func processActiveTricksOnTurn() async {
         for activeTrick in state.activeTricks {
             await activeTrick.trick.triggerOnTurn(to: self.state)
         }

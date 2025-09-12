@@ -5,6 +5,7 @@ enum TrickType: CaseIterable {
     case shuffleTarget
     case snail
     case linguaLarry
+    case drunkPlayer
 }
 
 protocol GameTrick: Identifiable, Equatable {
@@ -32,6 +33,8 @@ protocol GameTrick: Identifiable, Equatable {
     func triggerOnTurn(to state: GameState) async
     /// Hook to allow tricks to modify system messages
     func modify(systemMessage: SystemMessage) -> SystemMessage
+    /// Applies trick on the guess before it is used in the game
+    func triggerOnGuess(guess: Int) -> Int
 }
 
 extension GameTrick {
@@ -47,6 +50,7 @@ extension GameTrick {
     func triggerOnCreate(to state: GameState) {}
     func triggerOnTurn(to state: GameState) {}    
     func modify(systemMessage: SystemMessage) -> SystemMessage { return systemMessage }
+    func triggerOnGuess(guess: Int) -> Int { return guess }
 }
 
 /// Represents a single trick configuration:
@@ -80,7 +84,12 @@ enum AllTricks {
             type: .linguaLarry,
             probability: 1.0,
             builder: { LinguaLarryTrick() }
-        )
+        ),
+        TrickDefinition(
+            type: .drunkPlayer,
+            probability: 1.0,
+            builder: { DrunkPlayerTrick() }
+        ),
     ]
     
     // MARK: - Returns a random trick excluding active tricks
