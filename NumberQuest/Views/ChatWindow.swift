@@ -8,9 +8,9 @@ struct MessageBubble: View {
     
     var body: some View {
         if let playerMessage = message.asPlayerMessage {
-            PlayerMessageBubble(playerMessage: playerMessage)
+            PlayerBubble(playerMessage: playerMessage)
         } else if let systemMessage = message.asSystemMessage {
-            SystemMessageBubble(systemMessage: systemMessage)
+            SystemBubble(systemMessage: systemMessage)
         } else if let trickMessage = message.asTrickMessage {
             TrickBubble(trickMessage: trickMessage)
         }
