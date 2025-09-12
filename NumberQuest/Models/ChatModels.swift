@@ -31,7 +31,7 @@ struct SystemMessage: GameMessage {
         case tooHigh(currentGuess: Int)
         case tooLow(currentGuess: Int)
         case victory(targetNumber: Int, attempts: Int)
-        case debug(activeTricks: [ActiveTrick])
+        case debug(activeTricks: [ActiveTrick], target: Int)
     }
     
     init(type: SystemMessageType) {

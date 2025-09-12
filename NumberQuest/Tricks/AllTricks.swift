@@ -79,7 +79,7 @@ enum AllTricks {
         TrickDefinition(
             type: .linguaLarry,
             probability: 1.0,
-            builder: {LinguaLarryTrick()}
+            builder: { LinguaLarryTrick() }
         )
     ]
     

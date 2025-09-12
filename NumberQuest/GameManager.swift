@@ -18,7 +18,7 @@ class GameManager: ObservableObject {
         activeTricks = []
         chatMessages = [
             Message(SystemMessage(type: .welcome)),
-            Message(SystemMessage(type: .debug(activeTricks: [])))
+            Message(SystemMessage(type: .debug(activeTricks: [], target: 0)))
         ]
     }
     
@@ -113,7 +113,7 @@ class GameManager: ObservableObject {
     // MARK: - Active Tricks Status
     private func sendActiveTricksUpdate() async {
         await MainActor.run {
-            chatMessages.append(Message(SystemMessage(type: .debug(activeTricks: activeTricks))))
+            chatMessages.append(Message(SystemMessage(type: .debug(activeTricks: activeTricks, target: targetNumber))))
         }
     }
     

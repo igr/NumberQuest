@@ -14,12 +14,12 @@ struct SystemBubble: View {
             return "🎯 Welcome! Guess a Number!"
         case .victory:
             return "🎉 Congratulations! You won!"
-        case .debug(let activeTricks):
+        case .debug(let activeTricks, let target):
             if activeTricks.isEmpty {
                 return "✨ No active tricks"
             } else {
                 let trickList = activeTricks.map { "• \($0.trick.name) (\($0.remainingDuration) turns left)" }.joined(separator: "\n")
-                return "⚡ Active Tricks:\n\(trickList)"
+                return "🎯 \(target)\n⚡ Active Tricks:\n\(trickList)"
             }
         }
     }
