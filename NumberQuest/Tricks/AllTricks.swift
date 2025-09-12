@@ -83,7 +83,12 @@ enum AllTricks {
     }
 }
 
-struct ActiveTrick {
+struct ActiveTrick : Identifiable, Equatable {
+    let id = UUID()
     let trick: any GameTrick
     var remainingDuration: Int
+    
+    static func == (lhs: ActiveTrick, rhs: ActiveTrick) -> Bool {
+        lhs.id == rhs.id
+    }
 }
