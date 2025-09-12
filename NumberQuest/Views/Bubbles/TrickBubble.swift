@@ -1,7 +1,7 @@
 import SwiftUI
 import Foundation
 
-struct TrickMessageBubble: View {
+struct TrickBubble: View {
     let trickMessage: TrickMessage
     
     private var trickColor: Color {

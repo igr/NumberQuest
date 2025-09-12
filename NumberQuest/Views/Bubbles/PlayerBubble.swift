@@ -1,7 +1,7 @@
 import SwiftUI
 import Foundation
 
-struct PlayerMessageBubble: View {
+struct PlayerBubble: View {
     let playerMessage: PlayerMessage
     
     var body: some View {

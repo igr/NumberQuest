@@ -12,7 +12,7 @@ struct MessageBubble: View {
         } else if let systemMessage = message.asSystemMessage {
             SystemMessageBubble(systemMessage: systemMessage)
         } else if let trickMessage = message.asTrickMessage {
-            TrickMessageBubble(trickMessage: trickMessage)
+            TrickBubble(trickMessage: trickMessage)
         }
     }
 }

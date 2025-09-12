@@ -1,7 +1,7 @@
 import SwiftUI
 import Foundation
 
-struct SystemMessageBubble: View {
+struct SystemBubble: View {
     let systemMessage: SystemMessage
     
     private var systemText: String {
