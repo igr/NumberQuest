@@ -8,6 +8,65 @@ struct NumberPickerView: View {
     
     var onGuess: (Int) -> Void
     
+    private let challengingMessages = [
+        "Accomplishing",
+        "Actioning",
+        "Actualizing",
+        "Baking",
+        "Brewing",
+        "Calculating",
+        "Cerebrating",
+        "Churning",
+        "Clauding",
+        "Coalescing",
+        "Cogitating",
+        "Computing",
+        "Conjuring",
+        "Considering",
+        "Cooking",
+        "Crafting",
+        "Creating",
+        "Crunching",
+        "Deliberating",
+        "Determining",
+        "Doing",
+        "Effecting",
+        "Finagling",
+        "Forging",
+        "Forming",
+        "Generating",
+        "Hatching",
+        "Herding",
+        "Honking",
+        "Hustling",
+        "Ideating",
+        "Inferring",
+        "Manifesting",
+        "Marinating",
+        "Moseying",
+        "Mulling",
+        "Mustering",
+        "Musing",
+        "Noodling",
+        "Percolating",
+        "Pondering",
+        "Processing",
+        "Puttering",
+        "Reticulating",
+        "Ruminating",
+        "Schlepping",
+        "Shucking",
+        "Simmering",
+        "Smooshing",
+        "Spinning",
+        "Stewing",
+        "Synthesizing",
+        "Thinking",
+        "Transmuting",
+        "Vibing",
+        "Working"
+    ]
+    
     var body: some View {
         VStack(spacing: 20) {
             HStack(spacing: 0) {
@@ -28,7 +87,9 @@ struct NumberPickerView: View {
             }) {
                 HStack {
                     Image(systemName: isEnabled ? "play.fill" : "hourglass")
-                    Text(isEnabled ? "Make Guess" : "Challenging...")
+                    Text(isEnabled ?
+                         "Make Guess" :
+                            (challengingMessages.randomElement() ?? "Challenging") + "...")
                 }
                 .font(.title2)
                 .fontWeight(.bold)
@@ -51,6 +112,29 @@ struct NumberPickerView: View {
         @State private var secondDigit = 2
         @State private var thirdDigit = 7
         @State private var isEnabled = true
+        
+        var body: some View {
+            NumberPickerView(
+                firstDigit: $firstDigit,
+                secondDigit: $secondDigit,
+                thirdDigit: $thirdDigit,
+                isEnabled: $isEnabled,
+                onGuess: { number in
+                    print("Guess made with number: \(number)")
+                }
+            )
+        }
+    }
+    
+    return PreviewWrapper()
+}
+
+#Preview("Disabled") {
+    struct PreviewWrapper: View {
+        @State private var firstDigit = 1
+        @State private var secondDigit = 7
+        @State private var thirdDigit = 3
+        @State private var isEnabled = false
         
         var body: some View {
             NumberPickerView(
