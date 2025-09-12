@@ -8,8 +8,7 @@ class GameManager: ObservableObject {
     @Published var gameStarted: Bool = false
     @Published var chatMessages: [Message] = []
     @Published var thinking: Bool = false
-    
-    private var activeTricks: [ActiveTrick] = []
+    @Published var activeTricks: [ActiveTrick] = []
     
     func startNewGame() {
         targetNumber = Int.random(in: 1...999)

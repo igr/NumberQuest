@@ -21,6 +21,8 @@ struct GameView: View {
                     .font(.largeTitle)
                     .fontWeight(.bold)
                 
+                ActiveTricksView(activeTricks: gameManager.activeTricks)
+                
                 ChatWindow(messages: $gameManager.chatMessages)
                     .background(Color.gray.opacity(0.05))
                     .cornerRadius(15)
