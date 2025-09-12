@@ -11,24 +11,27 @@ protocol GameTrick: Identifiable, Equatable {
     /// Trick description
     var description: String { get }
     
-    /// How many cycles trick is working
-    /// Setting to 0 means its an immediate action
+    /// How many cycles trick is active
     var duration: Int { get }
     
     /// Returns true if trick is not really an trick, but a NOOP.
     var isNoop: Bool { get }
+    
+    // triggers when trick is created
+    func triggerOnCreate(to game: GameManager)
 }
 
 extension GameTrick {
     var id: UUID { UUID() }
-    var isNoop: Bool { false }
     var icon: String { "X" }
     var name: String { "Trick" }
     var message: String { "Trick in action" }
     var description: String { "Trick description" }
     var duration: Int { Int.max }
+    var isNoop: Bool { false }
+    
     /// Applies trick to the game manager right after choosing the trick
-    func apply(to game: GameManager) {}
+    func triggerOnCreate(to game: GameManager) {}
 }
 
 /// Represents a single trick configuration:

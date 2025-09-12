@@ -8,6 +8,8 @@ class GameManager: ObservableObject {
     @Published var chatMessages: [Message] = []
     @Published var thinking: Bool = false
     
+    private var activeTricks: [any GameTrick] = []
+    
     func startNewGame() {
         targetNumber = Int.random(in: 1...999)
         attempts = 0
@@ -18,64 +20,83 @@ class GameManager: ObservableObject {
         ]
     }
     
-    func makeGuess(_ guess: Int) {
-        thinking = true
-        
-        attempts += 1
-        let trick = AllTricks.randomTrick()
-        
-        Task {
-            // Show the player message immediately
-            await MainActor.run {
-                chatMessages.append(Message(PlayerMessage(guess: guess, attempt: attempts)))
-            }
-            
-            // Wait before responding
-            try? await Task.sleep(nanoseconds: randomThinkingTime())
-            
-            if guess == targetNumber {
-                await MainActor.run {
-                    winGame()
-                }
-            } else {
-                await MainActor.run {
-                    missGuess(guess)
-
-                    if (trick.isNoop) {
-                        thinking = false
-                    }
-                }
-
-                if (!trick.isNoop) {
-                    // Second delay before a follow-up message
-                    try? await Task.sleep(nanoseconds: randomTrickTime())
-                    
-                    trick.apply(to: self)
-                    
-                    await MainActor.run {
-                        announceTrick(trick)
-                    }
-                }
+    fileprivate func showMissed(guess: Int, isEnd: Bool) async {
+        await MainActor.run {
+            showMissed(guess)
+            if (isEnd) {
+                thinking = false
             }
         }
     }
     
-    fileprivate func announceTrick(_ trick: any GameTrick) {
-        chatMessages.append(Message(TrickMessage(trick)))
-        thinking = false
+    func makeGuess(_ guess: Int) {
+        thinking = true
+        attempts += 1
+        let newTrick = AllTricks.randomTrick()
+        
+        Task {
+            await showPlayerGuess(guess)
+            
+            try? await Task.sleep(nanoseconds: randomThinkingTime())
+            
+            if guess == targetNumber {
+                await winGame()
+            } else {
+                await continueGame(guess: guess, newTrick: newTrick)
+            }
+        }
     }
     
-    fileprivate func winGame() {
-        gameWon = true
-        chatMessages.append(Message(SystemMessage(type: .victory(targetNumber: targetNumber, attempts: attempts))))
-        thinking = false
+    fileprivate func continueGame(guess: Int, newTrick: any GameTrick) async {
+        await showMissed(guess: guess, isEnd: newTrick.isNoop)
+        
+        if (newTrick.isNoop) {
+            return
+        }
+        
+        // HANDLE NEW TRICK
+        
+        if (newTrick.duration != 0) {
+            activeTricks.append(newTrick)
+        }
+        
+        try? await Task.sleep(nanoseconds: randomTrickTime())
+        
+        newTrick.triggerOnCreate(to: self)
+        
+        await showNewTrick(newTrick)
+        
+        // HANDLE ALL TRICKS
+        // iterate all tricks, apply effect
+        // reduce tricks duration by one
     }
-
-    fileprivate func missGuess(_ guess: Int) {
+    
+    fileprivate func showNewTrick(_ trick: any GameTrick) async {
+        await MainActor.run {
+            chatMessages.append(Message(TrickMessage(trick)))
+            thinking = false
+        }
+    }
+    
+    fileprivate func winGame() async {
+        await MainActor.run {
+            gameWon = true
+            chatMessages.append(Message(SystemMessage(type: .victory(targetNumber: targetNumber, attempts: attempts))))
+            thinking = false
+        }
+    }
+    
+    fileprivate func showMissed(_ guess: Int) {
         if guess < targetNumber {
             chatMessages.append(Message(SystemMessage(type: .tooLow(currentGuess: guess))))
         } else {
             chatMessages.append(Message(SystemMessage(type: .tooHigh(currentGuess: guess))))
+        }
+    }
+    
+    fileprivate func showPlayerGuess(_ guess: Int) async {
+        await MainActor.run {
+            chatMessages.append(Message(PlayerMessage(guess: guess, attempt: attempts)))
         }
     }
     

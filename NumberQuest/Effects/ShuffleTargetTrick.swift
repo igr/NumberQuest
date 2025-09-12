@@ -6,7 +6,7 @@ struct ShuffleTargetTrick: GameTrick {
     var name = "Shuffle Target"
     var description = "The target number will change to a NEW random number immediately!"
     var duration = 0
-    func apply(to game: inout GameManager) {        
+    func triggerOnCreate(to game: GameManager) {
         game.targetNumber = Int.random(in: 0...999)
     }
 }
