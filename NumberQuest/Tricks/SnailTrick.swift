@@ -5,7 +5,7 @@ struct SnailTrick: GameTrick {
     var name = "Snail"
     var message = "Target changed by ONE!"
     var description = "Target changes by ONE each turn."
-    var duration = 10
+    var duration = 3
 
     @MainActor
     func triggerOnTurn(to state: GameState) async {
