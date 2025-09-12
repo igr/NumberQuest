@@ -8,6 +8,7 @@ class GameState: ObservableObject {
     @Published var chatMessages: [Message] = []
     @Published var thinking: Bool = false
     @Published var activeTricks: [ActiveTrick] = []
+    @Published var maxActiveTricks: Int = 3
 }
 
 @MainActor
@@ -52,20 +53,22 @@ class GameManager: ObservableObject {
     fileprivate func continueGame(guess: Int) async {
         await showMissed(guess: guess)
         
+        await processActiveTricksOnTurn()
+
+        await removeExpiredTricks()
+        
+        // NEW trick
+        
         let newTrick = AllTricks.randomTrick(excluding: state.activeTricks)
         
-        if (newTrick.duration > 0) {
-            // new trick is not an immediate action, keep it.
+        if (newTrick.duration > 0 && state.activeTricks.count <=  state.maxActiveTricks) {
+            // new trick is not an immediate action, keep it - if there are enough room
             state.activeTricks.append(ActiveTrick(trick: newTrick, remainingDuration: newTrick.duration))
         }
         
         await newTrick.triggerOnCreate(to: state)
         
         await showNewTrick(newTrick)
-        
-        await processActiveTricksOnTurn()
-
-        await removeExpiredTricks()
     }
     
     fileprivate func processActiveTricksOnGuess(_ guess: Int) -> Int {
