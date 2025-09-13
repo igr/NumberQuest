@@ -59,6 +59,7 @@ struct ActiveTricksView: View {
             $0
                 .type(.floater())
                 .closeOnTap(true)
+                .backgroundColor(Color(white: 1.0, opacity: 0.5))
                 .appearFrom(.topSlide)
                 .position(.center)
         }
