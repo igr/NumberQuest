@@ -36,15 +36,8 @@ struct TrickBubble: View {
                 .stroke(trickColor.opacity(0.5), lineWidth: 1)
         )
         .padding(.horizontal, 16)
-        .popup(item: $selectedTrick) { item in
+        .trickPopup(item: $selectedTrick) { item in
             TrickDetailView(activeTrick: item)
-        } customize: {
-            $0
-                .type(.floater())
-                .closeOnTap(true)
-                .appearFrom(.topSlide)
-                .backgroundColor(Color(white: 1.0, opacity: 0.5))
-                .position(.center)
         }
     }
 }

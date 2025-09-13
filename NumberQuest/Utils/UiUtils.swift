@@ -1,4 +1,5 @@
 import SwiftUI
+import PopupView
 
 extension Color {
     init(hex: String) {
@@ -49,3 +50,26 @@ struct RoundedCorner: Shape {
     }
 }
 #endif
+
+extension View {
+    /// Presents a popup for an Identifiable `item` with the app's "trick" styling.
+    /// Usage:
+    ///   .trickPopup(item: $selectedTrick) { trick in
+    ///       TrickDetailView(activeTrick: trick)
+    ///   }
+    func trickPopup<Item: Identifiable & Equatable, Content: View>(
+        item: Binding<Item?>,
+        @ViewBuilder content: @escaping (Item) -> Content
+    ) -> some View {
+        self.popup(item: item) { item in
+            content(item)
+        } customize: {
+            $0
+                .type(.floater())
+                .closeOnTap(true)
+                .appearFrom(.topSlide)
+                .backgroundColor(Color(white: 1.0, opacity: 0.5))
+                .position(.center)
+        }
+    }
+}
