@@ -84,19 +84,10 @@ struct GameView: View {
 
 #Preview("Game Won") {
     let gameState = GameState()
-    return GameViewPreviewWrapper(state: gameState)
+    return GameView(state: gameState)
         .onAppear {
             DispatchQueue.main.async {
                 gameState.gameWon = true
             }
         }
-}
-
-// Helper wrapper to inject GameState into GameView for preview
-private struct GameViewPreviewWrapper: View {
-    @StateObject var state: GameState
-
-    var body: some View {
-        GameView(state: state, gameManager: nil)
-    }
 }
