@@ -2,17 +2,17 @@ import SwiftUI
 import SwiftData
 
 struct GameView: View {
-    @StateObject private var state = GameState()
+    @StateObject private var state: GameState
     @StateObject private var gameManager: GameManager
-    
+
     @State private var firstDigit = 0
     @State private var secondDigit = 0
     @State private var thirdDigit = 0
-    
-    init() {
-        let gameState = GameState()
+
+    init(state: GameState? = nil, gameManager: GameManager? = nil) {
+        let gameState = state ?? GameState()
         _state = StateObject(wrappedValue: gameState)
-        _gameManager = StateObject(wrappedValue: GameManager(state: gameState))
+        _gameManager = StateObject(wrappedValue: gameManager ?? GameManager(state: gameState))
     }
     
     private var isGuessEnabled: Binding<Bool> {
@@ -45,29 +45,7 @@ struct GameView: View {
                     ) { value in
                         gameManager.makeGuess(value)
                     }
-                    .padding(.bottom, 30)                    
-                    
-                    // New Game Button (appears when game is won)
-                    if state.gameWon {
-                        Button(action: {
-                            gameManager.startNewGame()
-                            // Reset pickers
-                            firstDigit = 0
-                            secondDigit = 0
-                            thirdDigit = 0
-                        }) {
-                            Text("🎮 New Game")
-                                .font(.title2)
-                                .fontWeight(.bold)
-                                .foregroundColor(.white)
-                                .padding(.horizontal, 40)
-                                .padding(.vertical, 15)
-                                .background(
-                                    RoundedRectangle(cornerRadius: 15)
-                                        .fill(Color.blue)
-                                )
-                        }
-                    }
+                    .padding(.bottom, 30)
                 }
                 .frame(maxWidth: .infinity)
                 .background(Color.green.opacity(0.1))
@@ -78,10 +56,47 @@ struct GameView: View {
                     gameManager.startNewGame()
                 }
             }
+            .popup(isPresented: $state.gameWon) {
+                WinView(
+                    targetNumber: state.targetNumber,
+                    attempts: state.attempts
+                ) {
+                    gameManager.startNewGame()
+                    // Reset pickers
+                    firstDigit = 0
+                    secondDigit = 0
+                    thirdDigit = 0
+                }
+            } customize: {
+                $0
+                .type(.floater())
+                .closeOnTap(false)
+                .position(.center)
+                .appearFrom(.centerScale)
+            }
         }
     }
 }
 
-#Preview {
+#Preview() {
     GameView()
+}
+
+#Preview("Game Won") {
+    let gameState = GameState()
+    return GameViewPreviewWrapper(state: gameState)
+        .onAppear {
+            DispatchQueue.main.async {
+                gameState.gameWon = true
+            }
+        }
+}
+
+// Helper wrapper to inject GameState into GameView for preview
+private struct GameViewPreviewWrapper: View {
+    @StateObject var state: GameState
+
+    var body: some View {
+        GameView(state: state, gameManager: nil)
+    }
 }
