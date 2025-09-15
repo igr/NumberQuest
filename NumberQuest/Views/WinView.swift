@@ -7,12 +7,10 @@ struct WinView: View {
     
     var body: some View {
         VStack(spacing: 24) {
-            // Trophy/celebration icon
             Text("🎉")
                 .font(.system(size: 80))
                 .scaleEffect(1.2)
             
-            // Congratulations title
             Text("You Win!")
                 .font(.largeTitle)
                 .fontWeight(.bold)
@@ -28,7 +26,15 @@ struct WinView: View {
                     .font(.system(size: 48, weight: .bold, design: .rounded))
                     .foregroundColor(.blue)
                 
-                Text("in \(attempts) attempt\(attempts == 1 ? "" : "s")!")
+                Text("in")
+                    .font(.title2)
+                    .foregroundColor(.secondary)
+                
+                Text("\(attempts)")
+                    .font(.system(size: 48, weight: .bold, design: .rounded))
+                    .foregroundColor(.blue)
+                
+                Text("attempt\(attempts == 1 ? "" : "s")!")
                     .font(.title2)
                     .foregroundColor(.secondary)
             }
