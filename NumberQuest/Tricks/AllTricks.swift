@@ -9,6 +9,7 @@ enum TrickType: CaseIterable {
     case expandSlots
     case magnet
     case killBill
+    case mirror
 }
 
 protocol GameTrick: Identifiable, Equatable {
@@ -102,7 +103,12 @@ enum AllTricks {
             type: .killBill,
             probability: 1.0,
             builder: { KillBillTrick() }
-        )
+        ),
+        TrickDefinition(
+            type: .mirror,
+            probability: 1.0,
+            builder: { MirrorTrick() }
+        ),
     ]
     
     // MARK: - Returns a random trick excluding active tricks
