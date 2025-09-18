@@ -25,12 +25,12 @@ struct GameView: View {
     var body: some View {
         NavigationView() {
             VStack(spacing: 20) {
-                ActiveTricksView(activeTricks: state.activeTricks, attemptCount: state.attempts)
-                
                 ChatWindow(messages: $state.chatMessages)
-                    .background(Color.gray.opacity(0.05))
+                    .background(Color.gray.opacity(0.1))
                     .cornerRadius(15)
                     .padding(.horizontal)
+
+                ActiveTricksView(activeTricks: state.activeTricks, attemptCount: state.attempts)
 
                 VStack() {
                     NumberPickerView(
