@@ -3,7 +3,7 @@ struct MirrorTrick: GameTrick {
     var type = TrickType.mirror
     var icon = "🪞"
     var name = "Mirror"
-    var message = "Digits are reflected!"
+    var message = "Input is inverted!"
     var description = "The order of the digits is reversed when you guess."
     var duration = 3
     
