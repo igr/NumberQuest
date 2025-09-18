@@ -22,19 +22,19 @@ struct ActiveTricksView: View {
                                 Text("\(activeTrick.remainingDuration)")
                                     .font(.caption)
                                     .fontWeight(.bold)
-                                    .foregroundColor(.white)
+                                    .foregroundColor(.black.opacity(0.6))
                                     .padding(.horizontal, 8)
                                     .padding(.vertical, 4)
                                     .background(
                                         RoundedRectangle(cornerRadius: 8)
-                                            .fill(activeTrick.remainingDuration <= 2 ? Color.red : Color.blue)
+                                            .fill( Color.theme.trickAction.opacity(0.6))
                                     )
                             }
                             .padding(.horizontal, 12)
                             .padding(.vertical, 8)
                             .background(
                                 RoundedRectangle(cornerRadius: 10)
-                                    .fill(Color.gray.opacity(0.1))
+                                    .fill(Color.theme.trickAction.opacity(0.3))
                             )
                         }
                         .buttonStyle(PlainButtonStyle())
@@ -48,7 +48,7 @@ struct ActiveTricksView: View {
                 .foregroundColor(.white)
                 .frame(width: 40, height: 40)
                 .background(
-                    Circle().fill(Color.theme.numberAction)
+                    Circle().fill(Color.theme.attempt)
                 )
             
         }
@@ -82,5 +82,5 @@ struct ActiveTricksView: View {
 }
 
 #Preview("TrickDetailView") {
-    TrickDetailView(activeTrick: ActiveTrick(trick: SnailTrick(), remainingDuration: 3))
+    TrickDetailView(activeTrick: ActiveTrick(trick: SnailTrick(), remainingDuration: 2))
 }

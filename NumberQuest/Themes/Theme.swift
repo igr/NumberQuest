@@ -7,13 +7,16 @@ protocol Theme {
     var bubbleSystemWin: Color { get }
     var bubbleTrick: Color { get }
     var trickAction: Color { get }
+    var attempt: Color { get }
 }
 
+// https://flatuicolors.com/palette/nl
 struct DefaultTheme: Theme {
-    var digitPickerSelected: Color { Color.blue }
-    var numberAction: Color { Color.green }
-    var bubbleSystem: Color { Color.blue }
-    var bubbleSystemWin: Color { Color.yellow }
-    var bubbleTrick: Color { Color.yellow }
-    var trickAction: Color { Color.yellow }
+    var digitPickerSelected: Color { Color(hex: "#006266") }
+    var numberAction: Color { Color(hex: "#009432") }
+    var bubbleSystem: Color { Color(hex: "#0652DD") }
+    var bubbleSystemWin: Color { Color(hex: "#FFC312") }
+    var bubbleTrick: Color { Color(hex: "#FFC312") }
+    var trickAction: Color { Color(hex: "#FFC312") }
+    var attempt: Color { Color(hex: "#EA2027") }
 }

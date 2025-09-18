@@ -35,7 +35,7 @@ struct WinView: View {
                     
                     Text("\(targetNumber)")
                         .font(.system(size: 48, weight: .bold, design: .rounded))
-                        .foregroundColor(.blue)
+                        .foregroundColor(Color.theme.bubbleSystem)
                     
                     Text("in")
                         .font(.title2)
@@ -43,7 +43,7 @@ struct WinView: View {
                     
                     Text("\(attempts)")
                         .font(.system(size: 48, weight: .bold, design: .rounded))
-                        .foregroundColor(.blue)
+                        .foregroundColor(Color.theme.attempt)
                     
                     Text("attempt\(attempts == 1 ? "" : "s")!")
                         .font(.title2)
@@ -56,14 +56,14 @@ struct WinView: View {
                         Image(systemName: "arrow.clockwise")
                         Text("New Game")
                     }
-                    .font(.title2)
+                    .font(.title)
                     .fontWeight(.bold)
                     .foregroundColor(.white)
                     .padding(.horizontal, 32)
                     .padding(.vertical, 16)
                     .background(
                         RoundedRectangle(cornerRadius: 16)
-                            .fill(Color.green)
+                            .fill(Color.theme.numberAction)
                     )
                 }
                 .buttonStyle(PlainButtonStyle())
@@ -74,6 +74,7 @@ struct WinView: View {
                     .fill(Color.white)
                     .shadow(color: .black.opacity(0.1), radius: 20, x: 0, y: 10)
             )
+            .shadowedStyle()
             .padding(.horizontal, 40)
             ConfettiView().ignoresSafeArea()
         }

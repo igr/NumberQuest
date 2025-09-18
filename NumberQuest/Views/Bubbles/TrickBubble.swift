@@ -15,7 +15,7 @@ struct TrickBubble: View {
     var body: some View {
         HStack(spacing: 4) {
             Button(action: {
-                selectedTrick = ActiveTrick(trick: trickMessage.trick, remainingDuration: 0)
+                selectedTrick = ActiveTrick(trick: trickMessage.trick, remainingDuration: trickMessage.trick.duration)
             }) {
                 Text(trickMessage.trick.icon)
                     .font(.system(size: 20, weight: .bold, design: .monospaced))

@@ -3,15 +3,29 @@ import PopupView
 
 extension Color {
     init(hex: String) {
-        let scanner = Scanner(string: hex)
-        var rgbValue: UInt64 = 0
-        scanner.scanHexInt64(&rgbValue)
+        var hex = hex.trimmingCharacters(in: .whitespacesAndNewlines)
+        hex = hex.replacingOccurrences(of: "#", with: "")
         
-        let r = (rgbValue & 0xff0000) >> 16
-        let g = (rgbValue & 0xff00) >> 8
-        let b = rgbValue & 0xff
+        var int: UInt64 = 0
+        Scanner(string: hex).scanHexInt64(&int)
         
-        self.init(red: Double(r) / 0xff, green: Double(g) / 0xff, blue: Double(b) / 0xff)
+        let r, g, b, a: UInt64
+        switch hex.count {
+        case 6: // RGB (24-bit)
+            (r, g, b, a) = ((int >> 16) & 0xFF, (int >> 8) & 0xFF, int & 0xFF, 255)
+        case 8: // RGBA (32-bit)
+            (r, g, b, a) = ((int >> 24) & 0xFF, (int >> 16) & 0xFF, (int >> 8) & 0xFF, int & 0xFF)
+        default:
+            (r, g, b, a) = (0, 0, 0, 255)
+        }
+        
+        self.init(
+            .sRGB,
+            red: Double(r) / 0xff,
+            green: Double(g) / 0xff,
+            blue: Double(b) / 0xff,
+            opacity: Double(a) / 0xff
+        )
     }
 }
 
