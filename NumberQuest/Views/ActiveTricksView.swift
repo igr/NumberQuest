@@ -10,13 +10,12 @@ struct ActiveTricksView: View {
         HStack(alignment: .center, spacing: 8) {
             // Attempt count circle on the left
             Text("\(attemptCount)")
-                .font(.headline)
+                .font(.system(size: 24))
                 .fontWeight(.bold)
                 .foregroundColor(.white)
                 .frame(width: 40, height: 40)
                 .background(
-                    Circle()
-                        .fill(Color.orange)
+                    Circle().fill(Color.theme.numberAction)
                 )
             
             VStack(alignment: .center, spacing: 8) {
