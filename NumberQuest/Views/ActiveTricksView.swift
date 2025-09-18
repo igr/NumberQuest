@@ -8,16 +8,6 @@ struct ActiveTricksView: View {
     
     var body: some View {
         HStack(alignment: .center, spacing: 8) {
-            // Attempt count circle on the left
-            Text("\(attemptCount)")
-                .font(.system(size: 24))
-                .fontWeight(.bold)
-                .foregroundColor(.white)
-                .frame(width: 40, height: 40)
-                .background(
-                    Circle().fill(Color.theme.numberAction)
-                )
-            
             VStack(alignment: .center, spacing: 8) {
                 // split activeTricks into chunks of max 3 per line
                 ForEach(Array(activeTricks.chunked(into: 3).enumerated()), id: \.offset) { _, row in
@@ -51,6 +41,16 @@ struct ActiveTricksView: View {
                     }
                 }
             }
+            // Attempt count circle on the left
+            Text("\(attemptCount)")
+                .font(.system(size: 24))
+                .fontWeight(.bold)
+                .foregroundColor(.white)
+                .frame(width: 40, height: 40)
+                .background(
+                    Circle().fill(Color.theme.numberAction)
+                )
+            
         }
         .trickPopup(item: $selectedTrick) { item in
             TrickDetailView(activeTrick: item)
