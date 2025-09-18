@@ -9,7 +9,8 @@ struct ExpandSlotsTrick: GameTrick {
     var duration = 0
 
     @MainActor
-    func triggerOnCreate(to state: GameState) async {
+    func triggerOnCreate(to state: GameState) async -> Bool {
         state.maxActiveTricks += 1
+        return true
     }
 }

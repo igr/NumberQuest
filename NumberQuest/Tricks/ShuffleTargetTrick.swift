@@ -9,7 +9,8 @@ struct ShuffleTargetTrick: GameTrick {
     var duration = 0
 
     @MainActor
-    func triggerOnCreate(to state: GameState) async {
+    func triggerOnCreate(to state: GameState) async -> Bool {
         state.targetNumber = Int.random(in: 0...999)
+        return true
     }
 }

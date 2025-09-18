@@ -26,6 +26,7 @@ struct GameView: View {
         NavigationView() {
             VStack(spacing: 20) {
                 ChatWindow(messages: $state.chatMessages)
+                    .padding(.vertical, 8)
                     .background(Color.gray.opacity(0.1))
                     .cornerRadius(15)
                     .padding(.horizontal)

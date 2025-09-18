@@ -54,11 +54,11 @@ class GameManager: ObservableObject {
     fileprivate func continueGame(guess: Int) async {
         await showMissed(guess: guess)
         
-        await processActiveTricksOnTurn()
+        await triggerActiveTricksOnTurn()
 
         await removeExpiredTricks()
         
-        // NEW trick
+        // Spawn NEW trick
         
         let newTrick = AllTricks.randomTrick(excluding: state.activeTricks)
         
@@ -67,9 +67,10 @@ class GameManager: ObservableObject {
             state.activeTricks.append(ActiveTrick(trick: newTrick, remainingDuration: newTrick.duration))
         }
         
-        await newTrick.triggerOnCreate(to: state)
-        
-        await showNewTrick(newTrick)
+        let newTrickActivated = await newTrick.triggerOnCreate(to: state)
+        if (newTrickActivated) {
+            await showTrick(newTrick)
+        }
     }
     
     fileprivate func processActiveTricksOnGuess(_ guess: Int) -> Int {
@@ -80,9 +81,12 @@ class GameManager: ObservableObject {
         return newGuess
     }
     
-    fileprivate func processActiveTricksOnTurn() async {
+    fileprivate func triggerActiveTricksOnTurn() async {
         for activeTrick in state.activeTricks {
-            await activeTrick.trick.triggerOnTurn(to: self.state)
+            let trickTriggered = await activeTrick.trick.triggerOnTurn(to: self.state)
+            if (trickTriggered) {
+                await showTrick(activeTrick.trick)
+            }            
         }
     }
     
@@ -94,7 +98,7 @@ class GameManager: ObservableObject {
         }
     }
     
-    fileprivate func showNewTrick(_ trick: any GameTrick) async {
+    fileprivate func showTrick(_ trick: any GameTrick) async {
         if (trick.isNoop) {
             return
         }

@@ -9,8 +9,9 @@ struct KillBillTrick: GameTrick {
     var duration = 0
 
     @MainActor
-    func triggerOnCreate(to state: GameState) async {
-        if state.activeTricks.isEmpty { return }
+    func triggerOnCreate(to state: GameState) async -> Bool {
+        if state.activeTricks.isEmpty { return false }
         state.activeTricks.removeFirst()
+        return true
     }
 }

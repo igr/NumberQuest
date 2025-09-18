@@ -8,9 +8,10 @@ struct SnailTrick: GameTrick {
     var duration = 3
 
     @MainActor
-    func triggerOnTurn(to state: GameState) async {
+    func triggerOnTurn(to state: GameState) async -> Bool {
         let change = Bool.random() ? 1 : -1
         let newTarget = Numbers.clip(state.targetNumber + change)
         state.targetNumber = newTarget
+        return true
     }
 }
