@@ -17,7 +17,9 @@ struct DigitPicker: View {
             ForEach(digits, id: \.self) { num in
                 Text("\(num)")
                     .font(digitFont)
-                    .foregroundColor(num == selectedIndex ? .blue : .gray)
+                    .foregroundColor(num == selectedIndex
+                                     ? Color.theme.digitPickerSelected
+                                     : .gray)
                     .tag(num) // tag must match the type of selectedIndex
             }
         }

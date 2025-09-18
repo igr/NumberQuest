@@ -13,7 +13,7 @@ struct TrickDetailView: View {
                     .font(.system(size: 60))
                 
                 Text(activeTrick.trick.name)
-                    .font(.title)
+                    .font(.largeTitle)
                     .fontWeight(.bold)
             }
             .padding(.top, 20)
@@ -22,6 +22,7 @@ struct TrickDetailView: View {
             VStack(alignment: .leading, spacing: 8) {
                 Text(activeTrick.trick.description)
                     .font(.body)
+                    .italic(true)
                     .foregroundColor(.primary)
                     .multilineTextAlignment(.leading)
             }
@@ -65,18 +66,17 @@ struct TrickDetailView: View {
             Button {
                 dismiss?()
             } label: {
-                Text("OK!")
-                    .font(.system(size: 18, weight: .bold))
+                Text("OK")
+                    .font(.system(size: 22, weight: .bold))
                     .frame(maxWidth: .infinity)
                     .padding(.vertical, 18)
-                    .padding(.horizontal, 24)
-                    .foregroundColor(.white)
-                    .background(.blue)
+                    .foregroundColor(.black)
+                    .background(Color.theme.trickAction)
                     .cornerRadius(12)
             }
             .buttonStyle(.plain)
         }
-        .padding(EdgeInsets(top: 37, leading: 24, bottom: 40, trailing: 24))
+        .padding(EdgeInsets(top: 32, leading: 24, bottom: 32, trailing: 24))
         .background(Color.white.cornerRadius(20))
         .shadowedStyle()
         .padding(.horizontal, 40)

@@ -25,10 +25,6 @@ struct GameView: View {
     var body: some View {
         NavigationView() {
             VStack(spacing: 20) {
-                Text("🎯 Number Quest")
-                    .font(.largeTitle)
-                    .fontWeight(.bold)
-                
                 ActiveTricksView(activeTricks: state.activeTricks, attemptCount: state.attempts)
                 
                 ChatWindow(messages: $state.chatMessages)
@@ -48,7 +44,7 @@ struct GameView: View {
                     .padding(.bottom, 30)
                 }
                 .frame(maxWidth: .infinity)
-                .background(Color.green.opacity(0.1))
+                .background(Color.theme.numberAction.opacity(0.1))
             }
             .edgesIgnoringSafeArea(.bottom)
             .onAppear {

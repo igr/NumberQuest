@@ -17,11 +17,16 @@ struct PlayerBubble: View {
             .padding(.vertical, 12)
             .background(
                 RoundedRectangle(cornerRadius: 20)
-                    .fill(Color.green)
-                    .shadow(color: Color.green.opacity(0.3), radius: 4, x: 0, y: 2)
+                    .fill(Color.theme.numberAction)
+                    .shadow(color: Color.theme.numberAction.opacity(0.3), radius: 4, x: 2, y: 2)
             )
             .frame(maxWidth: 200, alignment: .trailing)
         }
         .padding(.horizontal, 16)
     }
+}
+
+
+#Preview {
+    PlayerBubble(playerMessage: PlayerMessage(guess: 173, attempt: 2))
 }

@@ -6,7 +6,7 @@ struct TrickBubble: View {
     @State private var selectedTrick: ActiveTrick?
     
     private var trickColor: Color {
-        return .yellow
+        return Color.theme.bubbleTrick
     }
     private var trickText: String {
         return trickMessage.trick.message
@@ -24,7 +24,7 @@ struct TrickBubble: View {
             
             Text(trickText)
                 .foregroundColor(.primary)
-                .font(.callout)
+                .font(.title3)
                 .fontWeight(.semibold)
         }
         .frame(maxWidth: .infinity)

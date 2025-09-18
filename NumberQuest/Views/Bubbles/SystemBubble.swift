@@ -11,12 +11,12 @@ struct SystemBubble: View {
         case .tooLow(_, let content):
             return content
         case .welcome:
-            return "🎯 Welcome! Guess a Number!"
+            return "🎯 Guess a number!"
         case .victory:
             return "🎉 Congratulations! You won!"
         case .debug(let activeTricks, let target):
             if activeTricks.isEmpty {
-                return "✨ No active tricks"
+                return "✨ No active tricks."
             } else {
                 let trickList = activeTricks.map { "• \($0.trick.name) (\($0.remainingDuration) turns left)" }.joined(separator: "\n")
                 return "🎯 \(target)\n⚡ Active Tricks:\n\(trickList)"
@@ -26,12 +26,10 @@ struct SystemBubble: View {
     
     var systemColor: Color {
         switch systemMessage.messageType {
-        case .tooHigh, .tooLow:
-            return .blue
-        case .welcome:
-            return .green
+        case .tooHigh, .tooLow, .welcome:
+            return Color.theme.bubbleSystem
         case .victory:
-            return .yellow
+            return Color.theme.bubbleSystemWin
         case .debug:
             return .gray
         }
@@ -42,18 +40,29 @@ struct SystemBubble: View {
             VStack(alignment: .leading, spacing: 2) {
                 Text(systemText)
                     .foregroundColor(.white)
-                    .font(.body)
+                    .font(.title2)
             }
             .padding(.horizontal, 16)
             .padding(.vertical, 10)
             .background(
                 RoundedRectangle(cornerRadius: 18)
                     .fill(systemColor)
+                    .shadow(color: systemColor.opacity(0.3), radius: 4, x: 2, y: 2)
             )
-            .frame(maxWidth: 280, alignment: .leading)
+            .frame(maxWidth: .infinity, alignment: .leading)
             
             Spacer()
         }
         .padding(.horizontal, 16)
     }
+}
+
+#Preview("welcome") {
+    SystemBubble(systemMessage: SystemMessage(type: .welcome))
+}
+#Preview("toolow") {
+    SystemBubble(systemMessage: SystemMessage(type: .tooLow(currentGuess: 123)))
+}
+#Preview("toohigh") {
+    SystemBubble(systemMessage: SystemMessage(type: .tooHigh(currentGuess: 123)))
 }

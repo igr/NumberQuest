@@ -27,8 +27,7 @@ class GameManager: ObservableObject {
         state.gameStarted = true
         state.activeTricks = []
         state.chatMessages = [
-            Message(SystemMessage(type: .welcome)),
-            Message(SystemMessage(type: .debug(activeTricks: [], target: 0)))
+            Message(SystemMessage(type: .welcome))
         ]
     }
     

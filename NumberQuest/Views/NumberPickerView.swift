@@ -8,6 +8,51 @@ struct NumberPickerView: View {
     
     var onGuess: (Int) -> Void
     
+    private let guessingMessages = [
+        "Approximate",
+        "Bet",
+        "Bluff",
+        "Cast lots",
+        "Chance it",
+        "Conjecture",
+        "Crack it",
+        "Daydream",
+        "Deduce",
+        "Estimate",
+        "Figure it",
+        "Forecast",
+        "Gamble",
+        "Go fish",
+        "Guesstimate",
+        "Hazard it",
+        "Hypothesize",
+        "Intuit",
+        "Invent",
+        "Jot it",
+        "Jump in",
+        "Posit",
+        "Predict",
+        "Project",
+        "Propose",
+        "Reckon",
+        "Roll the dice",
+        "Shoot",
+        "Shoehorn it",
+        "Speculate",
+        "Spin it",
+        "Stab at it",
+        "Suppose",
+        "Surmise",
+        "Swing",
+        "Take a crack",
+        "Take a stab",
+        "Theorize",
+        "Try it",
+        "Venture",
+        "Wager",
+        "Wing it"
+    ]
+    
     private let challengingMessages = [
         "Accomplishing",
         "Actioning",
@@ -88,7 +133,7 @@ struct NumberPickerView: View {
                 HStack {
                     Image(systemName: isEnabled ? "play.fill" : "hourglass")
                     Text(isEnabled ?
-                         "Make Guess" :
+                         (guessingMessages.randomElement() ?? "Guess") :
                             (challengingMessages.randomElement() ?? "Challenging") + "...")
                 }
                 .font(.title2)
@@ -98,7 +143,9 @@ struct NumberPickerView: View {
                 .padding(.vertical, 15)
                 .background(
                     RoundedRectangle(cornerRadius: 15)
-                        .fill(isEnabled ? Color.green : Color.gray)
+                        .fill(isEnabled
+                              ? Color.theme.numberAction
+                              : Color.gray)
                 )
             }
             .disabled(!isEnabled)
