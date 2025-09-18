@@ -4,8 +4,8 @@ struct ExpandSlotsTrick: GameTrick {
     var type = TrickType.expandSlots
     var icon = "🚥"
     var name = "Expand Slots"
-    var message = "Number of Trick slots increased!"
-    var description = "The number of Trick slots is increased by one."
+    var message = "Number of Trick slots increases!"
+    var description = "The number of Trick slots is increased by one (permamently)."
     var duration = 0
 
     @MainActor

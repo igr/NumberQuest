@@ -4,7 +4,7 @@ struct MagnetTrick: GameTrick {
     var icon = "🧲"
     var name = "Magnet"
     var message = "Target moves towards the Guess!"
-    var description = "Each turn, the target number is moved towards the guess for random amount, but never more than half the distance."
+    var description = "Each turn, the target number moves towards the guess for random amount, but never more than half the distance."
     var duration = 2
 
     @MainActor
