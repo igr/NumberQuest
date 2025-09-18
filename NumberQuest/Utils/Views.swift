@@ -79,11 +79,28 @@ extension View {
             content(item)
         } customize: {
             $0
-                .type(.floater())
-                .closeOnTap(true)
-                .appearFrom(.topSlide)
-                .backgroundColor(Color(white: 1.0, opacity: 0.5))
-                .position(.center)
+            .type(.floater())
+            .closeOnTap(true)
+            .appearFrom(.topSlide)
+            .backgroundColor(Color(white: 1.0, opacity: 0.5))
+            .position(.center)
         }
     }
+    
+    func winPopup<Content: View>(
+        isPresented: Binding<Bool>,
+        @ViewBuilder content: @escaping () -> Content
+    ) -> some View {
+        self.popup(isPresented: isPresented) {
+            content()
+        } customize: {
+           $0
+           .type(.floater())
+           .closeOnTap(false)
+           .backgroundColor(Color(white: 1.0, opacity: 0.5))
+           .position(.center)
+           .appearFrom(.centerScale)
+       }
+    }
+
 }

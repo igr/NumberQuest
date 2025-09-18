@@ -53,7 +53,7 @@ struct GameView: View {
                     gameManager.startNewGame()
                 }
             }
-            .popup(isPresented: $state.gameWon) {
+            .winPopup(isPresented: $state.gameWon) {
                 WinView(
                     targetNumber: state.targetNumber,
                     attempts: state.attempts
@@ -64,12 +64,6 @@ struct GameView: View {
                     secondDigit = 0
                     thirdDigit = 0
                 }
-            } customize: {
-                $0
-                .type(.floater())
-                .closeOnTap(false)
-                .position(.center)
-                .appearFrom(.centerScale)
             }
         }
     }

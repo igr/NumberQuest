@@ -31,7 +31,7 @@ struct WinView: View {
                 VStack(spacing: 8) {
                     Text("You guessed the number")
                         .font(.title2)
-                        .foregroundColor(.secondary)
+                        .foregroundColor(.primary)
                     
                     Text("\(targetNumber)")
                         .font(.system(size: 48, weight: .bold, design: .rounded))
@@ -39,7 +39,7 @@ struct WinView: View {
                     
                     Text("in")
                         .font(.title2)
-                        .foregroundColor(.secondary)
+                        .foregroundColor(.primary)
                     
                     Text("\(attempts)")
                         .font(.system(size: 48, weight: .bold, design: .rounded))
@@ -47,7 +47,7 @@ struct WinView: View {
                     
                     Text("attempt\(attempts == 1 ? "" : "s")!")
                         .font(.title2)
-                        .foregroundColor(.secondary)
+                        .foregroundColor(.primary)
                 }
                 
                 // Start Again button
