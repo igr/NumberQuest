@@ -37,7 +37,7 @@ protocol GameTrick: Identifiable, Equatable {
     func triggerOnTurn(to state: GameState) async -> Bool
     /// Hook to allow tricks to modify system messages
     func modify(systemMessage: SystemMessage) -> SystemMessage
-    /// Applies trick on the guess before it is used in the game
+    /// Applies trick on the guess before it is used in the game, changed value indicates activated trick
     func triggerOnGuess(guess: Int) -> Int
 }
 
