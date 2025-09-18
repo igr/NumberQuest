@@ -9,9 +9,8 @@ struct DigitPicker: View {
     }
     
     private let digits = Array(0...9)
-    private var digitFont: Font {
-        .system(size: 30, weight: .bold, design: .monospaced)
-    }
+    private let digitFont =
+        Font.system(size: 30, weight: .bold, design: .monospaced)
     
     var body: some View {
         Picker(selection: $selectedIndex, label: Text("digit picker")) {
