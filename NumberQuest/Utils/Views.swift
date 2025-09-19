@@ -81,7 +81,7 @@ extension View {
             $0
             .type(.floater())
             .closeOnTap(true)
-            .appearFrom(.topSlide)
+            .appearFrom(.bottomSlide)
             .backgroundColor(Color(white: 1.0, opacity: 0.5))
             .position(.center)
         }

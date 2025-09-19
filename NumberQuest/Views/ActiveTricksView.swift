@@ -36,6 +36,7 @@ struct ActiveTricksView: View {
                                 RoundedRectangle(cornerRadius: 10)
                                     .fill(Color.theme.trickAction.opacity(0.3))
                             )
+                            .rotationEffect(.degrees(index.isMultiple(of: 2) ? 5 : -5))
                         }
                         .buttonStyle(PlainButtonStyle())
                     }
