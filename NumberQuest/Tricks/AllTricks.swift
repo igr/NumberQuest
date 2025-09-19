@@ -35,8 +35,8 @@ protocol GameTrick: Identifiable, Equatable {
     func triggerOnCreate(to state: GameState) async -> Bool
     /// Applies trick effect on each turn while active, returns true if active
     func triggerOnTurn(to state: GameState) async -> Bool
-    /// Hook to allow tricks to modify system messages
-    func modify(systemMessage: SystemMessage) -> SystemMessage
+    /// Hook to allow tricks to modify system messages, returns value if changed
+    func triggerOnShowMiss(systemMessage: SystemMessage) -> SystemMessage?
     /// Applies trick on the guess before it is used in the game, returns value if changed
     func triggerOnGuess(guess: Int) -> Int?
 }
@@ -53,7 +53,7 @@ extension GameTrick {
     
     func triggerOnCreate(to state: GameState) -> Bool { return false }
     func triggerOnTurn(to state: GameState) -> Bool { return false }
-    func modify(systemMessage: SystemMessage) -> SystemMessage { return systemMessage }
+    func triggerOnShowMiss(systemMessage: SystemMessage) -> SystemMessage? { return nil }
     func triggerOnGuess(guess: Int) -> Int? { return nil }
 }
 

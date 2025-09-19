@@ -7,7 +7,7 @@ struct LinguaLarryTrick: GameTrick {
     var description = "Each turn, guessing responses is shown in a random language."
     var duration = 3
     
-    func modify(systemMessage: SystemMessage) -> SystemMessage {
+    func triggerOnShowMiss(systemMessage: SystemMessage) -> SystemMessage? {
         switch (systemMessage.messageType) {
         case .tooLow(let currentGuess, _):
             let randomTranslation = tooLowTranslations.randomElement() ?? "Too Low"
@@ -16,7 +16,7 @@ struct LinguaLarryTrick: GameTrick {
             let randomTranslation = tooHighTranslations.randomElement() ?? "Too High"
             return SystemMessage(type: .tooHigh(currentGuess: currentGuess, content: "\(randomTranslation)"))
         default:
-            return systemMessage
+            return nil
         }
     }
     

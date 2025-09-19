@@ -95,6 +95,12 @@ class GameManager: ObservableObject {
         }
     }
     
+    private func triggerActiveTricksForMessage(to message: SystemMessage) -> SystemMessage {
+        state.activeTricks.reduce(message) { current, activeTrick in
+            activeTrick.trick.triggerOnShowMiss(systemMessage: current) ?? current
+        }
+    }
+    
     fileprivate func removeExpiredTricks() async {
         // Reduce duration and remove expired tricks
         state.activeTricks = state.activeTricks.compactMap { activeTrick in
@@ -129,7 +135,7 @@ class GameManager: ObservableObject {
             let sysMsg: SystemMessage = guess < state.targetNumber
                 ? SystemMessage(type: .tooLow(currentGuess: guess))
                 : SystemMessage(type: .tooHigh(currentGuess: guess))
-            state.chatMessages.append(Message(applyTricks(to: sysMsg)))
+            state.chatMessages.append(Message(triggerActiveTricksForMessage(to: sysMsg)))
         }
     }
     
@@ -150,9 +156,4 @@ class GameManager: ObservableObject {
         return UInt64(seconds * 1_000_000_000)
     }
     
-    private func applyTricks(to message: SystemMessage) -> SystemMessage {
-        state.activeTricks.reduce(message) { current, activeTrick in
-            activeTrick.trick.modify(systemMessage: current)
-        }
-    }
 }
