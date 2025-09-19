@@ -5,7 +5,7 @@ struct ShuffleTargetTrick: GameTrick {
     var icon = "🔀"
     var name = "Shuffle Target"
     var message = "Target changes!"
-    var description = "The target number changes to a NEW random number periodically."
+    var description = "The target number changes to a NEW random number permanently."
     var duration = 0
 
     @MainActor

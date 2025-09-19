@@ -4,7 +4,7 @@ struct KillBillTrick: GameTrick {
     var type = TrickType.killBill
     var icon = "⚔️"
     var name = "Kill Bill"
-    var message = "Active Trick killed!"
+    var message = "One active Trick killed!"
     var description = "The first of active tricks is removed permanently."
     var duration = 0
 

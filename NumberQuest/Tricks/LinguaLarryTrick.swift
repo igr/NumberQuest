@@ -3,8 +3,8 @@ struct LinguaLarryTrick: GameTrick {
     var type = TrickType.linguaLarry
     var icon = "🈳"
     var name = "Language Larry"
-    var message = "Response speaks a random language."
-    var description = "Each turn, guessing responses is shown in a random language."
+    var message = "Replies in a random language."
+    var description = "Each turn, guessing reply is shown in a random language."
     var duration = 3
     
     func triggerOnShowMiss(systemMessage: SystemMessage) -> SystemMessage? {

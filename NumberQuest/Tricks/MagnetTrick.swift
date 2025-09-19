@@ -3,8 +3,8 @@ struct MagnetTrick: GameTrick {
     var type = TrickType.magnet
     var icon = "🧲"
     var name = "Magnet"
-    var message = "Target moves towards the Guess!"
-    var description = "Each turn, the target number moves towards the guess for random amount, but never more than half the distance."
+    var message = "The Target moves to Guess!"
+    var description = "Each turn, the Target moves towards the Guess for random amount, but never more than half the distance."
     var duration = 2
 
     @MainActor

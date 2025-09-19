@@ -65,7 +65,9 @@ class GameManager: ObservableObject {
         
         if (newTrick.duration > 0 && state.activeTricks.count <=  state.maxActiveTricks) {
             // new trick is not an immediate action, keep it - if there are enough room
-            state.activeTricks.append(ActiveTrick(trick: newTrick, remainingDuration: newTrick.duration))
+            withAnimation(.linear(duration: 0.2)) {
+                state.activeTricks.append(ActiveTrick(trick: newTrick, remainingDuration: newTrick.duration))
+            }
         }
         
         let newTrickActivated = await newTrick.triggerOnCreate(to: state)
@@ -103,9 +105,11 @@ class GameManager: ObservableObject {
     
     fileprivate func removeExpiredTricks() async {
         // Reduce duration and remove expired tricks
-        state.activeTricks = state.activeTricks.compactMap { activeTrick in
-            let newDuration = activeTrick.remainingDuration - 1
-            return newDuration > 0 ? ActiveTrick(trick: activeTrick.trick, remainingDuration: newDuration) : nil
+        withAnimation(.linear(duration: 0.2)) {
+            state.activeTricks = state.activeTricks.compactMap { activeTrick in
+                let newDuration = activeTrick.remainingDuration - 1
+                return newDuration > 0 ? ActiveTrick(trick: activeTrick.trick, remainingDuration: newDuration) : nil
+            }
         }
     }
     

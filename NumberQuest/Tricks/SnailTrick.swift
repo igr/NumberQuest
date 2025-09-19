@@ -3,8 +3,8 @@ struct SnailTrick: GameTrick {
     var type = TrickType.snail
     var icon = "🐌"
     var name = "Snail"
-    var message = "Target changes by ONE!"
-    var description = "Each turn, Target changes by ONE in random direction."
+    var message = "Target changes by 1!"
+    var description = "Each turn, Target changes by one in random direction."
     var duration = 3
 
     @MainActor
