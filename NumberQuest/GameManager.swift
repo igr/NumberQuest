@@ -74,15 +74,16 @@ class GameManager: ObservableObject {
         }
     }
     
-    fileprivate func triggerActiveTricksOnGuess(_ guess: Int) async -> Int {
-        var newGuess = guess
+    fileprivate func triggerActiveTricksOnGuess(_ _guess: Int) async -> Int {
+        var guess = _guess
         for activeTrick in state.activeTricks {
-            newGuess = activeTrick.trick.triggerOnGuess(guess: newGuess)
-            if (newGuess != guess) {
+            let newGuess = activeTrick.trick.triggerOnGuess(guess: guess)
+            if (newGuess != nil) {
+                guess = newGuess!
                 await showTrick(activeTrick.trick)
             }
         }
-        return newGuess
+        return guess
     }
     
     fileprivate func triggerActiveTricksOnTurn() async {

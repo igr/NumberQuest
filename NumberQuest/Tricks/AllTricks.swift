@@ -31,14 +31,14 @@ protocol GameTrick: Identifiable, Equatable {
     /// Returns true if trick is not really an trick, but a NOOP.
     var isNoop: Bool { get }
     
-    /// Applies trick to the game manager right after choosing the trick, return true if activated
+    /// Applies trick to the game manager right after choosing the trick, returns true if activated
     func triggerOnCreate(to state: GameState) async -> Bool
-    /// Applies trick effect on each turn while active, return true if active
+    /// Applies trick effect on each turn while active, returns true if active
     func triggerOnTurn(to state: GameState) async -> Bool
     /// Hook to allow tricks to modify system messages
     func modify(systemMessage: SystemMessage) -> SystemMessage
-    /// Applies trick on the guess before it is used in the game, changed value indicates activated trick
-    func triggerOnGuess(guess: Int) -> Int
+    /// Applies trick on the guess before it is used in the game, returns value if changed
+    func triggerOnGuess(guess: Int) -> Int?
 }
 
 extension GameTrick {
@@ -54,7 +54,7 @@ extension GameTrick {
     func triggerOnCreate(to state: GameState) -> Bool { return false }
     func triggerOnTurn(to state: GameState) -> Bool { return false }
     func modify(systemMessage: SystemMessage) -> SystemMessage { return systemMessage }
-    func triggerOnGuess(guess: Int) -> Int { return guess }
+    func triggerOnGuess(guess: Int) -> Int? { return nil }
 }
 
 /// Represents a single trick configuration:
