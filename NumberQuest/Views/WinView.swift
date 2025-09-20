@@ -11,6 +11,7 @@ struct ConfettiView: UIViewRepresentable {
 }
 
 struct WinView: View {
+    @Environment(\.colorScheme) var colorScheme
     let targetNumber: Int
     let attempts: Int
     let onStartAgain: () -> Void
@@ -71,7 +72,7 @@ struct WinView: View {
             .padding(32)
             .background(
                 RoundedRectangle(cornerRadius: 24)
-                    .fill(Color.white)
+                    .fill(Color.theme.background(colorScheme))
                     .shadow(color: .black.opacity(0.1), radius: 20, x: 0, y: 10)
             )
             .shadowedStyle()
@@ -85,4 +86,10 @@ struct WinView: View {
     WinView(targetNumber: 742, attempts: 5) {
         print("Start new game")
     }
+}
+#Preview("Dark") {
+    WinView(targetNumber: 742, attempts: 5) {
+        print("Start new game")
+    }
+    .preferredColorScheme(.dark)
 }

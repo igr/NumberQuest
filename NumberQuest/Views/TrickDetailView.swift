@@ -2,6 +2,7 @@ import SwiftUI
 import PopupView
 
 struct TrickDetailView: View {
+    @Environment(\.colorScheme) var colorScheme
     @Environment(\.popupDismiss) var dismiss
     let activeTrick: ActiveTrick
     
@@ -51,7 +52,7 @@ struct TrickDetailView: View {
             .buttonStyle(.plain)
         }
         .padding(EdgeInsets(top: 32, leading: 24, bottom: 32, trailing: 24))
-        .background(Color.white.cornerRadius(20))
+        .background(Color.theme.background(colorScheme).cornerRadius(20))
         .shadowedStyle()
         .padding(.horizontal, 40)
     }
@@ -61,8 +62,9 @@ struct TrickDetailView: View {
     TrickDetailView(activeTrick: ActiveTrick(trick: SnailTrick(), remainingDuration: 3))
 }
 
-#Preview("Almost Expired") {
+#Preview("Dark Mode") {
     TrickDetailView(activeTrick: ActiveTrick(trick: SnailTrick(), remainingDuration: 1))
+        .preferredColorScheme(.dark)
 }
 
 #Preview("Shuffle Trick") {

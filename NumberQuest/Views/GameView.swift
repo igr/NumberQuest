@@ -72,6 +72,11 @@ struct GameView: View {
 #Preview() {
     GameView()
 }
+#Preview("Dark") {
+    GameView()
+    .preferredColorScheme(.dark)
+}
+
 
 #Preview("Game Won") {
     let gameState = GameState()
