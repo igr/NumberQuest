@@ -7,7 +7,7 @@ struct MirrorTrick: GameTrick {
     var description = "Each turn, the Guess digits flips order before being sent."
     var duration = 3
     
-    func triggerOnGuess(guess: Int) -> Int? {
+    func triggerOnGuess(target: Int, guess: Int) -> Int? {
         let reversedString = String(String(guess).reversed())
         return Int(reversedString) ?? guess
     }

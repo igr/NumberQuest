@@ -7,7 +7,7 @@ struct DrunkPlayerTrick: GameTrick {
     var description = "Each turn, the Guess changes by random number between -20 and 20."
     var duration = 3
     
-    func triggerOnGuess(guess: Int) -> Int? {
+    func triggerOnGuess(target: Int, guess: Int) -> Int? {
         let offset = Int.random(in: -20...20)
         return Numbers.clip(guess + offset)
     }

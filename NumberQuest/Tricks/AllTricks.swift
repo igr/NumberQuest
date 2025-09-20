@@ -10,6 +10,7 @@ enum TrickType: CaseIterable {
     case magnet
     case killBill
     case mirror
+    case doubleOhSeven
 }
 
 protocol GameTrick: Identifiable, Equatable {
@@ -38,7 +39,7 @@ protocol GameTrick: Identifiable, Equatable {
     /// Hook to allow tricks to modify system messages, returns value if changed
     func triggerOnShowMiss(systemMessage: SystemMessage) -> SystemMessage?
     /// Applies trick on the guess before it is used in the game, returns value if changed
-    func triggerOnGuess(guess: Int) -> Int?
+    func triggerOnGuess(target: Int, guess: Int) -> Int?
 }
 
 extension GameTrick {
@@ -54,7 +55,7 @@ extension GameTrick {
     func triggerOnCreate(to state: GameState) -> Bool { return false }
     func triggerOnTurn(to state: GameState) -> Bool { return false }
     func triggerOnShowMiss(systemMessage: SystemMessage) -> SystemMessage? { return nil }
-    func triggerOnGuess(guess: Int) -> Int? { return nil }
+    func triggerOnGuess(target: Int, guess: Int) -> Int? { return nil }
 }
 
 /// Represents a single trick configuration:
@@ -106,6 +107,11 @@ enum AllTricks {
         ),
         TrickDefinition(
             type: .mirror,
+            probability: 1.0,
+            builder: { MirrorTrick() }
+        ),
+        TrickDefinition(
+            type: .doubleOhSeven,
             probability: 1.0,
             builder: { MirrorTrick() }
         ),

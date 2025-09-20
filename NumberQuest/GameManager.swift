@@ -36,7 +36,7 @@ class GameManager: ObservableObject {
         state.attempts += 1
 
         Task {
-            let guess = await triggerActiveTricksOnGuess(_guess)
+            let guess = await triggerActiveTricksOnGuess(state.targetNumber, _guess)
 
             state.lastGuess = guess
 
@@ -76,10 +76,10 @@ class GameManager: ObservableObject {
         }
     }
     
-    fileprivate func triggerActiveTricksOnGuess(_ _guess: Int) async -> Int {
+    fileprivate func triggerActiveTricksOnGuess(_ target: Int,_ _guess: Int) async -> Int {
         var guess = _guess
         for activeTrick in state.activeTricks {
-            let newGuess = activeTrick.trick.triggerOnGuess(guess: guess)
+            let newGuess = activeTrick.trick.triggerOnGuess(target: target, guess: guess)
             if (newGuess != nil) {
                 guess = newGuess!
                 await showTrick(activeTrick.trick)
