@@ -41,9 +41,6 @@ struct TrickBubble: View {
     }
 }
 
-#Preview {
-    TrickBubble(trickMessage: TrickMessage(SnailTrick()))
-}
 #Preview("Shuffle Target") {
     TrickBubble(trickMessage: TrickMessage(ShuffleTargetTrick()))
 }
@@ -52,13 +49,13 @@ struct TrickBubble: View {
 }
 #Preview("All") {
     VStack {
-        TrickBubble(trickMessage: TrickMessage(DoubleOhSevenTrick()))
-        TrickBubble(trickMessage: TrickMessage(DrunkPlayerTrick()))
+        TrickBubble(trickMessage: TrickMessage(DoubleOhSevenTrick(duration: 2)))
+        TrickBubble(trickMessage: TrickMessage(DrunkPlayerTrick(duration: 2)))
         TrickBubble(trickMessage: TrickMessage(ExpandSlotsTrick()))
         TrickBubble(trickMessage: TrickMessage(KillBillTrick()))
-        TrickBubble(trickMessage: TrickMessage(LinguaLarryTrick()))
-        TrickBubble(trickMessage: TrickMessage(MagnetTrick()))
+        TrickBubble(trickMessage: TrickMessage(LinguaLarryTrick(duration: 2)))
+        TrickBubble(trickMessage: TrickMessage(MagnetTrick(duration: 2)))
         TrickBubble(trickMessage: TrickMessage(ShuffleTargetTrick()))
-        TrickBubble(trickMessage: TrickMessage(SnailTrick()))
+        TrickBubble(trickMessage: TrickMessage(SnailTrick(duration: 2)))
     }
 }

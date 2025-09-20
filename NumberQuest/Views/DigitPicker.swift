@@ -1,5 +1,4 @@
 import SwiftUI
-import AudioToolbox
 
 struct DigitPicker: View {
     @Binding var selectedIndex: Int

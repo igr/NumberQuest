@@ -77,28 +77,28 @@ enum AllTricks {
         ),
         TrickDefinition(
             type: .shuffleTarget,
-            probability: 1.0,
+            probability: 0.5,
             builder: { ShuffleTargetTrick() }
         ),
         TrickDefinition(
             type: .snail,
             probability: 5.0,
-            builder: { SnailTrick() }
+            builder: { SnailTrick(duration: 3) }
         ),
         TrickDefinition(
             type: .linguaLarry,
             probability: 4.0,
-            builder: { LinguaLarryTrick() }
+            builder: { LinguaLarryTrick(duration: 1) }
         ),
         TrickDefinition(
             type: .drunkPlayer,
             probability: 5.0,
-            builder: { DrunkPlayerTrick() }
+            builder: { DrunkPlayerTrick(duration: 3) }
         ),
         TrickDefinition(
             type: .magnet,
             probability: 5.0,
-            builder: { MagnetTrick() }
+            builder: { MagnetTrick(duration: 2) }
         ),
         TrickDefinition(
             type: .killBill,
@@ -108,12 +108,12 @@ enum AllTricks {
         TrickDefinition(
             type: .mirror,
             probability: 2.0,
-            builder: { MirrorTrick() }
+            builder: { MirrorTrick(duration: 1) }
         ),
         TrickDefinition(
             type: .doubleOhSeven,
             probability: 1.0,
-            builder: { DoubleOhSevenTrick() }
+            builder: { DoubleOhSevenTrick(duration: 1) }
         ),
     ]
     
@@ -128,10 +128,15 @@ enum AllTricks {
         let totalProbability = tricks.reduce(0) { $0 + $1.probability }
         
         // Return as integers (converting from Double)
-        let trickProbability = Int(trickDef.probability)
-        let totalProbabilityInt = Int(totalProbability)
+        var trickProbability = trickDef.probability
+        var factor = 1.0
+        if (trickProbability < 1) {
+            factor = 1 / trickProbability
+            trickProbability = 1.0
+        }
+        let totalProbabilityInt = Int(totalProbability * factor)
         
-        return (trickProbability, totalProbabilityInt)
+        return (Int(trickProbability), totalProbabilityInt)
     }
     
     // MARK: - Returns a random trick excluding active tricks

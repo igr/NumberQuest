@@ -6,6 +6,10 @@ struct SnailTrick: GameTrick {
     var message = "Target changed by 1."
     var description = "Each turn, the Target moves by one in a random direction."
     var duration = 3
+    
+    init(duration: Int) {
+        self.duration = duration
+    }
 
     @MainActor
     func triggerOnTurn(to state: GameState) async -> Bool {

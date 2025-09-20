@@ -6,6 +6,10 @@ struct MagnetTrick: GameTrick {
     var message = "Target moved to Guess!"
     var description = "Each turn, the Target moves towards the Guess by a random distance, but never more than half the remaining distance."
     var duration = 2
+    
+    init(duration: Int) {
+        self.duration = duration
+    }
 
     @MainActor
     func triggerOnTurn(to state: GameState) async -> Bool {

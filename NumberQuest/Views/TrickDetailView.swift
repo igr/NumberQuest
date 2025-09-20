@@ -59,11 +59,11 @@ struct TrickDetailView: View {
 }
 
 #Preview {
-    TrickDetailView(activeTrick: ActiveTrick(trick: SnailTrick(), remainingDuration: 3))
+    TrickDetailView(activeTrick: ActiveTrick(trick: SnailTrick(duration: 3), remainingDuration: 3))
 }
 
 #Preview("Dark Mode") {
-    TrickDetailView(activeTrick: ActiveTrick(trick: SnailTrick(), remainingDuration: 1))
+    TrickDetailView(activeTrick: ActiveTrick(trick: SnailTrick(duration: 3), remainingDuration: 1))
         .preferredColorScheme(.dark)
 }
 

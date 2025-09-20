@@ -62,17 +62,17 @@ struct ActiveTricksView: View {
 
 #Preview {
     ActiveTricksView(activeTricks: [
-        ActiveTrick(trick: SnailTrick(), remainingDuration: 5),
+        ActiveTrick(trick: SnailTrick(duration: 2), remainingDuration: 5),
         ActiveTrick(trick: ShuffleTargetTrick(), remainingDuration: 1),
-        ActiveTrick(trick: LinguaLarryTrick(), remainingDuration: 4),
-        ActiveTrick(trick: DrunkPlayerTrick(), remainingDuration: 4),
+        ActiveTrick(trick: LinguaLarryTrick(duration: 2), remainingDuration: 4),
+        ActiveTrick(trick: DrunkPlayerTrick(duration: 2), remainingDuration: 4),
         ActiveTrick(trick: ExpandSlotsTrick(), remainingDuration: 4),
     ], attemptCount: 7)
 }
 
 #Preview("Two") {
     ActiveTricksView(activeTricks: [
-        ActiveTrick(trick: SnailTrick(), remainingDuration: 5),
+        ActiveTrick(trick: SnailTrick(duration: 2), remainingDuration: 5),
         ActiveTrick(trick: ShuffleTargetTrick(), remainingDuration: 1),
     ], attemptCount: 7)
 }
@@ -83,5 +83,5 @@ struct ActiveTricksView: View {
 }
 
 #Preview("TrickDetailView") {
-    TrickDetailView(activeTrick: ActiveTrick(trick: SnailTrick(), remainingDuration: 2))
+    TrickDetailView(activeTrick: ActiveTrick(trick: SnailTrick(duration: 3), remainingDuration: 2))
 }
