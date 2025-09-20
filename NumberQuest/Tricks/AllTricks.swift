@@ -72,7 +72,7 @@ enum AllTricks {
     static let tricks: [TrickDefinition] = [
         TrickDefinition(
             type: .noop,
-            probability: 1.0,
+            probability: 10.0,
             builder: { NoopTrick() }
         ),
         TrickDefinition(
@@ -82,22 +82,22 @@ enum AllTricks {
         ),
         TrickDefinition(
             type: .snail,
-            probability: 1.0,            
+            probability: 5.0,
             builder: { SnailTrick() }
         ),
         TrickDefinition(
             type: .linguaLarry,
-            probability: 1.0,
+            probability: 4.0,
             builder: { LinguaLarryTrick() }
         ),
         TrickDefinition(
             type: .drunkPlayer,
-            probability: 1.0,
+            probability: 5.0,
             builder: { DrunkPlayerTrick() }
         ),
         TrickDefinition(
             type: .magnet,
-            probability: 1.0,
+            probability: 5.0,
             builder: { MagnetTrick() }
         ),
         TrickDefinition(
@@ -107,7 +107,7 @@ enum AllTricks {
         ),
         TrickDefinition(
             type: .mirror,
-            probability: 1.0,
+            probability: 2.0,
             builder: { MirrorTrick() }
         ),
         TrickDefinition(

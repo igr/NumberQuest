@@ -3,9 +3,9 @@ struct MirrorTrick: GameTrick {
     var type = TrickType.mirror
     var icon = "🪞"
     var name = "Mirror"
-    var message = "Input digits flips!"
-    var description = "Each turn, the Guess digits flips order before being sent."
-    var duration = 3
+    var message = "Guess digits flipped!"
+    var description = "Each turn, the Guess digits flip their order before being sent."
+    var duration = 1
     
     func triggerOnGuess(target: Int, guess: Int) -> Int? {
         let reversedString = String(String(guess).reversed())

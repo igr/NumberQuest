@@ -4,8 +4,8 @@ struct DoubleOhSevenTrick: GameTrick {
     var type = TrickType.doubleOhSeven
     var icon = "🕵️‍♀️"
     var name = "007"
-    var message = "One 7 turns to Target."
-    var description = "Each turn, last digit 7 is turned into the Target digit."
+    var message = "One 7 turned into Target."
+    var description = "Each turn, the last digit 7 of the Guess is changed into the Target digit."
     var duration = 1
     
     func triggerOnGuess(target: Int, guess: Int) -> Int? {
