@@ -6,6 +6,10 @@ struct TrickDetailView: View {
     let activeTrick: ActiveTrick
     
     var body: some View {
+        let probability = AllTricks.calcTrickProbability(activeTrick)
+        let thisProb = probability.0
+        let totalProb = probability.1
+        
         VStack(spacing: 20) {
             // Header with icon
             VStack(spacing: 8) {
@@ -21,13 +25,17 @@ struct TrickDetailView: View {
             // Description
             VStack(alignment: .leading, spacing: 8) {
                 Text(activeTrick.trick.description)
-                    .font(.body)
+                    .font(.system(size: 18))
                     .italic(true)
                     .foregroundColor(.primary)
                     .multilineTextAlignment(.leading)
             }
             .padding(.horizontal, 20)
             .frame(maxWidth: .infinity, alignment: .leading)
+            
+            Text("Chance: \(Int(thisProb)) / \(Int(totalProb))")
+                .font(.system(size: 22, weight: .bold))
+                .foregroundColor(.secondary)
                         
             Button {
                 dismiss?()

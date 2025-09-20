@@ -117,6 +117,23 @@ enum AllTricks {
         ),
     ]
     
+    // MARK: - Probability
+    static func calcTrickProbability(_ activeTrick: ActiveTrick) -> (Int, Int) {
+        // Find the trick definition for this active trick
+        guard let trickDef = tricks.first(where: { $0.type == activeTrick.type }) else {
+            return (0, 0) // Trick not found
+        }
+        
+        // Calculate total probability of all tricks
+        let totalProbability = tricks.reduce(0) { $0 + $1.probability }
+        
+        // Return as integers (converting from Double)
+        let trickProbability = Int(trickDef.probability)
+        let totalProbabilityInt = Int(totalProbability)
+        
+        return (trickProbability, totalProbabilityInt)
+    }
+    
     // MARK: - Returns a random trick excluding active tricks
     static func randomTrick(excluding activeTricks: [ActiveTrick]) -> any GameTrick {
         guard !tricks.isEmpty else { fatalError("No tricks available") }
