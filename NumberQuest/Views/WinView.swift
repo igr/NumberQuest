@@ -77,7 +77,9 @@ struct WinView: View {
             )
             .shadowedStyle()
             .padding(.horizontal, 40)
-            ConfettiView().ignoresSafeArea()
+            ConfettiView()
+                .ignoresSafeArea()
+                .allowsHitTesting(false)
         }
     }
 }
