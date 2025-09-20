@@ -57,6 +57,20 @@ struct TrickMessage: GameMessage {
     }
 }
 
+// MARK: - New Trick Message
+struct NewTrickMessage: GameMessage {
+    let id = UUID()
+    let trick: any GameTrick
+    
+    init(_ trick: any GameTrick) {
+        self.trick = trick
+    }
+    
+    static func == (lhs: NewTrickMessage, rhs: NewTrickMessage) -> Bool {
+        lhs.id == rhs.id
+    }
+}
+
 // MARK: - Type-erased Message Container
 struct Message: Identifiable, Equatable {
     let id = UUID()
@@ -65,11 +79,13 @@ struct Message: Identifiable, Equatable {
     var isPlayerMessage: Bool { _message is PlayerMessage }
     var isSystemMessage: Bool { _message is SystemMessage }
     var isTrickMessage: Bool { _message is TrickMessage }
+    var isNewTrickMessage: Bool { _message is NewTrickMessage }
     
     // Type-safe unwrapping methods
     var asPlayerMessage: PlayerMessage? { _message as? PlayerMessage }
     var asSystemMessage: SystemMessage? { _message as? SystemMessage }
     var asTrickMessage: TrickMessage? { _message as? TrickMessage }
+    var asNewTrickMessage: NewTrickMessage? { _message as? NewTrickMessage }
     
     init(_ message: any GameMessage) {
         self._message = message

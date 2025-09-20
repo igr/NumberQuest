@@ -34,12 +34,22 @@ struct SystemBubble: View {
             return .gray
         }
     }
+    var systemForgroundColor: Color {
+        switch systemMessage.messageType {
+        case .tooHigh, .tooLow, .welcome:
+            return .white
+        case .victory:
+            return Color.black
+        case .debug:
+            return .gray
+        }
+    }
     
     var body: some View {
         HStack {
             VStack(alignment: .leading, spacing: 2) {
                 Text(systemText)
-                    .foregroundColor(.white)
+                    .foregroundColor(systemForgroundColor)
                     .font(.title2)
             }
             .padding(.horizontal, 16)
@@ -65,4 +75,7 @@ struct SystemBubble: View {
 }
 #Preview("toohigh") {
     SystemBubble(systemMessage: SystemMessage(type: .tooHigh(currentGuess: 123)))
+}
+#Preview("victory") {
+    SystemBubble(systemMessage: SystemMessage(type: .victory(targetNumber: 123, attempts:3)))
 }

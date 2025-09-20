@@ -63,6 +63,8 @@ class GameManager: ObservableObject {
         
         if (newTrick.duration > 0 && state.activeTricks.count <=  state.maxActiveTricks) {
             // new trick is not an immediate action, keep it - if there are enough room
+            await showNewTrick(newTrick)
+            
             withAnimation(.linear(duration: 0.2)) {
                 state.activeTricks.append(ActiveTrick(trick: newTrick, remainingDuration: newTrick.duration))
             }
@@ -128,7 +130,7 @@ class GameManager: ObservableObject {
     }
 
 
-    // MARK: SHOW
+    // MARK: - SHOW
     
     fileprivate func showTrick(_ trick: any GameTrick) async {
         if (trick.isNoop) {
@@ -138,6 +140,17 @@ class GameManager: ObservableObject {
         
         await MainActor.run {
             state.chatMessages.append(Message(TrickMessage(trick)))
+        }
+    }
+    
+    fileprivate func showNewTrick(_ trick: any GameTrick) async {
+        if (trick.isNoop) {
+            return
+        }
+        try? await Task.sleep(nanoseconds: randomTrickTime())
+        
+        await MainActor.run {
+            state.chatMessages.append(Message(NewTrickMessage(trick)))
         }
     }
     
@@ -156,7 +169,7 @@ class GameManager: ObservableObject {
         try? await Task.sleep(nanoseconds: randomThinkingTime())
     }
     
-    // MARK: UTIL
+    // MARK: - UTIL
     
     private func randomThinkingTime() -> UInt64 {
         let seconds = Double.random(in: 0.5...1.5)

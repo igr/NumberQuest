@@ -13,6 +13,8 @@ struct MessageBubble: View {
             SystemBubble(systemMessage: systemMessage)
         } else if let trickMessage = message.asTrickMessage {
             TrickBubble(trickMessage: trickMessage)
+        } else if let newTrickMessage = message.asNewTrickMessage {
+            NewTrickBubble(trickMessage: newTrickMessage)
         }
     }
 }
@@ -110,6 +112,7 @@ struct ChatWindow_Previews: PreviewProvider {
     static var sampleMessages: [Message] = [
         Message(SystemMessage(type: .welcome)),
         Message(PlayerMessage(guess: 500, attempt: 1)),
+        Message(NewTrickMessage(SnailTrick())),
         Message(SystemMessage(type: .tooHigh(currentGuess: 500))),
         Message(PlayerMessage(guess: 250, attempt: 2)),
         Message(SystemMessage(type: .tooLow(currentGuess: 250))),
