@@ -113,7 +113,7 @@ enum AllTricks {
         TrickDefinition(
             type: .doubleOhSeven,
             probability: 1.0,
-            builder: { MirrorTrick() }
+            builder: { DoubleOhSevenTrick() }
         ),
     ]
     

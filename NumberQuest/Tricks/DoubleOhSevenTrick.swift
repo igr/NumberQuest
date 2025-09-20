@@ -9,10 +9,11 @@ struct DoubleOhSevenTrick: GameTrick {
     var duration = 1
     
     func triggerOnGuess(target: Int, guess: Int) -> Int? {
-        var digits = Array(String(guess))
-        if let idx = digits.lastIndex(of: "7") {
-            digits[idx] = Character(String(target))
-            return Int(String(digits))
+        var guessDigits = Array(String(guess))
+        let targetDigits = Array(String(target))
+        if let idx = guessDigits.lastIndex(of: "7") {
+            guessDigits[idx] = targetDigits[idx]
+            return Int(String(guessDigits))
         }
         return nil
     }
