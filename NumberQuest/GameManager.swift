@@ -59,8 +59,6 @@ class GameManager: ObservableObject {
 
         await removeExpiredTricks()
         
-        // Spawn NEW trick
-        
         let newTrick = AllTricks.randomTrick(excluding: state.activeTricks)
         
         if (newTrick.duration > 0 && state.activeTricks.count <=  state.maxActiveTricks) {
@@ -119,6 +117,19 @@ class GameManager: ObservableObject {
         }
     }
     
+    fileprivate func winGame() async {
+        await MainActor.run {
+            state.gameWon = true
+            state.chatMessages.append(
+                Message(SystemMessage(type: .victory(targetNumber: state.targetNumber, attempts: state.attempts)))
+            )
+            state.thinking = false
+        }
+    }
+
+
+    // MARK: SHOW
+    
     fileprivate func showTrick(_ trick: any GameTrick) async {
         if (trick.isNoop) {
             return
@@ -130,16 +141,6 @@ class GameManager: ObservableObject {
         }
     }
     
-    fileprivate func winGame() async {
-        await MainActor.run {
-            state.gameWon = true
-            state.chatMessages.append(
-                Message(SystemMessage(type: .victory(targetNumber: state.targetNumber, attempts: state.attempts)))
-            )
-            state.thinking = false
-        }
-    }
-
     fileprivate func showMissed(guess: Int) async {
         let sysMsg: SystemMessage = guess < state.targetNumber
             ? SystemMessage(type: .tooLow(currentGuess: guess))
@@ -154,6 +155,8 @@ class GameManager: ObservableObject {
         }
         try? await Task.sleep(nanoseconds: randomThinkingTime())
     }
+    
+    // MARK: UTIL
     
     private func randomThinkingTime() -> UInt64 {
         let seconds = Double.random(in: 0.5...1.5)
