@@ -31,7 +31,7 @@ struct ActiveTricksView: View {
                                     )
                             }
                             .padding(.horizontal, 12)
-                            .padding(.vertical, 8)
+                            .padding(.vertical, 6)
                             .background(
                                 RoundedRectangle(cornerRadius: 10)
                                     .fill(Color.theme.trickAction.opacity(0.3))

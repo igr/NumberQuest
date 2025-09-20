@@ -97,10 +97,16 @@ class GameManager: ObservableObject {
         }
     }
     
-    private func triggerActiveTricksForMessage(to message: SystemMessage) -> SystemMessage {
-        state.activeTricks.reduce(message) { current, activeTrick in
-            activeTrick.trick.triggerOnShowMiss(systemMessage: current) ?? current
+    private func triggerActiveTricksForMessage(to message: SystemMessage) async -> SystemMessage {
+        var current = message
+        for activeTrick in state.activeTricks {
+            let newMessage = activeTrick.trick.triggerOnShowMiss(systemMessage: current)
+            if newMessage != nil {
+                await showTrick(activeTrick.trick)
+            }
+            current = newMessage ?? current
         }
+        return current
     }
     
     fileprivate func removeExpiredTricks() async {
@@ -135,12 +141,11 @@ class GameManager: ObservableObject {
     }
 
     fileprivate func showMissed(guess: Int) async {
-        await MainActor.run {
-            let sysMsg: SystemMessage = guess < state.targetNumber
-                ? SystemMessage(type: .tooLow(currentGuess: guess))
-                : SystemMessage(type: .tooHigh(currentGuess: guess))
-            state.chatMessages.append(Message(triggerActiveTricksForMessage(to: sysMsg)))
-        }
+        let sysMsg: SystemMessage = guess < state.targetNumber
+            ? SystemMessage(type: .tooLow(currentGuess: guess))
+            : SystemMessage(type: .tooHigh(currentGuess: guess))
+        let newMsg = await triggerActiveTricksForMessage(to: sysMsg)
+        state.chatMessages.append(Message(newMsg))
     }
     
     fileprivate func showPlayerGuess(_ guess: Int) async {
