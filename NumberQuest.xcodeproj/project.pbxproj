@@ -28,7 +28,7 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
-		9FD463D32E72C53600D496D6 /* NumberQuest.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = NumberQuest.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		9FD463D32E72C53600D496D6 /* NumberQuest7.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = NumberQuest7.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		9FD463E22E72C53700D496D6 /* NumberQuestTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = NumberQuestTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		9FD463EC2E72C53700D496D6 /* NumberQuestUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = NumberQuestUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
@@ -90,7 +90,7 @@
 		9FD463D42E72C53600D496D6 /* Products */ = {
 			isa = PBXGroup;
 			children = (
-				9FD463D32E72C53600D496D6 /* NumberQuest.app */,
+				9FD463D32E72C53600D496D6 /* NumberQuest7.app */,
 				9FD463E22E72C53700D496D6 /* NumberQuestTests.xctest */,
 				9FD463EC2E72C53700D496D6 /* NumberQuestUITests.xctest */,
 			);
@@ -100,9 +100,9 @@
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
-		9FD463D22E72C53600D496D6 /* NumberQuest */ = {
+		9FD463D22E72C53600D496D6 /* NumberQuest7 */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = 9FD463F62E72C53700D496D6 /* Build configuration list for PBXNativeTarget "NumberQuest" */;
+			buildConfigurationList = 9FD463F62E72C53700D496D6 /* Build configuration list for PBXNativeTarget "NumberQuest7" */;
 			buildPhases = (
 				9FD463CF2E72C53600D496D6 /* Sources */,
 				9FD463D02E72C53600D496D6 /* Frameworks */,
@@ -115,12 +115,12 @@
 			fileSystemSynchronizedGroups = (
 				9FD463D52E72C53600D496D6 /* NumberQuest */,
 			);
-			name = NumberQuest;
+			name = NumberQuest7;
 			packageProductDependencies = (
 				9F9B153F2E7455CD00830474 /* PopupView */,
 			);
 			productName = NumberQuest;
-			productReference = 9FD463D32E72C53600D496D6 /* NumberQuest.app */;
+			productReference = 9FD463D32E72C53600D496D6 /* NumberQuest7.app */;
 			productType = "com.apple.product-type.application";
 		};
 		9FD463E12E72C53700D496D6 /* NumberQuestTests */ = {
@@ -209,7 +209,7 @@
 			projectDirPath = "";
 			projectRoot = "";
 			targets = (
-				9FD463D22E72C53600D496D6 /* NumberQuest */,
+				9FD463D22E72C53600D496D6 /* NumberQuest7 */,
 				9FD463E12E72C53700D496D6 /* NumberQuestTests */,
 				9FD463EB2E72C53700D496D6 /* NumberQuestUITests */,
 			);
@@ -267,12 +267,12 @@
 /* Begin PBXTargetDependency section */
 		9FD463E42E72C53700D496D6 /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
-			target = 9FD463D22E72C53600D496D6 /* NumberQuest */;
+			target = 9FD463D22E72C53600D496D6 /* NumberQuest7 */;
 			targetProxy = 9FD463E32E72C53700D496D6 /* PBXContainerItemProxy */;
 		};
 		9FD463EE2E72C53700D496D6 /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
-			target = 9FD463D22E72C53600D496D6 /* NumberQuest */;
+			target = 9FD463D22E72C53600D496D6 /* NumberQuest7 */;
 			targetProxy = 9FD463ED2E72C53700D496D6 /* PBXContainerItemProxy */;
 		};
 /* End PBXTargetDependency section */
@@ -416,7 +416,9 @@
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
+				INFOPLIST_KEY_UIStatusBarHidden = YES;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations = UIInterfaceOrientationPortrait;
+				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown";
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -445,7 +447,9 @@
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
+				INFOPLIST_KEY_UIStatusBarHidden = YES;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations = UIInterfaceOrientationPortrait;
+				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown";
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -543,7 +547,7 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		9FD463F62E72C53700D496D6 /* Build configuration list for PBXNativeTarget "NumberQuest" */ = {
+		9FD463F62E72C53700D496D6 /* Build configuration list for PBXNativeTarget "NumberQuest7" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				9FD463F72E72C53700D496D6 /* Debug */,
