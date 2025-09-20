@@ -18,18 +18,17 @@ struct TrickBubble: View {
                 selectedTrick = ActiveTrick(trick: trickMessage.trick, remainingDuration: trickMessage.trick.duration)
             }) {
                 Text(trickMessage.trick.icon)
-                    .font(.system(size: 20, weight: .bold, design: .monospaced))
+                    .font(.system(size: 30))
             }
             .buttonStyle(PlainButtonStyle())
             
             Text(trickText)
                 .foregroundColor(.primary)
-                .font(.title3)
-                .fontWeight(.semibold)
+                .font(.headline)
         }
         .frame(maxWidth: .infinity)
         .padding(.horizontal, 12)
-        .padding(.vertical, 8)
+        .padding(.vertical, 4)
         .background(
             RoundedRectangle(cornerRadius: 15)
                 .fill(trickColor.opacity(0.2))
@@ -50,4 +49,16 @@ struct TrickBubble: View {
 }
 #Preview("Noop Trick") {
     TrickBubble(trickMessage: TrickMessage(NoopTrick()))
+}
+#Preview("All") {
+    VStack {
+        TrickBubble(trickMessage: TrickMessage(DoubleOhSevenTrick()))
+        TrickBubble(trickMessage: TrickMessage(DrunkPlayerTrick()))
+        TrickBubble(trickMessage: TrickMessage(ExpandSlotsTrick()))
+        TrickBubble(trickMessage: TrickMessage(KillBillTrick()))
+        TrickBubble(trickMessage: TrickMessage(LinguaLarryTrick()))
+        TrickBubble(trickMessage: TrickMessage(MagnetTrick()))
+        TrickBubble(trickMessage: TrickMessage(ShuffleTargetTrick()))
+        TrickBubble(trickMessage: TrickMessage(SnailTrick()))
+    }
 }
