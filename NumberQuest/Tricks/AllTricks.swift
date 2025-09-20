@@ -102,7 +102,7 @@ enum AllTricks {
         ),
         TrickDefinition(
             type: .killBill,
-            probability: 1.0,
+            probability: 2.0,
             builder: { KillBillTrick() }
         ),
         TrickDefinition(

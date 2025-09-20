@@ -73,6 +73,7 @@ extension View {
     ///   }
     func trickPopup<Item: Identifiable & Equatable, Content: View>(
         item: Binding<Item?>,
+        colorScheme: ColorScheme,
         @ViewBuilder content: @escaping (Item) -> Content
     ) -> some View {
         self.popup(item: item) { item in
@@ -82,13 +83,14 @@ extension View {
             .type(.floater())
             .closeOnTap(true)
             .appearFrom(.bottomSlide)
-            .backgroundColor(Color(white: 1.0, opacity: 0.5))
+            .backgroundColor(Color.theme.background(colorScheme).opacity(0.5))
             .position(.center)
         }
     }
     
     func winPopup<Content: View>(
         isPresented: Binding<Bool>,
+        colorScheme: ColorScheme,
         @ViewBuilder content: @escaping () -> Content
     ) -> some View {
         self.popup(isPresented: isPresented) {
@@ -97,7 +99,7 @@ extension View {
            $0
            .type(.floater())
            .closeOnTap(false)
-           .backgroundColor(Color(white: 1.0, opacity: 0.5))
+           .backgroundColor(Color.theme.background(colorScheme).opacity(0.5))
            .position(.center)
            .appearFrom(.centerScale)
        }

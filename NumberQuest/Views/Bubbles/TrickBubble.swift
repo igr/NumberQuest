@@ -3,6 +3,8 @@ import PopupView
 
 struct TrickBubble: View {
     let trickMessage: TrickMessage
+    
+    @Environment(\.colorScheme) var colorScheme
     @State private var selectedTrick: ActiveTrick?
     
     private var trickColor: Color {
@@ -35,7 +37,7 @@ struct TrickBubble: View {
                 .stroke(trickColor.opacity(0.5), lineWidth: 1)
         )
         .padding(.horizontal, 16)
-        .trickPopup(item: $selectedTrick) { item in
+        .trickPopup(item: $selectedTrick, colorScheme: colorScheme) { item in
             TrickDetailView(activeTrick: item)
         }
     }

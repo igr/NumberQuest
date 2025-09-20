@@ -2,6 +2,7 @@ import SwiftUI
 import SwiftData
 
 struct GameView: View {
+    @Environment(\.colorScheme) var colorScheme
     @StateObject private var state: GameState
     @StateObject private var gameManager: GameManager
 
@@ -53,7 +54,7 @@ struct GameView: View {
                     gameManager.startNewGame()
                 }
             }
-            .winPopup(isPresented: $state.gameWon) {
+            .winPopup(isPresented: $state.gameWon, colorScheme: colorScheme) {
                 WinView(
                     targetNumber: state.targetNumber,
                     attempts: state.attempts

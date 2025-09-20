@@ -4,6 +4,7 @@ import PopupView
 struct ActiveTricksView: View {
     let activeTricks: [ActiveTrick]
     let attemptCount: Int
+    @Environment(\.colorScheme) var colorScheme
     @State var selectedTrick: ActiveTrick?
     
     var body: some View {
@@ -53,7 +54,7 @@ struct ActiveTricksView: View {
                 )
             
         }
-        .trickPopup(item: $selectedTrick) { item in
+        .trickPopup(item: $selectedTrick, colorScheme: colorScheme) { item in
             TrickDetailView(activeTrick: item)
         }
     }
