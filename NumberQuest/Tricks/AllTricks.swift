@@ -11,6 +11,7 @@ enum TrickType: CaseIterable {
     case killBill
     case mirror
     case doubleOhSeven
+    case runner
 }
 
 protocol GameTrick: Identifiable, Equatable {
@@ -114,6 +115,11 @@ enum AllTricks {
             type: .doubleOhSeven,
             probability: 1.0,
             builder: { DoubleOhSevenTrick(duration: 1) }
+        ),
+        TrickDefinition(
+            type: .runner,
+            probability: 5.0,
+            builder: { RunnerTrick(duration: 2) }
         ),
     ]
     

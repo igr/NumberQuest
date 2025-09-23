@@ -11,7 +11,7 @@ struct SystemBubble: View {
         case .tooLow(_, let content):
             return content
         case .welcome:
-            return "🎯 Guess a number!"
+            return "🎯 Guess the Target number!"
         case .victory:
             return "🎉 Congratulations! You won!"
         case .debug(let activeTricks, let target):

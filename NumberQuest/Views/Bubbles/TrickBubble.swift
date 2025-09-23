@@ -59,5 +59,6 @@ struct TrickBubble: View {
         TrickBubble(trickMessage: TrickMessage(MagnetTrick(duration: 2)))
         TrickBubble(trickMessage: TrickMessage(ShuffleTargetTrick()))
         TrickBubble(trickMessage: TrickMessage(SnailTrick(duration: 2)))
+        TrickBubble(trickMessage: TrickMessage(RunnerTrick(duration: 2)))
     }
 }
