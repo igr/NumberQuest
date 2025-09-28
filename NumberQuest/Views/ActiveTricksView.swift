@@ -5,7 +5,6 @@ struct ActiveTricksView: View {
     let activeTricks: [ActiveTrick]
     let attemptCount: Int
     @Environment(\.colorScheme) var colorScheme
-    @State var selectedTrick: ActiveTrick?
     
     var body: some View {
         HStack(alignment: .center, spacing: 8) {
@@ -15,35 +14,17 @@ struct ActiveTricksView: View {
                     HStack(alignment: .center, spacing: 8) {
                         ForEach(row.indices, id: \.self) { index in
                             let activeTrick = row[index]
-                            Button(action: {
-                                selectedTrick = activeTrick
-                            }) {
-                                Text(activeTrick.trick.icon)
-                                    .font(.title2)
-                                Text("\(activeTrick.remainingDuration)")
-                                    .font(.caption)
-                                    .fontWeight(.bold)
-                                    .foregroundColor(.black.opacity(0.6))
-                                    .padding(.horizontal, 8)
-                                    .padding(.vertical, 4)
-                                    .background(
-                                        RoundedRectangle(cornerRadius: 8)
-                                            .fill( Color.theme.trickAction.opacity(0.6))
-                                    )
+                            TrickView(
+                                activeTrick: activeTrick,
+                                rotationAngle: index.isMultiple(of: 2) ? 5 : -5
+                            ) {
+                                // Action can be empty or used for other purposes
                             }
-                            .padding(.horizontal, 12)
-                            .padding(.vertical, 6)
-                            .background(
-                                RoundedRectangle(cornerRadius: 10)
-                                    .fill(Color.theme.trickAction.opacity(0.3))
-                            )
-                            .rotationEffect(.degrees(index.isMultiple(of: 2) ? 5 : -5))
                         }
-                        .buttonStyle(PlainButtonStyle())
                     }
                 }
             }
-            // Attempt count circle on the left
+            // Attempt count circle on the right
             Text("\(attemptCount)")
                 .font(.system(size: 24))
                 .fontWeight(.bold)
@@ -53,9 +34,6 @@ struct ActiveTricksView: View {
                     Circle().fill(Color.theme.attempt)
                 )
             
-        }
-        .trickPopup(item: $selectedTrick, colorScheme: colorScheme) { item in
-            TrickDetailView(activeTrick: item)
         }
     }
 }
