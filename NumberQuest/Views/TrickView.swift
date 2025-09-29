@@ -44,6 +44,33 @@ struct TrickView: View {
     }
 }
 
+struct TrickCard: View {
+    let trick:any GameTrick
+    @Environment(\.colorScheme) var colorScheme
+    @State private var showDetail: AnyGameTrick?
+
+    var body: some View {
+        Button(action: {
+            showDetail = AnyGameTrick(trick)
+        }) {
+            HStack(spacing: 4) {
+                Text(trick.icon)
+                    .font(.title)
+            }
+        }
+        .buttonStyle(PlainButtonStyle())
+        .padding(.horizontal, 14)
+        .padding(.vertical, 6)
+        .background(
+            RoundedRectangle(cornerRadius: 10)
+                .fill(Color.theme.trickAction.opacity(0.3))
+        )
+        .trickPopup(item: $showDetail, colorScheme: colorScheme) { item in
+            TrickDetailView(trick: item.trick)
+        }
+    }
+}
+
 #Preview {
     TrickView(
         activeTrick: ActiveTrick(
@@ -63,4 +90,8 @@ struct TrickView: View {
     ) {
         print("Trick tapped")
     }
+}
+
+#Preview("TrickCard") {
+    TrickCard(trick: AllTricks.tricks[2])
 }
