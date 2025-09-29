@@ -65,7 +65,7 @@ struct GameView: View {
                 }
             }
             .overlay(
-                GameMenuOverlay(),
+                GameMenuOverlay(onRestart: {resetGame()}),
                 alignment: .topTrailing
             )
             .winPopup(isPresented: $state.gameWon, colorScheme: colorScheme) {

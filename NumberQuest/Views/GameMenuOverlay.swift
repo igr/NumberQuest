@@ -2,6 +2,7 @@ import SwiftUI
 
 struct GameMenuOverlay: View {
     @State private var menuOpen = false
+    let onRestart: () -> Void
     
     var body: some View {
         VStack {
@@ -14,7 +15,15 @@ struct GameMenuOverlay: View {
                                 Image(systemName: "xmark.circle")
                                     .imageScale(.large)
                                     .accessibilityLabel("Close menu")
-                            }                            
+                            }
+                            Button(action: {
+                                onRestart()
+                                withAnimation { menuOpen = false }
+                            }) {
+                                Text("🚀")
+                                    .font(.title)
+                                    .accessibilityLabel("Restart Game")
+                            }
                             NavigationLink(destination: InfoView()) {
                                 Text("🎯")
                                     .font(.title)
@@ -50,7 +59,9 @@ struct GameMenuOverlay: View {
     NavigationStack {
         Color.gray.opacity(0.3)
             .overlay(
-                GameMenuOverlay()
+                GameMenuOverlay(onRestart: {
+                    print("Restart game")
+                })
             )
     }
 }
