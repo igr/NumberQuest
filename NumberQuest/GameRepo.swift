@@ -1,8 +1,15 @@
+import os
 import Foundation
 import SwiftData
 
 /// Repository responsible for all GameProgressData SwiftData operations.
 class GameRepo {
+
+    private static let logger = Logger(
+        subsystem: Bundle.main.bundleIdentifier!,
+        category: String(describing: GameRepo.self)
+    )
+    
     private var context: ModelContext?
     private var gameProgress: GameProgressData
     
@@ -19,22 +26,24 @@ class GameRepo {
             let existingProgress = try context.fetch(descriptor)
             if let existing = existingProgress.first {
                 gameProgress = existing
+                Self.logger.info("Game loaded from storage")
                 return
             } else {
                 let newProgress = GameProgressData()
                 context.insert(newProgress)
                 try context.save()
                 gameProgress = newProgress
+                Self.logger.info("Game not found, creating new one")
                 return
             }
         } catch {
-            print("[GameProgressRepo] Error fetching GameProgressData: \(error)")
+            Self.logger.warning("Error fetching GameProgressData: \(error)")
             let newProgress = GameProgressData()
             context.insert(newProgress)
             do {
                 try context.save()
             } catch {
-                print("[GameProgressRepo] Error saving new GameProgressData after fetch failure: \(error)")
+                Self.logger.error("Error saving new GameProgressData after fetch failure: \(error)")
             }
             gameProgress = newProgress
             return
@@ -76,7 +85,7 @@ class GameRepo {
         do {
             try context!.save()
         } catch {
-            print("[GameProgressRepo] Error saving progress data: \(error)")
+            Self.logger.error("Error saving progress data: \(error)")
         }
     }
 }

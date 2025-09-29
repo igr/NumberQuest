@@ -46,7 +46,10 @@ struct InfoView: View {
                 //ScrollView {
                     LazyVGrid(columns: Array(repeating: GridItem(.flexible()), count: 4), spacing: 12) {
                         ForEach(AllTricks.tricks.dropFirst(), id: \.type) { trick in
-                            TrickCard(trick: trick)
+                            TrickCard(
+                                trick: trick,
+                                enabled: gameProgress.getTrickState(trick.type)
+                            )
                         }
                     }
                     .padding(20)

@@ -15,7 +15,6 @@ struct GameView: View {
         let initialState = state ?? GameState()
         _state = StateObject(wrappedValue: initialState)
         _gameManager = StateObject(wrappedValue: GameManager(state: initialState))
-        resetGame()
     }
 
     private var isGuessEnabled: Binding<Bool> {
@@ -25,7 +24,7 @@ struct GameView: View {
         )
     }
     
-    private func resetGame() {
+    private func restartGame() {
         gameManager.startNewGame()
         // Reset pickers
         firstDigit = 0
@@ -65,7 +64,7 @@ struct GameView: View {
             .overlay(
                 GameMenuOverlay(
                     gameProgress: gameManager.gameProgress,
-                    onRestart: { resetGame() }
+                    onRestart: { restartGame() }
                 ),
                 alignment: .topTrailing
             )
@@ -74,12 +73,13 @@ struct GameView: View {
                     targetNumber: state.targetNumber,
                     attempts: state.attempts
                 ) {
-                    resetGame()
+                    restartGame()
                 }
             }
         }
         .onAppear {
             gameManager.setup(context: modelContext)
+            restartGame()
         }
     }
 }

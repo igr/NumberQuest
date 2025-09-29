@@ -45,28 +45,46 @@ struct TrickView: View {
 }
 
 struct TrickCard: View {
-    let trick:any GameTrick
+    let trick: any GameTrick
+    let enabled: Bool
     @Environment(\.colorScheme) var colorScheme
     @State private var showDetail: AnyGameTrick?
 
     var body: some View {
-        Button(action: {
-            showDetail = AnyGameTrick(trick)
-        }) {
-            HStack(spacing: 4) {
-                Text(trick.icon)
-                    .font(.title)
+        if (enabled) {
+            Button(action: {
+                showDetail = AnyGameTrick(trick)
+            }) {
+                HStack(spacing: 4) {
+                    Text(trick.icon)
+                        .font(.title)
+                }
             }
-        }
-        .buttonStyle(PlainButtonStyle())
-        .padding(.horizontal, 14)
-        .padding(.vertical, 6)
-        .background(
-            RoundedRectangle(cornerRadius: 10)
-                .fill(Color.theme.trickAction.opacity(0.3))
-        )
-        .trickPopup(item: $showDetail, colorScheme: colorScheme) { item in
-            TrickDetailView(trick: item.trick)
+            .buttonStyle(PlainButtonStyle())
+            .padding(.horizontal, 14)
+            .padding(.vertical, 6)
+            .background(
+                RoundedRectangle(cornerRadius: 10)
+                    .fill(Color.theme.trickAction.opacity(0.3))
+            )
+            .trickPopup(item: $showDetail, colorScheme: colorScheme) { item in
+                TrickDetailView(trick: item.trick)
+            }
+        } else {
+            Button(action: {
+            }) {
+                HStack(spacing: 4) {
+                    Text("⁇")
+                        .font(.title)
+                }
+            }
+            .buttonStyle(PlainButtonStyle())
+            .padding(.horizontal, 14)
+            .padding(.vertical, 6)
+            .background(
+                RoundedRectangle(cornerRadius: 10)
+                    .fill(Color.gray.opacity(0.2))
+            )
         }
     }
 }
@@ -92,6 +110,7 @@ struct TrickCard: View {
     }
 }
 
-#Preview("TrickCard") {
-    TrickCard(trick: AllTricks.tricks[2])
+#Preview("TrickCards") {
+    TrickCard(trick: AllTricks.tricks[2], enabled: true)
+    TrickCard(trick: AllTricks.tricks[2], enabled: false)
 }

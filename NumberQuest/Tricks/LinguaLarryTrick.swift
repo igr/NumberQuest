@@ -25,7 +25,7 @@ struct LinguaLarryTrick: GameTrick {
     let tooHighTranslations: [String] = [
         "太高",           // Mandarin Chinese
         "Demasiado alto", // Spanish
-        "Too High",       // English
+        "Previsoko",
         "बहुत ऊँचा",      // Hindi
         "مرتفـع جدًا",    // Arabic
         "খুব উঁচু",       // Bengali
@@ -47,7 +47,7 @@ struct LinguaLarryTrick: GameTrick {
     let tooLowTranslations: [String] = [
         "太低",           // Mandarin Chinese
         "Demasiado bajo", // Spanish
-        "Too Low",        // English
+        "Prenisko",
         "बहुत नीचा",      // Hindi
         "منخفض جدًا",     // Arabic
         "খুব নিচু",       // Bengali

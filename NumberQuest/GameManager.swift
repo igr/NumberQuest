@@ -1,3 +1,4 @@
+import os
 import SwiftUI
 import SwiftData
 
@@ -14,7 +15,13 @@ class GameState: ObservableObject {
 }
 
 @MainActor
-class GameManager: ObservableObject {    
+class GameManager: ObservableObject {
+    
+    private static let logger = Logger(
+        subsystem: Bundle.main.bundleIdentifier!,
+        category: String(describing: GameManager.self)
+    )
+    
     @ObservedObject var state: GameState
     private var gameRepo: GameRepo
     
@@ -29,6 +36,7 @@ class GameManager: ObservableObject {
     
     func setup(context: ModelContext) {
         gameRepo.setupGameProgress(context: context)
+        Self.logger.notice("Setup game")
     }
     
     func startNewGame() {
@@ -40,6 +48,7 @@ class GameManager: ObservableObject {
         state.chatMessages = [
             Message(SystemMessage(type: .welcome))
         ]
+        Self.logger.notice("Start new game")
     }
     
     func makeGuess(_ _guess: Int) {
