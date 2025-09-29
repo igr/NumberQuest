@@ -1,6 +1,6 @@
 import Foundation
 
-enum TrickType: CaseIterable {
+enum TrickType: String, CaseIterable {
     case noop
     case shuffleTarget
     case snail
@@ -12,6 +12,15 @@ enum TrickType: CaseIterable {
     case mirror
     case doubleOhSeven
     case runner
+}
+
+extension TrickType {
+    var asString: String {
+        return self.rawValue
+    }
+    static func fromString(_ string: String) -> TrickType? {
+        return TrickType(rawValue: string)
+    }
 }
 
 protocol GameTrick: Identifiable, Equatable {
