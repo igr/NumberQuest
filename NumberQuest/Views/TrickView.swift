@@ -74,7 +74,7 @@ struct TrickCard: View {
             Button(action: {
             }) {
                 HStack(spacing: 4) {
-                    Text("⁇")
+                    Text("﹖")
                         .font(.title)
                 }
             }

@@ -61,7 +61,14 @@ struct InfoView: View {
 }
 
 #Preview {
-    NavigationStack {
-        InfoView(gameProgress: GameProgressData())
+    let progress = GameProgressData()
+    progress.setTrickState(.shuffleTarget, true)
+    progress.setTrickState(.snail, true)
+    progress.setTrickState(.magnet, true)
+    progress.setTrickState(.mirror, true)
+    progress.setTrickState(.runner, true)
+
+    return NavigationStack {
+        InfoView(gameProgress: progress)
     }
 }
