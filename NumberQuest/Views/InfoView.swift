@@ -32,7 +32,7 @@ struct InfoView: View {
             .padding(.bottom, 10)
             
             VStack(alignment: .leading, spacing: 4) {
-                Text("Welcome to **Number Quest Seven**, where traditional number guessing meets strategic gameplay! Use your wits and special tricks to outsmart the system and find the secret number.")
+                Text("Welcome to **Number Quest Seven**, where traditional number guessing meets strategic gameplay! Use your wits and outsmart the _Tricks_ and find the _Target_ number.")
             }
             .font(.body)
             .padding(.horizontal)
