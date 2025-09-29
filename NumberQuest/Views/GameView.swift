@@ -21,6 +21,14 @@ struct GameView: View {
             set: { _ in /* Read-only computed binding */ }
         )
     }
+    
+    private func resetGame() {
+        gameManager.startNewGame()
+        // Reset pickers
+        firstDigit = 0
+        secondDigit = 0
+        thirdDigit = 0
+    }
 
     var body: some View {
         NavigationStack {
@@ -65,11 +73,7 @@ struct GameView: View {
                     targetNumber: state.targetNumber,
                     attempts: state.attempts
                 ) {
-                    gameManager.startNewGame()
-                    // Reset pickers
-                    firstDigit = 0
-                    secondDigit = 0
-                    thirdDigit = 0
+                    resetGame()
                 }
             }
         }
