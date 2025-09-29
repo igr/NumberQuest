@@ -62,5 +62,5 @@ struct ActiveTricksView: View {
 }
 
 #Preview("TrickDetailView") {
-    TrickDetailView(activeTrick: ActiveTrick(trick: AllTricks.tricks[1], remainingDuration: 2))
+    TrickDetailView(trick: AllTricks.tricks[1])
 }

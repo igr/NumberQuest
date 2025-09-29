@@ -63,10 +63,23 @@ extension GameTrick {
     func triggerOnGuess(target: Int, guess: Int) -> Int? { return nil }
 }
 
+// Type-erased wrapper for GameTrick that conforms to Identifiable and Equatable
+struct AnyGameTrick: Identifiable, Equatable {
+    let id = UUID()
+    let trick: any GameTrick
+    
+    init(_ trick: any GameTrick) {
+        self.trick = trick
+    }
+    
+    static func == (lhs: AnyGameTrick, rhs: AnyGameTrick) -> Bool {
+        lhs.id == rhs.id
+    }
+}
+
 struct ActiveTrick : Identifiable, Equatable {
     let id = UUID()
     let trick: any GameTrick
-    var type: TrickType { trick.type }
     var remainingDuration: Int
     
     static func == (lhs: ActiveTrick, rhs: ActiveTrick) -> Bool {
@@ -91,7 +104,7 @@ enum AllTricks {
     ]
     
     // MARK: - Probability in percentages
-    static func calcTrickProbability(_ activeTrick: ActiveTrick) -> Double {
+    static func calcTrickProbability(_ activeTrick: any GameTrick) -> Double {
         // Find the trick definition for this active trick
         guard let trickDef = tricks.first(where: { $0.type == activeTrick.type }) else {
             return 0 // Trick not found
@@ -109,7 +122,7 @@ enum AllTricks {
         guard !tricks.isEmpty else { fatalError("No tricks available") }
         
         // Get types of currently active tricks
-        let activeTrickTypes = Set(activeTricks.map { $0.type })
+        let activeTrickTypes = Set(activeTricks.map { $0.trick.type })
         
         // Filter out tricks that are currently active
         let availableTricks = tricks.filter { trickDef in

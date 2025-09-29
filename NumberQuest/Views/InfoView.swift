@@ -43,7 +43,7 @@ struct InfoView: View {
                     .font(.title)
                     .fontWeight(.semibold)
                     .padding(.horizontal)
-                ScrollView {
+                //ScrollView {
                     LazyVGrid(columns: Array(repeating: GridItem(.flexible()), count: 3), spacing: 12) {
                         ForEach(AllTricks.tricks.dropFirst(), id: \.type) { trick in
                             TrickCard(
@@ -52,7 +52,7 @@ struct InfoView: View {
                             )
                         }
                     }
-                }
+                //}
             }
         }
         .padding()
@@ -64,14 +64,16 @@ struct TrickCard: View {
     let title: String
     
     var body: some View {
-        VStack(spacing: 8) {
+        VStack(spacing: 4) {
             Text(icon)
                 .font(.title)
             Text(title)
-                .font(.headline)
+                .font(.caption)
                 .fontWeight(.medium)
+                .multilineTextAlignment(.center)
         }
-        .padding(12)
+        .frame(width: 80, height: 50)
+        .padding(6)
         .background(.ultraThinMaterial)
         .clipShape(RoundedRectangle(cornerRadius: 12))
         .shadow(radius: 2)

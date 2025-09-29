@@ -39,7 +39,7 @@ struct TrickView: View {
         )
         .rotationEffect(.degrees(rotationAngle))
         .trickPopup(item: $showDetail, colorScheme: colorScheme) { item in
-            TrickDetailView(activeTrick: item)
+            TrickDetailView(trick: item.trick)
         }
     }
 }

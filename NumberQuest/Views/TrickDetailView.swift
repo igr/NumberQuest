@@ -4,18 +4,18 @@ import PopupView
 struct TrickDetailView: View {
     @Environment(\.colorScheme) var colorScheme
     @Environment(\.popupDismiss) var dismiss
-    let activeTrick: ActiveTrick
+    let trick: any GameTrick
     
     var body: some View {
-        let probability = AllTricks.calcTrickProbability(activeTrick)
+        let probability = AllTricks.calcTrickProbability(trick)
         
         VStack(spacing: 20) {
             // Header with icon
             VStack(spacing: 8) {
-                Text(activeTrick.trick.icon)
+                Text(trick.icon)
                     .font(.system(size: 60))
                 
-                Text(activeTrick.trick.name)
+                Text(trick.name)
                     .font(.largeTitle)
                     .fontWeight(.bold)
             }
@@ -23,7 +23,7 @@ struct TrickDetailView: View {
             
             // Description
             VStack(alignment: .leading, spacing: 8) {
-                Text(activeTrick.trick.description)
+                Text(trick.description)
                     .font(.system(size: 18))
                     .italic(true)
                     .foregroundColor(.primary)
@@ -57,14 +57,14 @@ struct TrickDetailView: View {
 }
 
 #Preview {
-    TrickDetailView(activeTrick: ActiveTrick(trick: AllTricks.tricks[2], remainingDuration: 3))
+    TrickDetailView(trick: AllTricks.tricks[2])
 }
 
 #Preview("Dark Mode") {
-    TrickDetailView(activeTrick: ActiveTrick(trick: AllTricks.tricks[2], remainingDuration: 1))
+    TrickDetailView(trick: AllTricks.tricks[2])
         .preferredColorScheme(.dark)
 }
 
 #Preview("Shuffle Trick") {
-    TrickDetailView(activeTrick: ActiveTrick(trick: AllTricks.tricks[3], remainingDuration: 0))
+    TrickDetailView(trick: AllTricks.tricks[3])
 }
