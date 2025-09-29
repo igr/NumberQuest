@@ -77,7 +77,7 @@ struct GameView: View {
                 }
             }
         }
-        .onAppear {
+        .task {
             gameManager.setup(context: modelContext)
             restartGame()
         }

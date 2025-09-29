@@ -12,6 +12,8 @@ enum TrickType: String, CaseIterable {
     case mirror
     case doubleOhSeven
     case runner
+    case axe
+    case blow
 }
 
 extension TrickType {
@@ -109,7 +111,9 @@ enum AllTricks {
         MirrorTrick(duration: 1, probability: 2.0),
         DoubleOhSevenTrick(duration: 1, probability: 1.0),
         RunnerTrick(duration: 2, probability: 5.0),
-        ExpandSlotsTrick(probability: 1.0),
+        ExpandSlotsTrick(probability: 2.0),
+        AxeTrick(duration: 1, probability: 2.0),
+        BlowTrick(duration: 2, probability: 4.0),
     ]
     
     // MARK: - Probability in percentages

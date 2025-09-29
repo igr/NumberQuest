@@ -32,17 +32,15 @@ struct InfoView: View {
             .frame(maxWidth: .infinity)
             .padding(.bottom, 10)
             
-            VStack(alignment: .leading, spacing: 4) {
-                Text("Welcome to **Number Quest Seven**, where traditional number guessing meets strategic gameplay! Use your wits and outsmart the _Tricks_ and find the _Target_ number.")
-            }
-            .font(.body)
-            .padding(.horizontal)
-            
             VStack(alignment: .leading, spacing: 16) {
+                Text("Welcome to **Number Quest Seven**, where traditional number guessing meets strategic gameplay! Use your wits and outsmart the _Tricks_ and find the _Target_ number.")
+                    .font(.body)
+
                 Text("Tricks")
                     .font(.title)
                     .fontWeight(.semibold)
-                    .padding(.horizontal)
+                    .frame(maxWidth: .infinity, alignment: .center)
+
                 //ScrollView {
                     LazyVGrid(columns: Array(repeating: GridItem(.flexible()), count: 4), spacing: 12) {
                         ForEach(AllTricks.tricks.dropFirst(), id: \.type) { trick in
@@ -52,9 +50,10 @@ struct InfoView: View {
                             )
                         }
                     }
-                    .padding(20)
+                    
                 //}
             }
+            .padding(.horizontal)
         }
         .padding()
     }
@@ -67,6 +66,7 @@ struct InfoView: View {
     progress.setTrickState(.magnet, true)
     progress.setTrickState(.mirror, true)
     progress.setTrickState(.runner, true)
+    progress.setTrickState(.blow, true)
 
     return NavigationStack {
         InfoView(gameProgress: progress)

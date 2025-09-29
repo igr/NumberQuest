@@ -45,8 +45,12 @@ struct TrickBubble: View {
     }
 }
 
-#Preview("Shuffle Target") {
-    TrickBubble(trickMessage: TrickMessage(AllTricks.tricks[1]))
+#Preview("All Tricks") {
+    VStack(spacing: 8) {
+        ForEach(0..<AllTricks.tricks.count, id: \.self) { index in
+            TrickBubble(trickMessage: TrickMessage(AllTricks.tricks[index]))
+        }
+    }
 }
 #Preview("Noop Trick") {
     TrickBubble(trickMessage: TrickMessage(AllTricks.tricks[0]))
