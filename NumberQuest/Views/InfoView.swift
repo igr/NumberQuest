@@ -1,8 +1,9 @@
 import SwiftUI
 import UIKit
 
-
-struct InfoView: View {    
+struct InfoView: View {
+    let gameProgress: GameProgressData
+    
     var body: some View {
 
         VStack(alignment: .leading, spacing: 20) {
@@ -58,6 +59,6 @@ struct InfoView: View {
 
 #Preview {
     NavigationStack {
-        InfoView()
+        InfoView(gameProgress: GameProgressData())
     }
 }

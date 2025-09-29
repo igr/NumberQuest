@@ -2,6 +2,7 @@ import SwiftUI
 
 struct GameMenuOverlay: View {
     @State private var menuOpen = false
+    let gameProgress: GameProgressData
     let onRestart: () -> Void
     
     var body: some View {
@@ -24,7 +25,7 @@ struct GameMenuOverlay: View {
                                     .font(.title)
                                     .accessibilityLabel("Restart Game")
                             }
-                            NavigationLink(destination: InfoView()) {
+                            NavigationLink(destination: InfoView(gameProgress: gameProgress)) {
                                 Text("🎯")
                                     .font(.title)
                                     .accessibilityLabel("Info")
@@ -59,9 +60,9 @@ struct GameMenuOverlay: View {
     NavigationStack {
         Color.gray.opacity(0.3)
             .overlay(
-                GameMenuOverlay(onRestart: {
-                    print("Restart game")
-                })
+                GameMenuOverlay(
+                    gameProgress: GameProgressData(),
+                    onRestart: {print("Restart game")})
             )
     }
 }

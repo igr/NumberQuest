@@ -1,6 +1,8 @@
 import SwiftUI
+import SwiftData
 
 struct GameView: View {
+    @Environment(\.modelContext) private var modelContext
     @Environment(\.colorScheme) var colorScheme
     @StateObject private var state: GameState
     @StateObject private var gameManager: GameManager
@@ -9,12 +11,13 @@ struct GameView: View {
     @State private var secondDigit = 0
     @State private var thirdDigit = 0
 
-    init(state: GameState? = nil, gameManager: GameManager? = nil) {
-        let gameState = state ?? GameState()
-        _state = StateObject(wrappedValue: gameState)
-        _gameManager = StateObject(wrappedValue: gameManager ?? GameManager(state: gameState))
+    init(state: GameState? = nil) {
+        let initialState = state ?? GameState()
+        _state = StateObject(wrappedValue: initialState)
+        _gameManager = StateObject(wrappedValue: GameManager(state: initialState))
+        resetGame()
     }
-    
+
     private var isGuessEnabled: Binding<Bool> {
         Binding(
             get: { !state.thinking && !state.gameWon },
@@ -58,14 +61,12 @@ struct GameView: View {
                 }
                 .padding(.horizontal, UIDevice.current.userInterfaceIdiom == .pad ? UIScreen.main.bounds.width * 0.2 : 0)
                 .edgesIgnoringSafeArea(.bottom)
-                .onAppear {
-                    if !state.gameStarted {
-                        gameManager.startNewGame()
-                    }
-                }
             }
             .overlay(
-                GameMenuOverlay(onRestart: {resetGame()}),
+                GameMenuOverlay(
+                    gameProgress: gameManager.gameProgress,
+                    onRestart: { resetGame() }
+                ),
                 alignment: .topTrailing
             )
             .winPopup(isPresented: $state.gameWon, colorScheme: colorScheme) {
@@ -77,6 +78,9 @@ struct GameView: View {
                 }
             }
         }
+        .onAppear {
+            gameManager.setup(context: modelContext)
+        }
     }
 }
 
@@ -87,7 +91,6 @@ struct GameView: View {
     GameView()
     .preferredColorScheme(.dark)
 }
-
 #Preview("Game Won") {
     let gameState = GameState()
     return GameView(state: gameState)

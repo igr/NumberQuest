@@ -1,4 +1,5 @@
 import SwiftUI
+import SwiftData
 
 class GameState: ObservableObject {
     @Published var targetNumber: Int = 0
@@ -13,11 +14,21 @@ class GameState: ObservableObject {
 }
 
 @MainActor
-class GameManager: ObservableObject {
+class GameManager: ObservableObject {    
     @ObservedObject var state: GameState
+    private var gameRepo: GameRepo
     
+    var gameProgress: GameProgressData {
+        return gameRepo.progress
+    }
+
     init(state: GameState) {
         self.state = state
+        self.gameRepo = GameRepo()
+    }
+    
+    func setup(context: ModelContext) {
+        gameRepo.setupGameProgress(context: context)
     }
     
     func startNewGame() {
@@ -74,6 +85,9 @@ class GameManager: ObservableObject {
         if (newTrickActivated) {
             await showTrick(newTrick)
         }
+        
+        // Update trick encounter in progress data
+        gameRepo.markTrickEncountered(newTrick.type)
     }
     
     fileprivate func triggerActiveTricksOnGuess(_ target: Int,_ _guess: Int) async -> Int {
@@ -93,7 +107,7 @@ class GameManager: ObservableObject {
             let trickTriggered = await activeTrick.trick.triggerOnTurn(to: self.state)
             if (trickTriggered) {
                 await showTrick(activeTrick.trick)
-            }            
+            }
         }
     }
     
@@ -126,9 +140,11 @@ class GameManager: ObservableObject {
                 Message(SystemMessage(type: .victory(targetNumber: state.targetNumber, attempts: state.attempts)))
             )
             state.thinking = false
+            
+            // Update game progress data
+            gameRepo.updateMinAttempts(state.attempts)
         }
     }
-
 
     // MARK: - SHOW
     
