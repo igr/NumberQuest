@@ -1,15 +1,12 @@
 
 struct MagnetTrick: GameTrick {
-    var type = TrickType.magnet
-    var icon = "🧲"
-    var name = "Magnet"
-    var message = "Target pulled toward the Guess."
-    var description = "Each turn, the Target moves towards the Guess by a random distance, but never more than half the remaining distance."
-    var duration = 2
-    
-    init(duration: Int) {
-        self.duration = duration
-    }
+    let type = TrickType.magnet
+    let icon = "🧲"
+    let name = "Magnet"
+    let message = "Target pulled toward the Guess."
+    let description = "Each turn, the Target moves towards the Guess by a random distance, but never more than half the remaining distance."
+    let duration: Int
+    let probability: Double
 
     @MainActor
     func triggerOnTurn(to state: GameState) async -> Bool {

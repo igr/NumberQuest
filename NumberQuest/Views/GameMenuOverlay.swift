@@ -14,7 +14,7 @@ struct GameMenuOverlay: View {
                                 Image(systemName: "xmark.circle")
                                     .imageScale(.large)
                                     .accessibilityLabel("Close menu")
-                            }
+                            }                            
                             NavigationLink(destination: InfoView()) {
                                 Text("🎯")
                                     .font(.title)

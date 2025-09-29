@@ -32,6 +32,9 @@ protocol GameTrick: Identifiable, Equatable {
     
     /// Returns true if trick is not really an trick, but a NOOP.
     var isNoop: Bool { get }
+
+    /// Probability
+    var probability: Double { get }
     
     /// Applies trick to the game manager right after choosing the trick, returns true if activated
     func triggerOnCreate(to state: GameState) async -> Bool
@@ -52,6 +55,7 @@ extension GameTrick {
     var description: String { "Trick description" }
     var duration: Int { Int.max }
     var isNoop: Bool { false }
+    var probability: Double { 0.0 }
     
     func triggerOnCreate(to state: GameState) -> Bool { return false }
     func triggerOnTurn(to state: GameState) -> Bool { return false }
@@ -59,90 +63,45 @@ extension GameTrick {
     func triggerOnGuess(target: Int, guess: Int) -> Int? { return nil }
 }
 
-/// Represents a single trick configuration:
-/// - probability: chance that the trick is chosen
-/// - builder: function that creates the trick
-struct TrickDefinition {
-    let type: TrickType
-    let probability: Double    
-    let builder: () -> any GameTrick
+struct ActiveTrick : Identifiable, Equatable {
+    let id = UUID()
+    let trick: any GameTrick
+    var type: TrickType { trick.type }
+    var remainingDuration: Int
+    
+    static func == (lhs: ActiveTrick, rhs: ActiveTrick) -> Bool {
+        lhs.id == rhs.id
+    }
 }
 
 enum AllTricks {
     // MARK: - Registry of all tricks
-    static let tricks: [TrickDefinition] = [
-        TrickDefinition(
-            type: .noop,
-            probability: 10.0,
-            builder: { NoopTrick() }
-        ),
-        TrickDefinition(
-            type: .shuffleTarget,
-            probability: 0.5,
-            builder: { ShuffleTargetTrick() }
-        ),
-        TrickDefinition(
-            type: .snail,
-            probability: 5.0,
-            builder: { SnailTrick(duration: 3) }
-        ),
-        TrickDefinition(
-            type: .linguaLarry,
-            probability: 4.0,
-            builder: { LinguaLarryTrick(duration: 1) }
-        ),
-        TrickDefinition(
-            type: .drunkPlayer,
-            probability: 5.0,
-            builder: { DrunkPlayerTrick(duration: 3) }
-        ),
-        TrickDefinition(
-            type: .magnet,
-            probability: 5.0,
-            builder: { MagnetTrick(duration: 2) }
-        ),
-        TrickDefinition(
-            type: .killBill,
-            probability: 2.0,
-            builder: { KillBillTrick() }
-        ),
-        TrickDefinition(
-            type: .mirror,
-            probability: 2.0,
-            builder: { MirrorTrick(duration: 1) }
-        ),
-        TrickDefinition(
-            type: .doubleOhSeven,
-            probability: 1.0,
-            builder: { DoubleOhSevenTrick(duration: 1) }
-        ),
-        TrickDefinition(
-            type: .runner,
-            probability: 5.0,
-            builder: { RunnerTrick(duration: 2) }
-        ),
+    static let tricks: [any GameTrick] = [
+        NoopTrick(probability: 10.0),
+        ShuffleTargetTrick(probability: 0.5),
+        SnailTrick(duration: 3, probability: 5.0),
+        LinguaLarryTrick(duration: 1, probability: 4.0),
+        DrunkPlayerTrick(duration: 3, probability: 5.0),
+        MagnetTrick(duration: 2, probability: 5.0),
+        KillBillTrick(probability: 2.0),
+        MirrorTrick(duration: 1, probability: 2.0),
+        DoubleOhSevenTrick(duration: 1, probability: 1.0),
+        RunnerTrick(duration: 2, probability: 5.0),
+        ExpandSlotsTrick(probability: 1.0),
     ]
     
-    // MARK: - Probability
-    static func calcTrickProbability(_ activeTrick: ActiveTrick) -> (Int, Int) {
+    // MARK: - Probability in percentages
+    static func calcTrickProbability(_ activeTrick: ActiveTrick) -> Double {
         // Find the trick definition for this active trick
         guard let trickDef = tricks.first(where: { $0.type == activeTrick.type }) else {
-            return (0, 0) // Trick not found
+            return 0 // Trick not found
         }
         
         // Calculate total probability of all tricks
         let totalProbability = tricks.reduce(0) { $0 + $1.probability }
+        let trickProbability = trickDef.probability
         
-        // Return as integers (converting from Double)
-        var trickProbability = trickDef.probability
-        var factor = 1.0
-        if (trickProbability < 1) {
-            factor = 1 / trickProbability
-            trickProbability = 1.0
-        }
-        let totalProbabilityInt = Int(totalProbability * factor)
-        
-        return (Int(trickProbability), totalProbabilityInt)
+        return totalProbability > 0 ? (trickProbability / totalProbability) * 100 : 0
     }
     
     // MARK: - Returns a random trick excluding active tricks
@@ -159,7 +118,7 @@ enum AllTricks {
         
         // If no tricks available (all are active)
         guard !availableTricks.isEmpty else {
-            return NoopTrick()
+            return tricks.first!
         }
         
         let totalWeight = availableTricks.reduce(0) { $0 + $1.probability }
@@ -169,20 +128,9 @@ enum AllTricks {
         for trick in availableTricks {
             running += trick.probability
             if random < running {
-                return trick.builder()
+                return trick
             }
         }
-        return availableTricks.last!.builder() // fallback
-    }
-}
-
-struct ActiveTrick : Identifiable, Equatable {
-    let id = UUID()
-    let trick: any GameTrick
-    var type: TrickType { trick.type }
-    var remainingDuration: Int
-    
-    static func == (lhs: ActiveTrick, rhs: ActiveTrick) -> Bool {
-        lhs.id == rhs.id
+        return availableTricks.last! // fallback
     }
 }

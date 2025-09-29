@@ -112,14 +112,14 @@ struct ChatWindow_Previews: PreviewProvider {
     static var sampleMessages: [Message] = [
         Message(SystemMessage(type: .welcome)),
         Message(PlayerMessage(guess: 500, attempt: 1)),
-        Message(NewTrickMessage(SnailTrick(duration: 3))),
+        Message(NewTrickMessage(AllTricks.tricks[1])),
         Message(SystemMessage(type: .tooHigh(currentGuess: 500))),
         Message(PlayerMessage(guess: 250, attempt: 2)),
         Message(SystemMessage(type: .tooLow(currentGuess: 250))),
         Message(PlayerMessage(guess: 375, attempt: 3)),
         Message(SystemMessage(type: .tooHigh(currentGuess: 375))),
         Message(PlayerMessage(guess: 312, attempt: 4)),
-        Message(TrickMessage(ShuffleTargetTrick())),
+        Message(TrickMessage(AllTricks.tricks[2])),
         Message(SystemMessage(type: .victory(targetNumber: 312, attempts: 4)))
     ]
 }

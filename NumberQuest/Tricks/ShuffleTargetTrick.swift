@@ -1,12 +1,12 @@
-import Foundation
 
 struct ShuffleTargetTrick: GameTrick {
-    var type = TrickType.shuffleTarget
-    var icon = "🔀"
-    var name = "Shuffle Target"
-    var message = "Target changed!"
-    var description = "The target number is replaced with a new random number permanently."
-    var duration = 0
+    let type = TrickType.shuffleTarget
+    let icon = "🔀"
+    let name = "Shuffle Target"
+    let message = "Target changed!"
+    let description = "The target number is replaced with a new random number permanently."
+    let duration = 0
+    let probability: Double
 
     @MainActor
     func triggerOnCreate(to state: GameState) async -> Bool {

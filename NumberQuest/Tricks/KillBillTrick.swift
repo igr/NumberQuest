@@ -1,12 +1,12 @@
-import Foundation
 
 struct KillBillTrick: GameTrick {
-    var type = TrickType.killBill
-    var icon = "⚔️"
-    var name = "Kill Bill"
-    var message = "One active Trick killed!"
-    var description = "The first active Trick is removed permanently."
-    var duration = 0
+    let type = TrickType.killBill
+    let icon = "⚔️"
+    let name = "Kill Bill"
+    let message = "One active Trick killed!"
+    let description = "The first active Trick is removed permanently."
+    let duration = 0
+    let probability: Double
 
     @MainActor
     func triggerOnCreate(to state: GameState) async -> Bool {

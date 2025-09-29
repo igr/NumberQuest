@@ -8,8 +8,6 @@ struct TrickDetailView: View {
     
     var body: some View {
         let probability = AllTricks.calcTrickProbability(activeTrick)
-        let thisProb = probability.0
-        let totalProb = probability.1
         
         VStack(spacing: 20) {
             // Header with icon
@@ -34,7 +32,7 @@ struct TrickDetailView: View {
             .padding(.horizontal, 20)
             .frame(maxWidth: .infinity, alignment: .leading)
             
-            Text("Chance: \(Int(thisProb)) / \(Int(totalProb))")
+            Text("Chance: \(probability, specifier: "%.2f") %")
                 .font(.system(size: 22, weight: .bold))
                 .foregroundColor(.secondary)
                         
@@ -59,14 +57,14 @@ struct TrickDetailView: View {
 }
 
 #Preview {
-    TrickDetailView(activeTrick: ActiveTrick(trick: SnailTrick(duration: 3), remainingDuration: 3))
+    TrickDetailView(activeTrick: ActiveTrick(trick: AllTricks.tricks[2], remainingDuration: 3))
 }
 
 #Preview("Dark Mode") {
-    TrickDetailView(activeTrick: ActiveTrick(trick: SnailTrick(duration: 3), remainingDuration: 1))
+    TrickDetailView(activeTrick: ActiveTrick(trick: AllTricks.tricks[2], remainingDuration: 1))
         .preferredColorScheme(.dark)
 }
 
 #Preview("Shuffle Trick") {
-    TrickDetailView(activeTrick: ActiveTrick(trick: ShuffleTargetTrick(), remainingDuration: 0))
+    TrickDetailView(activeTrick: ActiveTrick(trick: AllTricks.tricks[3], remainingDuration: 0))
 }

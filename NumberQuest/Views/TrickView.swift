@@ -47,7 +47,7 @@ struct TrickView: View {
 #Preview {
     TrickView(
         activeTrick: ActiveTrick(
-            trick: SnailTrick(duration: 2),
+            trick: AllTricks.tricks[2],
             remainingDuration: 5
         ),
         rotationAngle: 5
@@ -56,7 +56,7 @@ struct TrickView: View {
     }
     TrickView(
         activeTrick: ActiveTrick(
-            trick: SnailTrick(duration: 2),
+            trick: AllTricks.tricks[3],
             remainingDuration: 0
         ),
         rotationAngle: -5

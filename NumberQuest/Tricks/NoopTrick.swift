@@ -1,6 +1,6 @@
-import Foundation
 
 struct NoopTrick: GameTrick {
-    var isNoop: Bool = true
-    var duration: Int = 0
+    let isNoop: Bool = true
+    let duration: Int = 0
+    let probability: Double
 }

@@ -1,15 +1,12 @@
 
 struct RunnerTrick: GameTrick {
-    var type = TrickType.runner
-    var icon = "🏃‍♂️"
-    var name = "Runner"
-    var message = "Target runs away from Guess."
-    var description = "Each turn, the Target moves 10 away from the Guess."
-    var duration = 2
-    
-    init(duration: Int) {
-        self.duration = duration
-    }
+    let type = TrickType.runner
+    let icon = "🏃‍♂️"
+    let name = "Runner"
+    let message = "Target runs away from Guess."
+    let description = "Each turn, the Target moves 10 away from the Guess."
+    let duration: Int
+    let probability: Double
 
     @MainActor
     func triggerOnTurn(to state: GameState) async -> Bool {

@@ -1,15 +1,12 @@
 
 struct MirrorTrick: GameTrick {
-    var type = TrickType.mirror
-    var icon = "🪞"
-    var name = "Mirror"
-    var message = "Guess digits flipped!"
-    var description = "Each turn, the Guess digits flip their order before being sent."
-    var duration = 1
-    
-    init(duration: Int) {
-        self.duration = duration
-    }
+    let type = TrickType.mirror
+    let icon = "🪞"
+    let name = "Mirror"
+    let message = "Guess digits flipped!"
+    let description = "Each turn, the Guess digits flip their order before being sent."
+    let duration: Int
+    let probability: Double
     
     func triggerOnGuess(target: Int, guess: Int) -> Int? {
         let reversedGuess = String(String(format: "%03d", guess).reversed())

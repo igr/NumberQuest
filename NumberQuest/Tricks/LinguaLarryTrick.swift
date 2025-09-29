@@ -1,15 +1,13 @@
 
 struct LinguaLarryTrick: GameTrick {
-    var type = TrickType.linguaLarry
-    var icon = "🈳"
-    var name = "Language Larry"
-    var message = "Reply language changed."
-    var description = "Each turn, the reply to your guess is shown in a random language."
-    var duration = 1
+    let type = TrickType.linguaLarry
+    let icon = "🈳"
+    let name = "Language Larry"
+    let message = "Reply language changed."
+    let description = "Each turn, the reply to your guess is shown in a random language."
+    let duration: Int
+    let probability: Double
     
-    init(duration: Int) {
-        self.duration = duration
-    }
     
     func triggerOnShowMiss(systemMessage: SystemMessage) -> SystemMessage? {
         switch (systemMessage.messageType) {

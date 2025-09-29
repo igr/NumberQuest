@@ -1,15 +1,12 @@
 
 struct DoubleOhSevenTrick: GameTrick {
-    var type = TrickType.doubleOhSeven
-    var icon = "🕵️‍♀️"
-    var name = "007"
-    var message = "One 7 turned into Target."
-    var description = "Each turn, the last digit 7 of the Guess is changed into the Target digit."
-    var duration = 1
-    
-    init(duration: Int) {
-        self.duration = duration
-    }
+    let type = TrickType.doubleOhSeven
+    let icon = "🕵️‍♀️"
+    let name = "007"
+    let message = "One 7 turned into Target."
+    let description = "Each turn, the last digit 7 of the Guess is changed into the Target digit."
+    let duration: Int
+    let probability: Double
     
     func triggerOnGuess(target: Int, guess: Int) -> Int? {
         var guessDigits = Array(String(guess))

@@ -30,5 +30,6 @@ struct NewTrickBubble: View {
 }
 
 #Preview {
-    NewTrickBubble(trickMessage: NewTrickMessage(SnailTrick(duration: 3)))
+    NewTrickBubble(trickMessage: NewTrickMessage(
+        AllTricks.tricks[2]))
 }
