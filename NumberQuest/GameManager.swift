@@ -73,6 +73,8 @@ class GameManager: ObservableObject {
     }
     
     fileprivate func continueGame(guess: Int) async {
+        Self.logger.debug("Miss Guess: \(guess)")
+
         await showMissed(guess: guess)
         
         await triggerActiveTricksOnTurn()
@@ -97,6 +99,10 @@ class GameManager: ObservableObject {
         
         // Update trick encounter in progress data
         gameRepo.markTrickEncountered(newTrick.type)
+        
+        let target = String(describing: state.targetNumber)
+        let attempts = String(describing: state.attempts)
+        Self.logger.debug("Target: \(target) Try: \(attempts)")
     }
     
     fileprivate func triggerActiveTricksOnGuess(_ target: Int,_ _guess: Int) async -> Int {
