@@ -21,14 +21,24 @@ struct GameMenuOverlay: View {
                                 onRestart()
                                 withAnimation { menuOpen = false }
                             }) {
-                                Text("🚀")
-                                    .font(.title)
-                                    .accessibilityLabel("Restart Game")
+                                VStack(spacing: 4) {
+                                    Text("🚀")
+                                        .font(.title)
+                                    Text("Restart")
+                                        .font(.caption)
+                                        .foregroundColor(.gray)
+                                }
+                                .accessibilityLabel("Restart Game")
                             }
                             NavigationLink(destination: InfoView(gameProgress: gameProgress)) {
-                                Text("🎯")
-                                    .font(.title)
-                                    .accessibilityLabel("Info")
+                                VStack(spacing: 4) {
+                                    Text("🎯")
+                                        .font(.title)
+                                    Text("Info")
+                                        .font(.caption)
+                                        .foregroundColor(.gray)
+                                }
+                                .accessibilityLabel("Info")
                             }
                         }
                         .padding(16)
