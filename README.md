@@ -31,3 +31,8 @@ Release:
 + Update `Whats new`
 + Assign the new build (that was distributed in previous step)
 + Submit for review
+
+## Screenshots
+
++ For iOS: iPhone 14 Plus (6.5'')
++ For iPad: iPad Pro (M4) (13'')
