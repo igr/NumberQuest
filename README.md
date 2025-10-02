@@ -2,6 +2,8 @@
 
 🎯 Guess a Number - with a twist: classic puzzle with chaotic tricks!
 
+[AppStore](https://apps.apple.com/hr/app/numberquest7/id6752815615)
+
 ## Description
 
 **NumberQuest** is a fresh take on number guessing games, focusing on how the trick system creates delightful chaos and unpredictability that keeps players engaged.
